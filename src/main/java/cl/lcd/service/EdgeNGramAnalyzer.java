@@ -18,15 +18,8 @@ public class EdgeNGramAnalyzer extends Analyzer {
 	@Override
 	protected TokenStreamComponents createComponents(String fieldName) {
 
-//		Tokenizer tokenizer = new StandardTokenizer();
 		Tokenizer tokenizer = new EdgeNGramTokenizer(1, 20);
 		TokenStream tokenStream = new LowerCaseFilter(tokenizer);
-		
-//		Map<String, String> args = new HashMap<>();
-//		args.put("minGramSize", "1");
-//		args.put("maxGramSize", "20");
-		
-//		tokenStream = new EdgeNGramTokenFilter(tokenStream, 1, 20, false);
 		
 		return new TokenStreamComponents(tokenizer, tokenStream);
 	}

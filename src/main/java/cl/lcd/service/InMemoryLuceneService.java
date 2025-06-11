@@ -39,6 +39,8 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.opencsv.CSVReader;
@@ -54,6 +56,8 @@ public class InMemoryLuceneService {
 
 	private Directory inMemoryIndex;
 	private Analyzer analyzer;
+	
+	Logger logger = LoggerFactory.getLogger(InMemoryLuceneService.class);
 	
 	@PostConstruct
 	public void init() {
@@ -76,7 +80,6 @@ public class InMemoryLuceneService {
 		analyzerPerField.put("city", new EdgeNGramAnalyzer());
 		analyzerPerField.put("state", new EdgeNGramAnalyzer());
 		
-		System.out.println("analyzer per field: " +analyzerPerField);
 		Analyzer defaultAnalyzer = new StandardAnalyzer();
 		
 		return new PerFieldAnalyzerWrapper(defaultAnalyzer, analyzerPerField);
@@ -99,18 +102,6 @@ public class InMemoryLuceneService {
 //	public void indexData(List<Airport> dataList) throws IOException {
 		public void indexData() throws IOException {
 			List<Airport> dataList = readDataFromFile("airports.csv");
-//		inMemoryIndex = new ByteBuffersDirectory();
-		
-//		Map<String, Analyzer> analyzerPerField = new HashMap<>();
-//		analyzerPerField.put("iata", new AutocompleteAnalyzer());
-//		analyzerPerField.put("icao", new AutocompleteAnalyzer());
-//		analyzerPerField.put("name", new AutocompleteAnalyzer());
-//		analyzerPerField.put("time_zone", new StandardAnalyzer());
-//		analyzerPerField.put("city_code", new AutocompleteAnalyzer());
-//		analyzerPerField.put("city", new AutocompleteAnalyzer());
-//		analyzerPerField.put("state", new AutocompleteAnalyzer());
-//		Analyzer defaultAnalyzer = new StandardAnalyzer();
-//		analyzer = new PerFieldAnalyzerWrapper(defaultAnalyzer, analyzerPerField);
 
 		try(IndexWriter writer = new IndexWriter(inMemoryIndex, new IndexWriterConfig(analyzer))) {
 			int batchSize = 1000;
@@ -141,50 +132,21 @@ public class InMemoryLuceneService {
         			doc.add(new TextField("type", a.getType(), Field.Store.YES));
         			writer.addDocument(doc);
         		}
-        		System.out.println("added docs from " + i + " to " + end);
+        		logger.info("added docs from " + i + " to " + end);
         	}
 		}
 	}
 	
 	public List<Airport> search(String keyword) throws Exception {
         List<Airport> results = new ArrayList<>();
-        
-//        Map<String, Analyzer> searchAnalyzerPerField = new HashMap<>();
-//        searchAnalyzerPerField.put("iata", new SearchAnalyzer());
-//        searchAnalyzerPerField.put("name", new SearchAnalyzer());
-//        searchAnalyzerPerField.put("city_code", new SearchAnalyzer());
-//        searchAnalyzerPerField.put("city", new SearchAnalyzer());
-//
-//        Analyzer queryAnalyzer = new PerFieldAnalyzerWrapper(
-//        		new StandardAnalyzer(), 
-//        		searchAnalyzerPerField);
 
         try (DirectoryReader reader = DirectoryReader.open(inMemoryIndex)) {
             IndexSearcher searcher = new IndexSearcher(reader);
             String[] edgeFields = {"name", "city"};
-            String[] exactFields = {"iata", "icao", "city_code"};
             Map<String, Float> boosts = new HashMap<>();
             boosts.put("city", 5.0f);
             boosts.put("name", 2.0f);
             boosts.put("iata", 1.0f);
-//            MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, queryAnalyzer, boosts);
-            
-//            QueryParser parser = new QueryParser("name", analyzer);
-//            Query query = parser.parse(keyword);
-//            List<Query> queries = new ArrayList<>();
-            
-//            for(String field: fields) {
-//            	if(field.equals("iata") || field.equals("icao") || field.equals("city_code")) {
-//            		TermQuery tQuery = new TermQuery(new Term(field, keyword.toLowerCase()));
-//            		queries.add(tQuery);
-//            	} else {            		
-//	            	PrefixQuery pquery = new PrefixQuery(new Term(field, keyword.toLowerCase()));
-//	            	queries.add(new BoostQuery(pquery, boosts.getOrDefault(field, 1.0f)));
-//	//            	queries.add(pquery);
-//            	}
-//            }
-            
-//            Query query = new DisjunctionMaxQuery(queries, 0.1f);
 
             List<Query> exactQueries = List.of(
             	    new TermQuery(new Term("iata", keyword.toLowerCase())),
