@@ -66,19 +66,19 @@ public class LuceneService {
         		for(Airport a: batch) {
         			Document doc = new Document();
         			doc.add(new StringField("iata", a.getIata(), Field.Store.YES));
-        			doc.add(new StringField("icao", a.getIcao(), Field.Store.YES));
+//        			doc.add(new StringField("icao", a.getIcao(), Field.Store.YES));
         			doc.add(new TextField("name", a.getName(), Field.Store.YES));
-        			doc.add(new StringField("latitude", a.getLatitude(), Field.Store.YES));
-        			doc.add(new StringField("longitude", a.getLongitude(), Field.Store.YES));
-        			doc.add(new IntField("elevation", a.getElevation(), Field.Store.YES));
-        			doc.add(new StringField("url", a.getUrl(), Field.Store.YES));
-        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
+//        			doc.add(new StringField("latitude", a.getLatitude(), Field.Store.YES));
+//        			doc.add(new StringField("longitude", a.getLongitude(), Field.Store.YES));
+//        			doc.add(new IntField("elevation", a.getElevation(), Field.Store.YES));
+//        			doc.add(new StringField("url", a.getUrl(), Field.Store.YES));
+//        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
         			doc.add(new StringField("city_code", a.getCity_code(), Field.Store.YES));
         			doc.add(new StringField("country_code", a.getCountry_code(), Field.Store.YES));
         			doc.add(new TextField("city", a.getCity(), Field.Store.YES));
-        			doc.add(new TextField("state", a.getState(), Field.Store.YES));
-        			doc.add(new TextField("county", a.getCounty(), Field.Store.YES));
-        			doc.add(new StringField("type", a.getType(), Field.Store.YES));
+//        			doc.add(new TextField("state", a.getState(), Field.Store.YES));
+//        			doc.add(new TextField("county", a.getCounty(), Field.Store.YES));
+//        			doc.add(new StringField("type", a.getType(), Field.Store.YES));
         			writer.addDocument(doc);
         		}
         		System.out.println("added docs from " + i + " to " + end);
@@ -100,22 +100,22 @@ public class LuceneService {
 
             for (ScoreDoc scoreDoc : hits.scoreDocs) {
                 Document doc = searcher.storedFields().document(scoreDoc.doc);
-                results.add(new Airport(
-                        doc.get("iata"),
-                        doc.get("icao"),
-                        doc.get("name"),
-                        doc.get("latitude"), 
-                        doc.get("longitude"), 
-                        Integer.parseInt(doc.get("elevation")), 
-                        doc.get("url"), 
-                        doc.get("time_zone"), 
-                        doc.get("city_code"), 
-                        doc.get("country_code"), 
-                        doc.get("city"), 
-                        doc.get("state"), 
-                        doc.get("county"), 
-                        doc.get("type")
-                ));
+//                results.add(new Airport(
+//                        doc.get("iata"),
+//                        doc.get("icao"),
+//                        doc.get("name"),
+//                        doc.get("latitude"), 
+//                        doc.get("longitude"), 
+//                        Integer.parseInt(doc.get("elevation")), 
+//                        doc.get("url"), 
+//                        doc.get("time_zone"), 
+//                        doc.get("city_code"), 
+//                        doc.get("country_code"), 
+//                        doc.get("city"), 
+//                        doc.get("state"), 
+//                        doc.get("county"), 
+//                        doc.get("type")
+//                ));
             }
         }
 

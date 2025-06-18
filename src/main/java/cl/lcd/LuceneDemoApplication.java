@@ -12,7 +12,7 @@ public class LuceneDemoApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(LuceneDemoApplication.class, args);
-		LuceneService.analyzeText();
+//		LuceneService.analyzeText();
 	}
 
 }

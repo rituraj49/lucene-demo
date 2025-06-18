@@ -15,6 +15,7 @@ import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.StringField;
@@ -49,6 +50,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
+import cl.lcd.model.LocationType;
 import jakarta.annotation.PostConstruct;
 
 @Service
@@ -117,19 +119,19 @@ public class InMemoryLuceneService {
         		for(Airport a: batch) {
         			Document doc = new Document();
         			doc.add(new TextField("iata", a.getIata(), Field.Store.YES));
-        			doc.add(new TextField("icao", a.getIcao(), Field.Store.YES));
+//        			doc.add(new TextField("icao", a.getIcao(), Field.Store.YES));
         			doc.add(new TextField("name", a.getName(), Field.Store.YES));
-        			doc.add(new TextField("latitude", a.getLatitude(), Field.Store.YES));
-        			doc.add(new TextField("longitude", a.getLongitude(), Field.Store.YES));
-        			doc.add(new IntField("elevation", a.getElevation(), Field.Store.YES));
-        			doc.add(new TextField("url", a.getUrl(), Field.Store.YES));
-        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
+        			doc.add(new DoubleField("latitude", a.getLatitude(), Field.Store.YES));
+        			doc.add(new DoubleField("longitude", a.getLongitude(), Field.Store.YES));
+//        			doc.add(new IntField("elevation", a.getElevation(), Field.Store.YES));
+//        			doc.add(new TextField("url", a.getUrl(), Field.Store.YES));
+//        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
         			doc.add(new TextField("city_code", a.getCity_code(), Field.Store.YES));
         			doc.add(new TextField("country_code", a.getCountry_code(), Field.Store.YES));
         			doc.add(new TextField("city", a.getCity(), Field.Store.YES));
-        			doc.add(new TextField("state", a.getState(), Field.Store.YES));
-        			doc.add(new TextField("county", a.getCounty(), Field.Store.YES));
-        			doc.add(new TextField("type", a.getType(), Field.Store.YES));
+//        			doc.add(new TextField("state", a.getState(), Field.Store.YES));
+//        			doc.add(new TextField("county", a.getCounty(), Field.Store.YES));
+//        			doc.add(new TextField("type", a.getType(), Field.Store.YES));
         			writer.addDocument(doc);
         		}
         		logger.info("added docs from " + i + " to " + end);
@@ -164,7 +166,7 @@ public class InMemoryLuceneService {
             		        "city_code", new IndexingKeywordAnalyzer(),
             		        "name", new SearchAnalyzer(),
             		        "city", new SearchAnalyzer())
-            		);
+            			);
             MultiFieldQueryParser mfqParser = new MultiFieldQueryParser(edgeFields, perFieldAnalyzer);
             Query edgeQuery = mfqParser.parse(QueryParserBase.escape(keyword.toLowerCase()));
             
@@ -177,20 +179,22 @@ public class InMemoryLuceneService {
             for (ScoreDoc scoreDoc : hits.scoreDocs) {
                 Document doc = searcher.storedFields().document(scoreDoc.doc);
                 results.add(new Airport(
+                	LocationType.AIRPORT,
                     doc.get("iata"),
-                    doc.get("icao"),
+//                    doc.get("icao"),
                     doc.get("name"),
-                    doc.get("latitude"), 
-                    doc.get("longitude"), 
-                    Integer.parseInt(doc.get("elevation")), 
-                    doc.get("url"), 
+                    Double.parseDouble(doc.get("latitude")), 
+                    Double.parseDouble(doc.get("longitude")), 
+//                    doc.get("longitude"), 
+//                    Integer.parseInt(doc.get("elevation")), 
+//                    doc.get("url"), 
                     doc.get("time_zone"), 
                     doc.get("city_code"), 
                     doc.get("country_code"), 
-                    doc.get("city"), 
-                    doc.get("state"), 
-                    doc.get("county"), 
-                    doc.get("type")
+                    doc.get("city") 
+//                    doc.get("state"), 
+//                    doc.get("county"), 
+//                    doc.get("type")
                 ));
             }
         }
