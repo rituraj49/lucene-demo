@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import cl.lcd.util.HelperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import cl.lcd.model.AirportResponse;
 import cl.lcd.model.LocationType;
 
 @Service
+@Slf4j
 public class AmadeusService {
 
 	public AmadeusService() {}
@@ -27,76 +30,72 @@ public class AmadeusService {
 	@Autowired
 	private Amadeus amadeusClient;
 
-	public AmadeusService(Amadeus amadeusClient) {
-        this.amadeusClient = amadeusClient;
-    }
+//	public AmadeusService(Amadeus amadeusClient) {
+//        this.amadeusClient = amadeusClient;
+//    }
 
-    public List<Airport> searchLocations(Map<String, String> queryParams) throws ResponseException {
+	/**
+	 *
+	 * @param queryParams = Map<String, String>
+	 * @return List<AirportResponse>
+	 * @throws ResponseException
+	 * queryParams should contain at least two key-value pairs. Examlpe - [{subType: CITY,AIRPORT} {keyword: delhi}]
+	 */
 
-    	Params params = Params.with(
-                queryParams.entrySet().iterator().next().getKey(),
-                queryParams.entrySet().iterator().next().getValue()
-        );
+    public List<AirportResponse> searchLocations(Map<String, String> queryParams) throws ResponseException {
+//		boolean first = true;
+		Params qParams = null;
+//		if(first) {
+//		for(Map.Entry<String, String> entry: queryParams.entrySet()) {
+//			if(qParams == null) {
+//				qParams = Params.with(
+//						"subType",
+//						queryParams.get("subType")
+//				);
+//			}
+//		}
+		qParams = Params.with("subType", queryParams.get("subType"));
+//			first = false;
+//		}
+		for(Map.Entry<String, String> entry: queryParams.entrySet()) {
+			if(!entry.getKey().equals("subType")) {
+				qParams.and(entry.getKey(), entry.getValue());
+			}
+		}
+//			queryParams.entrySet().stream()
+//					.filter(f -> !f.getKey().equals("subType"))
+//					.forEach(p -> qParams.and(p.getKey(), p.getValue()));
 
-        queryParams.entrySet()
-                .stream()
-                .skip(1)
-                .forEach(q -> params.and(q.getKey(), q.getValue()));
+//    	Params params = Params.with(
+////				queryParams.get("subType")
+//                queryParams.entrySet().iterator().next().getKey(),
+//                queryParams.entrySet().iterator().next().getValue()
+//        );
 
-        Location[] locations = amadeusClient.referenceData.locations.get(params);
+//        queryParams.entrySet()
+//                .stream()
+//                .skip(1)
+//                .forEach(q -> params.and(q.getKey(), q.getValue()));
+		System.out.println("query params: " + qParams.toString());
+        Location[] locations = amadeusClient.referenceData.locations.get(qParams);
         
         List<Location> locList = new ArrayList<>(Arrays.asList(locations));
 
         List<Airport> airports = locList.stream().map(l -> {
         	LocationType type = LocationType.valueOf(l.getSubType());
-        	return new Airport(
-        		type,
-    			l.getIataCode(),
-    			l.getName(),
-    			l.getGeoCode().getLatitude(),
-    			l.getGeoCode().getLongitude(),
-    			l.getTimeZoneOffset(),
-    			l.getAddress().getCityCode(),
-    			l.getAddress().getCountryCode(),
-    			l.getAddress().getCityName()
-        			);
-        }).toList();
+				return new Airport(
+					type,
+					l.getIataCode(),
+					l.getName(),
+					l.getGeoCode().getLatitude(),
+					l.getGeoCode().getLongitude(),
+					l.getTimeZoneOffset(),
+					l.getAddress().getCityCode(),
+					l.getAddress().getCountryCode(),
+					l.getAddress().getCityName()
+						);
+			}).toList();
 
-        return airports;
+        return HelperUtil.getGroupedData(airports);
     }
-    
-    public List<AirportResponse> getGroupedData(List<Airport> data) {
-		Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCity_code));
-		
-		List<AirportResponse> result = new ArrayList<>();
-		
-		for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
-			System.out.println("map entry: " + entry.toString());
-			List<Airport> group = entry.getValue();
-			
-			Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
-			
-//			Airport airport = group.get(0);
-			Airport airportCity = match.orElse(null);
-			System.out.println(airportCity.toString());
-//			if(match.isPresent()) {
-//				airportCity = match.get();
-//			}
-			
-//			List<Airport> children = group.subList(1, group.size());
-			List<Airport> children = group.
-					stream()
-					.filter(p -> 
-//						!p.getIata().equals(airportCity.getIata()))
-					!p.getSubType().equals(LocationType.CITY))
-					.toList();
-			
-			AirportResponse parent = new AirportResponse();
-			parent.setParent(airportCity);
-			parent.setGroupData(children);
-			
-			result.add(parent);
-		}
-		return result;
-	}
 }

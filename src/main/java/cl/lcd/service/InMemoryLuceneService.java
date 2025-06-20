@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import cl.lcd.util.HelperUtil;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
@@ -139,7 +140,7 @@ public class InMemoryLuceneService {
 		}
 	}
 	
-	public List<Airport> search(String keyword) throws Exception {
+	public List<AirportResponse> search(String keyword) throws Exception {
         List<Airport> results = new ArrayList<>();
 
         try (DirectoryReader reader = DirectoryReader.open(inMemoryIndex)) {
@@ -199,7 +200,8 @@ public class InMemoryLuceneService {
             }
         }
 
-        return results;
+//        return results;
+		return HelperUtil.getGroupedData(results);
     }
 	
 	public List<AirportResponse> getGroupedData(List<Airport> data) {

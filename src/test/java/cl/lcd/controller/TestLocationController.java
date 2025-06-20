@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import cl.lcd.service.AmadeusService;
-import cl.lcd.util.HelperService;
+import cl.lcd.util.HelperUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
 import cl.lcd.service.InMemoryLuceneService;
 
-@WebMvcTest(AirportController.class)
-@Import(TestAirportController.MockServiceConfig.class)
-public class TestAirportController {
+@WebMvcTest(LocationController.class)
+@Import(TestLocationController.MockServiceConfig.class)
+public class TestLocationController {
 	
 	@Autowired
 	MockMvc mockMvc;
@@ -39,7 +39,7 @@ public class TestAirportController {
 	AmadeusService amadeusService;
 
 	@Autowired
-	HelperService helperService;
+	HelperUtil helperUtil;
 	
 	@TestConfiguration
 	static class MockServiceConfig {
@@ -54,8 +54,8 @@ public class TestAirportController {
 		}
 
 		@Bean
-		HelperService helperService() {
-			return Mockito.mock(HelperService.class);
+		HelperUtil helperService() {
+			return Mockito.mock(HelperUtil.class);
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class TestAirportController {
 		List<AirportResponse> groupedResult = List.of(response);
 		
 		Mockito.when(inMemoryLuceneService.search("del")).thenReturn(searchResult);
-		Mockito.when(helperService.getGroupedData(searchResult)).thenReturn(groupedResult);
+		Mockito.when(helperUtil.getGroupedData(searchResult)).thenReturn(groupedResult);
 		
 		mockMvc.perform(MockMvcRequestBuilders.get("/search")
 				.param("q", "del")
@@ -107,7 +107,7 @@ public class TestAirportController {
 		List<AirportResponse> groupedResult = List.of(response);
 
 		Mockito.when(amadeusService.searchLocations(Mockito.<Map<String, String>>any())).thenReturn(searchResult);
-		Mockito.when(helperService.getGroupedData(searchResult)).thenReturn(groupedResult);
+		Mockito.when(helperUtil.getGroupedData(searchResult)).thenReturn(groupedResult);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/amadeus-search")
 				.param("keyword", "del")
