@@ -76,7 +76,7 @@ public class AmadeusService {
 //                .stream()
 //                .skip(1)
 //                .forEach(q -> params.and(q.getKey(), q.getValue()));
-		System.out.println("query params: " + qParams.toString());
+//		System.out.println("query params: " + qParams.toString());
         Location[] locations = amadeusClient.referenceData.locations.get(qParams);
         
         List<Location> locList = new ArrayList<>(Arrays.asList(locations));

@@ -61,7 +61,9 @@ public class InMemoryLuceneService {
 	private Analyzer analyzer;
 	
 	Logger logger = LoggerFactory.getLogger(InMemoryLuceneService.class);
-/*
+
+
+//	Logger logger = LoggerFactory.getLogger(InMemoryLuceneServiceBkp.class);
 
 	@PostConstruct
 	public void init() {
@@ -74,8 +76,7 @@ public class InMemoryLuceneService {
 			throw new RuntimeException("Lucene initialization failed", e);
 		}
 	}
-*/
-
+	
 	public Analyzer buildPerFieldAnalyzer() {
 		Map<String, Analyzer> analyzerPerField = new HashMap<>();
 		analyzerPerField.put("iata", new IndexingKeywordAnalyzer());
@@ -89,7 +90,7 @@ public class InMemoryLuceneService {
 		
 		return new PerFieldAnalyzerWrapper(defaultAnalyzer, analyzerPerField);
 	}
-
+	
 	public List<Airport> readDataFromFile(String file) {
 		try(CSVReader reader = new CSVReader(new FileReader(file))) {
 			CsvToBean<Airport> csvToBean = new CsvToBeanBuilder<Airport>(reader)
@@ -103,9 +104,8 @@ public class InMemoryLuceneService {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 //	public void indexData(List<Airport> dataList) throws IOException {
-/*
 		public void indexData() throws IOException {
 			List<Airport> dataList = readDataFromFile("airports.csv");
 
@@ -142,8 +142,7 @@ public class InMemoryLuceneService {
         	}
 		}
 	}
-*/
-
+	
 	public List<AirportResponse> search(String keyword) throws Exception {
         List<Airport> results = new ArrayList<>();
 

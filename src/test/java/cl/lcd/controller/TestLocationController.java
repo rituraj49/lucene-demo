@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
-import cl.lcd.service.InMemoryLuceneService;
+import cl.lcd.service.InMemoryLuceneServiceBkp;
 
 @WebMvcTest(LocationController.class)
 @Import(TestLocationController.MockServiceConfig.class)
@@ -32,7 +32,7 @@ public class TestLocationController {
 
 	@Autowired
 //	@InjectMocks
-	InMemoryLuceneService inMemoryLuceneService;
+	InMemoryLuceneServiceBkp inMemoryLuceneService;
 //
 //	@Autowired
 //	@InjectMocks
@@ -44,8 +44,8 @@ public class TestLocationController {
 	@TestConfiguration
 	static class MockServiceConfig {
 		@Bean
-		InMemoryLuceneService inMemoryLuceneService() {
-			return Mockito.mock(InMemoryLuceneService.class);
+		InMemoryLuceneServiceBkp inMemoryLuceneService() {
+			return Mockito.mock(InMemoryLuceneServiceBkp.class);
 		}
 
 		@Bean
@@ -77,8 +77,8 @@ public class TestLocationController {
 		
 		List<AirportResponse> groupedResult = List.of(response);
 		
-		Mockito.when(inMemoryLuceneService.search("del")).thenReturn(searchResult);
-		Mockito.when(helperUtil.getGroupedData(searchResult)).thenReturn(groupedResult);
+		Mockito.when(inMemoryLuceneService.search("del")).thenReturn(groupedResult);
+//		Mockito.when(helperUtil.getGroupedData(searchResult)).thenReturn(groupedResult);
 		
 		mockMvc.perform(MockMvcRequestBuilders.get("/search")
 				.param("q", "del")
@@ -106,8 +106,8 @@ public class TestLocationController {
 
 		List<AirportResponse> groupedResult = List.of(response);
 
-		Mockito.when(amadeusService.searchLocations(Mockito.<Map<String, String>>any())).thenReturn(searchResult);
-		Mockito.when(helperUtil.getGroupedData(searchResult)).thenReturn(groupedResult);
+		Mockito.when(amadeusService.searchLocations(Mockito.<Map<String, String>>any())).thenReturn(groupedResult);
+//		Mockito.when(helperUtil.getGroupedData(searchResult)).thenReturn(groupedResult);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/amadeus-search")
 				.param("keyword", "del")

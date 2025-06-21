@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "count": 2,
+    "links": {
+      "self": "https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY,AIRPORT&keyword=delhi&sort=analytics.travelers.score&view=FULL&page%5Boffset%5D=0&page%5Blimit%5D=10"
+    }
+  },
+  "data": [
+    {
+      "type": "location",
+      "subType": "CITY",
+      "name": "DELHI",
+      "detailedName": "DELHI/DL/IN",
+      "id": "CDEL",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/CDEL",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+05:30",
+      "iataCode": "DEL",
+      "geoCode": {
+        "latitude": 28.56639,
+        "longitude": 77.10306
+      },
+      "address": {
+        "cityName": "DELHI",
+        "cityCode": "DEL",
+        "countryName": "INDIA",
+        "countryCode": "IN",
+        "stateCode": "DL",
+        "regionCode": "ASIA"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 32
+        }
+      }
+    },
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "INDIRA GANDHI INTL",
+      "detailedName": "DELHI/DL/IN:INDIRA GANDHI INTL",
+      "id": "ADEL",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ADEL",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+05:30",
+      "iataCode": "DEL",
+      "geoCode": {
+        "latitude": 28.56639,
+        "longitude": 77.10306
+      },
+      "address": {
+        "cityName": "DELHI",
+        "cityCode": "DEL",
+        "countryName": "INDIA",
+        "countryCode": "IN",
+        "stateCode": "DL",
+        "regionCode": "ASIA"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 32
+        }
+      }
+    }
+  ]
+}

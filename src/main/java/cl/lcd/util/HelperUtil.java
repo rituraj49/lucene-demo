@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
 public class HelperUtil {
     public static List<AirportResponse> getGroupedData(List<Airport> data) {
         Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCity_code));
