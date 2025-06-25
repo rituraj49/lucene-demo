@@ -1,4 +1,4 @@
-package cl.lcd.model;
+package cl.lcd.enums;
 
 public enum LocationType {
 	CITY,

@@ -1,9 +1,7 @@
 package cl.lcd.service;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,15 +9,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import cl.lcd.util.HelperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.IntField;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
@@ -28,19 +24,9 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.QueryParserBase;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.BoostQuery;
-import org.apache.lucene.search.DisjunctionMaxQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.PrefixQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -51,19 +37,17 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
-import cl.lcd.model.LocationType;
+import cl.lcd.enums.LocationType;
 import jakarta.annotation.PostConstruct;
 
 @Service
+@Slf4j
 public class InMemoryLuceneService {
 
 	private Directory inMemoryIndex;
 	private Analyzer analyzer;
 	
-	Logger logger = LoggerFactory.getLogger(InMemoryLuceneService.class);
-
-
-//	Logger logger = LoggerFactory.getLogger(InMemoryLuceneServiceBkp.class);
+//	Logger logger = LoggerFactory.getLogger(InMemoryLuceneService.class);
 
 	@PostConstruct
 	public void init() {
@@ -81,11 +65,13 @@ public class InMemoryLuceneService {
 		Map<String, Analyzer> analyzerPerField = new HashMap<>();
 		analyzerPerField.put("iata", new IndexingKeywordAnalyzer());
 		analyzerPerField.put("icao", new IndexingKeywordAnalyzer());
-		analyzerPerField.put("name", new EdgeNGramAnalyzer());
+		analyzerPerField.put("name_autocomplete", new EdgeNGramAnalyzer());
+		analyzerPerField.put("name", new StandardAnalyzer());
 		analyzerPerField.put("city_code", new IndexingKeywordAnalyzer());
-		analyzerPerField.put("city", new EdgeNGramAnalyzer());
+		analyzerPerField.put("city_autocomplete", new EdgeNGramAnalyzer());
+		analyzerPerField.put("city", new StandardAnalyzer());
 		analyzerPerField.put("state", new EdgeNGramAnalyzer());
-		
+
 		Analyzer defaultAnalyzer = new StandardAnalyzer();
 		
 		return new PerFieldAnalyzerWrapper(defaultAnalyzer, analyzerPerField);
@@ -100,7 +86,8 @@ public class InMemoryLuceneService {
 			
 				return csvToBean.parse();
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+            log.error("Error reading data from file: {}; {}; {}", file, e.getCause(), e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -120,25 +107,27 @@ public class InMemoryLuceneService {
         		if(batch.isEmpty()) {
         			continue;
         		}
-        		for(Airport a: batch) {
-        			Document doc = new Document();
-        			doc.add(new TextField("iata", a.getIata(), Field.Store.YES));
-//        			doc.add(new TextField("icao", a.getIcao(), Field.Store.YES));
-        			doc.add(new TextField("name", a.getName(), Field.Store.YES));
-        			doc.add(new DoubleField("latitude", a.getLatitude(), Field.Store.YES));
-        			doc.add(new DoubleField("longitude", a.getLongitude(), Field.Store.YES));
-//        			doc.add(new IntField("elevation", a.getElevation(), Field.Store.YES));
-//        			doc.add(new TextField("url", a.getUrl(), Field.Store.YES));
-//        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
-        			doc.add(new TextField("city_code", a.getCity_code(), Field.Store.YES));
-        			doc.add(new TextField("country_code", a.getCountry_code(), Field.Store.YES));
-        			doc.add(new TextField("city", a.getCity(), Field.Store.YES));
+					for(Airport a: batch) {
+						Document doc = new Document();
+						doc.add(new TextField("iata", a.getIata(), Field.Store.YES));
+	//        			doc.add(new TextField("icao", a.getIcao(), Field.Store.YES));
+						doc.add(new TextField("name", a.getName(), Field.Store.YES));
+						doc.add(new TextField("name_autocomplete", a.getName(), Field.Store.YES));
+						doc.add(new DoubleField("latitude", a.getLatitude(), Field.Store.YES));
+						doc.add(new DoubleField("longitude", a.getLongitude(), Field.Store.YES));
+	//        			doc.add(new IntField("elevation", a.getElevation(), Field.Store.YES));
+	//        			doc.add(new TextField("url", a.getUrl(), Field.Store.YES));
+	//        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
+						doc.add(new TextField("city_code", a.getCity_code(), Field.Store.YES));
+						doc.add(new TextField("country_code", a.getCountry_code(), Field.Store.YES));
+						doc.add(new TextField("city", a.getCity(), Field.Store.YES));
+        				doc.add(new TextField("city_autocomplete", a.getCity(), Field.Store.YES));
 //        			doc.add(new TextField("state", a.getState(), Field.Store.YES));
 //        			doc.add(new TextField("county", a.getCounty(), Field.Store.YES));
 //        			doc.add(new TextField("type", a.getType(), Field.Store.YES));
         			writer.addDocument(doc);
         		}
-        		logger.info("added docs from " + i + " to " + end);
+        		log.info("added docs from {} to {}", i, end);
         	}
 		}
 	}
@@ -160,8 +149,7 @@ public class InMemoryLuceneService {
             	    new TermQuery(new Term("city_code", keyword.toLowerCase()))
             	);
             BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
-            
-//            Analyzer searchAnalyer = new SearchAnalyzer();
+
             Analyzer perFieldAnalyzer = new PerFieldAnalyzerWrapper(
             		new StandardAnalyzer(),
             		Map.of(
@@ -169,13 +157,26 @@ public class InMemoryLuceneService {
             		        "icao", new IndexingKeywordAnalyzer(),
             		        "city_code", new IndexingKeywordAnalyzer(),
             		        "name", new SearchAnalyzer(),
-            		        "city", new SearchAnalyzer())
-            			);
+            		        "name_autocomplete", new EdgeNGramAnalyzer(),
+            		        "city", new SearchAnalyzer(),
+            		        "city_autocomplete", new EdgeNGramAnalyzer()
+					)
+				);
             MultiFieldQueryParser mfqParser = new MultiFieldQueryParser(edgeFields, perFieldAnalyzer);
+
+			mfqParser.setDefaultOperator(QueryParser.Operator.AND);
+
             Query edgeQuery = mfqParser.parse(QueryParserBase.escape(keyword.toLowerCase()));
             
-            finalQuery.add(edgeQuery, BooleanClause.Occur.SHOULD);
-            exactQueries.forEach(q -> finalQuery.add(q, BooleanClause.Occur.SHOULD));
+            finalQuery.add(new BoostQuery(edgeQuery, 1.0f), BooleanClause.Occur.SHOULD);
+
+			Query cityAutocompleteQuery = new PrefixQuery(new Term("city_autocomplete", keyword.toLowerCase()));
+			Query nameAutocompleteQuery = new PrefixQuery(new Term("name_autocomplete", keyword.toLowerCase()));
+
+			finalQuery.add(new BoostQuery(cityAutocompleteQuery, 1.0f), BooleanClause.Occur.SHOULD);
+			finalQuery.add(new BoostQuery(nameAutocompleteQuery, 1.0f), BooleanClause.Occur.SHOULD);
+
+			exactQueries.forEach(q -> finalQuery.add(q, BooleanClause.Occur.SHOULD));
             
 //            TopDocs hits = searcher.search(query, 10);
             TopDocs hits = searcher.search(finalQuery.build(), 10);
@@ -206,7 +207,7 @@ public class InMemoryLuceneService {
 //        return results;
 		return HelperUtil.getGroupedData(results);
     }
-	
+
 	public List<AirportResponse> getGroupedData(List<Airport> data) {
 		Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCity_code));
 		

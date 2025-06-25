@@ -2,10 +2,9 @@ package cl.lcd.util;
 
 import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
-import cl.lcd.model.LocationType;
+import cl.lcd.enums.LocationType;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

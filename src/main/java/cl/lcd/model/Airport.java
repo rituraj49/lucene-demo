@@ -1,5 +1,6 @@
 package cl.lcd.model;
 
+import cl.lcd.enums.LocationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

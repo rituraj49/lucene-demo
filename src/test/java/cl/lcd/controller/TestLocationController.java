@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
-import cl.lcd.service.InMemoryLuceneServiceBkp;
+import cl.lcd.service.InMemoryLuceneService;
 
 @WebMvcTest(LocationController.class)
 @Import(TestLocationController.MockServiceConfig.class)
@@ -32,7 +32,7 @@ public class TestLocationController {
 
 	@Autowired
 //	@InjectMocks
-	InMemoryLuceneServiceBkp inMemoryLuceneService;
+	InMemoryLuceneService inMemoryLuceneService;
 //
 //	@Autowired
 //	@InjectMocks
@@ -44,8 +44,8 @@ public class TestLocationController {
 	@TestConfiguration
 	static class MockServiceConfig {
 		@Bean
-		InMemoryLuceneServiceBkp inMemoryLuceneService() {
-			return Mockito.mock(InMemoryLuceneServiceBkp.class);
+		InMemoryLuceneService inMemoryLuceneService() {
+			return Mockito.mock(InMemoryLuceneService.class);
 		}
 
 		@Bean
