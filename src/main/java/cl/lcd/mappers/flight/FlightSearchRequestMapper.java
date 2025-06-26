@@ -1,14 +1,15 @@
 package cl.lcd.mappers.flight;
 
-import cl.lcd.dto.search.FlightOfferSearchDto;
+import cl.lcd.dto.search.FlightOfferSearchRequestDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class FlightSearchRequestMapper {
-    public static Map<String, Object> mapDtoToFlightSearchRequest(FlightOfferSearchDto flightOfferSearchDto) {
+    public static Map<String, Object> mapDtoToFlightSearchRequest(FlightOfferSearchRequestDto flightOfferSearchRequestDto) {
         Map<String, Object> flightOfferMap = new HashMap<>();
         List<Map<String, Object>> ordList = new ArrayList<>();
         List<Map<String, String>> travelerList = new ArrayList<>();
@@ -16,24 +17,24 @@ public class FlightSearchRequestMapper {
         Map<String, Object> flightFilters = new HashMap<>();
 
         Map<String, Object> cabinRestrictions = new HashMap<>();
-        cabinRestrictions.put("cabin", flightOfferSearchDto.getCabin() != null ? flightOfferSearchDto.getCabin().toString() : "ECONOMY");
-        cabinRestrictions.put("originDestinationIds", flightOfferSearchDto.getTripDetails().stream()
-                .map(FlightOfferSearchDto.OriginDestinationsDto::getId).toList());
+        cabinRestrictions.put("cabin", flightOfferSearchRequestDto.getCabin() != null ? flightOfferSearchRequestDto.getCabin().toString() : "ECONOMY");
+        cabinRestrictions.put("originDestinationIds", flightOfferSearchRequestDto.getTripDetails().stream()
+                .map(FlightOfferSearchRequestDto.TripDetailsDto::getId).toList());
 
         flightFilters.put("cabinRestrictions", List.of(cabinRestrictions));
-        flightFilters.put("returnToDepartureAirport", !flightOfferSearchDto.isOneWay());
+//        flightFilters.put("returnToDepartureAirport", !flightOfferSearchRequestDto.isOneWay());
 
-        searchParams.put("maxFlightOffers", flightOfferSearchDto.getMaxCount());
-        searchParams.put("addOneWayOffers", flightOfferSearchDto.isOneWay());
+        searchParams.put("maxFlightOffers", flightOfferSearchRequestDto.getMaxCount());
+//        searchParams.put("addOneWayOffers", flightOfferSearchRequestDto.isOneWay());/0
         searchParams.put("flightFilters", flightFilters);
 
-        flightOfferMap.put("currencyCode", flightOfferSearchDto.getCurrencyCode());
+        flightOfferMap.put("currencyCode", flightOfferSearchRequestDto.getCurrencyCode());
         flightOfferMap.put("sources", List.of("GDS"));
         flightOfferMap.put("originDestinations", ordList);
         flightOfferMap.put("travelers", travelerList);
         flightOfferMap.put("searchCriteria", searchParams);
 
-        for(FlightOfferSearchDto.OriginDestinationsDto ord : flightOfferSearchDto.getTripDetails()) {
+        for(FlightOfferSearchRequestDto.TripDetailsDto ord : flightOfferSearchRequestDto.getTripDetails()) {
             Map<String, Object> ordMap = new HashMap<>();
             ordMap.put("id", ord.getId());
             ordMap.put("originLocationCode", ord.getFrom());
@@ -49,16 +50,48 @@ public class FlightSearchRequestMapper {
             ordList.add(ordMap);
         }
 
-        for(FlightOfferSearchDto.TravelerInfoDto trv: flightOfferSearchDto.getTravelers()) {
+//        for(FlightOfferSearchRequestDto.TravelerInfoDto trv: flightOfferSearchRequestDto.getTravelers()) {
+//            Map<String, String> travelerMap = new HashMap<>();
+//            String travelerType = trv.getTravelerType() != null ? trv.getTravelerType().toString() : "ADULT";
+//            travelerMap.put("id", trv.getId());
+//            travelerMap.put("travelerType", travelerType);
+//            if("HELD_INFANT".equals(travelerType)) {
+//                travelerMap.put("associateAdultId", trv.getAssociateAdultId());
+//            }
+//            travelerList.add(travelerMap);
+//        }
+        int adults = flightOfferSearchRequestDto.getAdults();
+        IntStream.rangeClosed(1, adults).forEach(i -> {
             Map<String, String> travelerMap = new HashMap<>();
-            String travelerType = trv.getTravelerType() != null ? trv.getTravelerType().toString() : "ADULT";
-            travelerMap.put("id", trv.getId());
-            travelerMap.put("travelerType", travelerType);
-            if("HELD_INFANT".equals(travelerType)) {
-                travelerMap.put("associateAdultId", trv.getAssociateAdultId());
-            }
+            travelerMap.put("id", String.valueOf(i));
+            travelerMap.put("travelerType", "ADULT");
             travelerList.add(travelerMap);
+        });
+
+        if(flightOfferSearchRequestDto.getChildren() > 0) {
+            IntStream.rangeClosed(travelerList.size() + 1, travelerList.size() + flightOfferSearchRequestDto.getChildren()).forEach(i -> {
+                Map<String, String> travelerMap = new HashMap<>();
+                travelerMap.put("id", String.valueOf(i));
+                travelerMap.put("travelerType", "CHILD");
+                travelerList.add(travelerMap);
+            });
         }
+
+        if(flightOfferSearchRequestDto.getInfants() > 0) {
+            IntStream.rangeClosed(travelerList.size() + 1,
+                    travelerList.size() + flightOfferSearchRequestDto.getInfants()).forEach(i -> {
+                Map<String, String> travelerMap = new HashMap<>();
+                travelerMap.put("id", String.valueOf(i));
+                travelerMap.put("travelerType", "HELD_INFANT");
+                travelerMap.put("associateAdultId", String.valueOf(travelerList.stream()
+                        .filter(tr -> "ADULT".equals(tr.get("travelerType")))
+                        .findFirst()
+                        .orElseThrow()
+                        .get("id")));
+                travelerList.add(travelerMap);
+            });
+        }
+
         return flightOfferMap;
     }
 }

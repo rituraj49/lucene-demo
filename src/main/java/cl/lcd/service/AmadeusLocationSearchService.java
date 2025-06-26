@@ -5,13 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import cl.lcd.dto.booking.TravelerDto;
 import cl.lcd.util.HelperUtil;
-import com.amadeus.resources.FlightOfferSearch;
-import com.amadeus.resources.FlightOrder;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +21,14 @@ import cl.lcd.enums.LocationType;
 
 @Service
 @Slf4j
-public class AmadeusService {
+public class AmadeusLocationSearchService {
 
-	public AmadeusService() {}
+	public AmadeusLocationSearchService() {}
 
 	@Autowired
 	private Amadeus amadeusClient;
 
-//	public AmadeusService(Amadeus amadeusClient) {
+//	public AmadeusLocationSearchService(Amadeus amadeusClient) {
 //        this.amadeusClient = amadeusClient;
 //    }
 

@@ -7,16 +7,19 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Data
-public class FlightOfferSearchDto {
+public class FlightOfferSearchRequestDto {
     private String currencyCode; // TODO enum
-    private List<OriginDestinationsDto> tripDetails;
-    private List<TravelerInfoDto> travelers;
-    private boolean isOneWay;
+    private List<TripDetailsDto> tripDetails;
+//    private List<TravelerInfoDto> travelers;
+    private int adults;
+    private int children; // < 12 yr
+    private int infants; // < 2 yr
+//    private boolean isOneWay;
     private int maxCount;
     private Cabin cabin;
 
     @Data
-    public static class OriginDestinationsDto {
+    public static class TripDetailsDto {
         private String id;
         private String from; // IATA code
         private String to; // IATA code
@@ -24,12 +27,12 @@ public class FlightOfferSearchDto {
         private LocalTime departureTime;
     }
 
-    @Data
-    public static class TravelerInfoDto {
-        private String id;
-        private TravelerType travelerType;
-        private String associateAdultId; // required if travelerType is HELD_INFANT
-    }
+//    @Data
+//    public static class TravelerInfoDto {
+//        private String id;
+//        private TravelerType travelerType;
+//        private String associateAdultId; // required if travelerType is HELD_INFANT
+//    }
 
     public static enum TravelerType {
         ADULT,

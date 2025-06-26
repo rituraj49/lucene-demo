@@ -4,19 +4,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import cl.lcd.service.AmadeusLocationSearchService;
 import cl.lcd.util.HelperUtil;
-import com.amadeus.resources.FlightOrder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +22,6 @@ import com.amadeus.exceptions.ResponseException;
 
 import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
-import cl.lcd.service.AmadeusService;
 import cl.lcd.service.InMemoryLuceneService;
 
 @RestController
@@ -41,7 +34,7 @@ public class LocationSearchController {
 	private InMemoryLuceneService inMemoryLuceneService;
 
 	@Autowired
-	private AmadeusService amadeusService;
+	private AmadeusLocationSearchService amadeusLocationSeArchService;
 
 
 	@PostMapping("bulk-upload")
@@ -87,7 +80,7 @@ public class LocationSearchController {
 	public ResponseEntity<?> searchForLocations(@RequestParam Map<String, String> params) {
 		try {
 			log.info("params received in searchForLocations: {}", params);
-			List<AirportResponse> response = amadeusService.searchLocations(params);
+			List<AirportResponse> response = amadeusLocationSeArchService.searchLocations(params);
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 

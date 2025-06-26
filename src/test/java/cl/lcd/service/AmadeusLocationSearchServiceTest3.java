@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 
 import java.io.IOException;
@@ -28,11 +27,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //@Import(AmadeusConfigTest.class)
 @WireMockTest(httpPort = 9999)
-@SpringBootTest(classes = {AmadeusConfigTest.class, AmadeusService.class})
-public class AmadeusServiceTest3 {
+@SpringBootTest(classes = {AmadeusConfigTest.class, AmadeusLocationSearchService.class})
+public class AmadeusLocationSearchServiceTest3 {
 
     @Autowired
-    private AmadeusService amadeusService;
+    private AmadeusLocationSearchService amadeusLocationSeArchService;
 
     @BeforeEach
     public void setup() {
@@ -65,7 +64,7 @@ public class AmadeusServiceTest3 {
 
     @Test
     void testSearch() throws ResponseException {
-        amadeusService.searchLocations(Map.of("subType", "CITY,AIRPORT", "keyword", "delhi"));
+        amadeusLocationSeArchService.searchLocations(Map.of("subType", "CITY,AIRPORT", "keyword", "delhi"));
 
         // Print requests seen by WireMock
         WireMock.findAll(RequestPatternBuilder.allRequests()).forEach(System.out::println);
@@ -83,7 +82,7 @@ public class AmadeusServiceTest3 {
                         .withBodyFile("locations-response.json")));
 
         try {
-            List<AirportResponse> result = amadeusService
+            List<AirportResponse> result = amadeusLocationSeArchService
                     .searchLocations(Map.of("subType", "CITY,AIRPORT", "keyword", "delhi"));
             assertEquals(1, result.size());
             assertEquals("DEL", result.get(0).getParent().getCity_code());

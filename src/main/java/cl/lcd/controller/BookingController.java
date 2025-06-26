@@ -1,7 +1,6 @@
 package cl.lcd.controller;
 
 import cl.lcd.service.AmadeusBookingService;
-import cl.lcd.service.AmadeusService;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;

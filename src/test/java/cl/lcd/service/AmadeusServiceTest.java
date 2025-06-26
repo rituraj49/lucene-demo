@@ -35,11 +35,11 @@
 ////    @Mock
 ////    private Locations locations;
 //
-//    private AmadeusService amadeusService;
+//    private AmadeusLocationSearchService amadeusService;
 //
 //    @BeforeEach
 //    public void setup() {
-//         amadeusService = new AmadeusService();
+//         amadeusService = new AmadeusLocationSearchService();
 //
 ////        Mockito.when(amadeusClient.referenceData).thenReturn(referenceData);
 ////        Mockito.when(referenceData.locations).thenReturn(locations);

@@ -21,20 +21,20 @@
 //import static org.mockito.Mockito.*;
 //
 //public class AmadeusServiceTest2 {
-//    private AmadeusService amadeusService;
+//    private AmadeusLocationSearchService amadeusService;
 //    private Amadeus amadeusClient;
 //    private ReferenceData referenceData;
 //    private Locations locations;
 //
 //    @BeforeEach
 //    public void setup() throws Exception {
-//        amadeusService = new AmadeusService();
+//        amadeusService = new AmadeusLocationSearchService();
 //
 //        amadeusClient = mock(Amadeus.class);
 //        referenceData = mock(ReferenceData.class);
 //        locations = mock(Locations.class);
 //
-//        Field field = AmadeusService.class.getDeclaredField("amadeusClient");
+//        Field field = AmadeusLocationSearchService.class.getDeclaredField("amadeusClient");
 //        field.setAccessible(true);
 //        field.set(amadeusService, amadeusClient);
 //

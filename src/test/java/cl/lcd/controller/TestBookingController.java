@@ -1,12 +1,9 @@
 package cl.lcd.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-import java.util.Map;
-
+import cl.lcd.model.Airport;
+import cl.lcd.model.AirportResponse;
 import cl.lcd.service.AmadeusLocationSearchService;
+import cl.lcd.service.InMemoryLuceneService;
 import cl.lcd.util.HelperUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,13 +16,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import cl.lcd.model.Airport;
-import cl.lcd.model.AirportResponse;
-import cl.lcd.service.InMemoryLuceneService;
+import java.util.List;
+import java.util.Map;
 
-@WebMvcTest(LocationSearchController.class)
-@Import(TestLocationSearchController.MockServiceConfig.class)
-public class TestLocationSearchController {
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(BookingController.class)
+@Import(TestBookingController.MockServiceConfig.class)
+public class TestBookingController {
 	
 	@Autowired
 	MockMvc mockMvc;
