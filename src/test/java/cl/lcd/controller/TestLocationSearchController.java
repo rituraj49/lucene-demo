@@ -23,9 +23,9 @@ import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
 import cl.lcd.service.InMemoryLuceneService;
 
-@WebMvcTest(LocationController.class)
-@Import(TestLocationController.MockServiceConfig.class)
-public class TestLocationController {
+@WebMvcTest(LocationSearchController.class)
+@Import(TestLocationSearchController.MockServiceConfig.class)
+public class TestLocationSearchController {
 	
 	@Autowired
 	MockMvc mockMvc;

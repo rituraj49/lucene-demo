@@ -1,9 +1,8 @@
-package cl.lcd.dto;
+package cl.lcd.dto.booking;
 
 import com.amadeus.shopping.FlightOffersSearch;
 
 import java.util.List;
-import java.util.Map;
 
 public class FlightCreateOrderDto {
     private FlightOffersSearch flightOffer;
