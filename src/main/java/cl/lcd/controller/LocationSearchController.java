@@ -14,10 +14,10 @@ import com.google.gson.JsonParser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,20 +33,15 @@ import cl.lcd.service.InMemoryLuceneService;
 
 @RestController
 @Slf4j
-public class LocationController {
-
-	//	private LuceneService luceneService;
-	private InMemoryLuceneService inMemoryLuceneService;
-	private AmadeusService amadeusService;
-
-//	private Gson gson;
+@Tag(name = "Locations search controller class ")
+@RequestMapping("locations")
+public class LocationSearchController {
 
 	@Autowired
-	public LocationController(InMemoryLuceneService inMemoryLuceneService, AmadeusService amadeusService) {
-//		this.luceneService = luceneService;
-		this.inMemoryLuceneService = inMemoryLuceneService;
-		this.amadeusService = amadeusService;
-	}
+	private InMemoryLuceneService inMemoryLuceneService;
+
+	@Autowired
+	private AmadeusService amadeusService;
 
 
 	@PostMapping("bulk-upload")
@@ -78,7 +73,6 @@ public class LocationController {
 	public ResponseEntity<List<AirportResponse>> searchAirports(@RequestParam String keyword) throws Exception {
 		List<AirportResponse> airportResponses = inMemoryLuceneService.search(keyword);
 
-//        List<AirportResponse> airportData = inMemoryLuceneService.getGroupedData(airports);
         return ResponseEntity.status(HttpStatus.OK).body(airportResponses);
 	}
 
@@ -93,49 +87,13 @@ public class LocationController {
 	public ResponseEntity<?> searchForLocations(@RequestParam Map<String, String> params) {
 		try {
 			log.info("params received in searchForLocations: {}", params);
-//	        	List<Airport> airports = amadeusService.searchLocations(params);
 			List<AirportResponse> response = amadeusService.searchLocations(params);
-
-//	            List<AirportResponse> response = HelperUtil.getGroupedData(airports);
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (ResponseException e) {
-//	            e.printStackTrace();
 			log.error("Error occurred while searching for locations: {}", e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong: " + e.getMessage());
-//			throw new RuntimeException();
 		}
 	}
-
-	@PostMapping("create-order")
-	@Operation(summary = "Book flight and create flight booking order using Amadeus API",
-			description = """
-					Create a flight booking order using the Amadeus API. 
-					The request body should contain the create flight order details i.e. 
-					FLightOffer object in an array and Travelers details in the travelers array in JSON format.
-					""")
-	@ApiResponses({
-			@ApiResponse(responseCode = "201", description = "Flight order created successfully"),
-			@ApiResponse(responseCode = "500", description = "Internal server error while creating flight order"),
-	})
-	@Parameter(name = "params", description = "Query parameters in the form of key=value pairs for searching locations", required = true)
-	public ResponseEntity<?> createFlightOrder(@RequestBody Map<String, Object> orderRequest) {
-        try {
-			Gson gson = new Gson();
-//			System.out.println("ord req" + orderRequest.toString());
-			String jsonString = new ObjectMapper().writeValueAsString(orderRequest);
-			JsonObject gsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
-
-            FlightOrder createdOrder = amadeusService.createFlightOrder(gsonObject);
-			System.out.println("createdOrder: "+createdOrder.toString());
-			String result = gson.toJson(createdOrder);
-
-			return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (ResponseException | JsonProcessingException e) {
-			log.error("Error occurred while creating flight order: {}", e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
-//			throw new RuntimeException(e);
-		}
-    }
 }

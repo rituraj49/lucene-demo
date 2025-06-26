@@ -1,8 +1,6 @@
-package cl.lcd.dto;
+package cl.lcd.dto.booking;
 
 import lombok.Data;
-
-import java.util.Map;
 
 @Data
 public class BookingRequestDto {
