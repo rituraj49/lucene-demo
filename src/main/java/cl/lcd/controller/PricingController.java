@@ -48,7 +48,7 @@ public class PricingController {
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
 
         } catch (Exception e) {
-            log.error("An Error occurred while processing pricing flight offer search offer API "+e.getMessage());
+            log.error("An Error occurred while processing pricing flight offer search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }

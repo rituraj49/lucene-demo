@@ -1,6 +1,6 @@
 package cl.lcd.service;
 
-import cl.lcd.dto.search.FlightOfferSearchRequestDto;
+import cl.lcd.dto.search.FlightAvailabilityRequest;
 import com.amadeus.Amadeus;
 import com.amadeus.Params;
 import com.amadeus.exceptions.ResponseException;
@@ -52,7 +52,7 @@ public class AmadeusFlightSearchService {
      * @throws JsonProcessingException If an error occurs while processing  the json body.
      */
     public FlightOfferSearch[] searchMultiCityFlightOffers
-            (FlightOfferSearchRequestDto flightOfferSearchRequestDto) throws ResponseException, JsonProcessingException {
+            (FlightAvailabilityRequest flightOfferSearchRequestDto) throws ResponseException, JsonProcessingException {
         Map<String, Object> dtoMap = mapDtoToFlightSearchRequest(flightOfferSearchRequestDto);
 
         String body = objectMapper.writeValueAsString(dtoMap);

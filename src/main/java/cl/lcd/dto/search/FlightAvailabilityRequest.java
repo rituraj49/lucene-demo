@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Data
-public class FlightOfferSearchRequestDto {
+public class FlightAvailabilityRequest { // FlightAvailability
     private String currencyCode; // TODO enum
     private List<TripDetailsDto> tripDetails;
 //    private List<TravelerInfoDto> travelers;

@@ -1,6 +1,6 @@
 package cl.lcd.controller;
 
-import cl.lcd.dto.search.FlightOfferSearchRequestDto;
+import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.service.AmadeusFlightSearchService;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
@@ -50,7 +50,7 @@ public class FlightSearchController {
     @PostMapping("/search")
     @Operation(summary = "find multi city flight offer search ")
     @ApiResponse(responseCode = "200", description = " return all available flight    [View Amadeus API Docs](https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference)")
-    public ResponseEntity<?> searchStructuredFlights(@RequestBody FlightOfferSearchRequestDto flightRequestDto) {
+    public ResponseEntity<?> searchStructuredFlights(@RequestBody FlightAvailabilityRequest flightRequestDto) {
         try {
             log.info("multicity search flight offer request received: {}", flightRequestDto.toString());
             FlightOfferSearch[] result = amadeusFlightSearchService.searchMultiCityFlightOffers(flightRequestDto);

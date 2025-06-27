@@ -1,6 +1,6 @@
 package cl.lcd.mappers.flight;
 
-import cl.lcd.dto.search.FlightOfferSearchRequestDto;
+import cl.lcd.dto.search.FlightAvailabilityRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 public class FlightSearchRequestMapper {
-    public static Map<String, Object> mapDtoToFlightSearchRequest(FlightOfferSearchRequestDto flightOfferSearchRequestDto) {
+    public static Map<String, Object> mapDtoToFlightSearchRequest(FlightAvailabilityRequest flightOfferSearchRequestDto) {
         Map<String, Object> flightOfferMap = new HashMap<>();
         List<Map<String, Object>> ordList = new ArrayList<>();
         List<Map<String, String>> travelerList = new ArrayList<>();
@@ -19,7 +19,7 @@ public class FlightSearchRequestMapper {
         Map<String, Object> cabinRestrictions = new HashMap<>();
         cabinRestrictions.put("cabin", flightOfferSearchRequestDto.getCabin() != null ? flightOfferSearchRequestDto.getCabin().toString() : "ECONOMY");
         cabinRestrictions.put("originDestinationIds", flightOfferSearchRequestDto.getTripDetails().stream()
-                .map(FlightOfferSearchRequestDto.TripDetailsDto::getId).toList());
+                .map(FlightAvailabilityRequest.TripDetailsDto::getId).toList());
 
         flightFilters.put("cabinRestrictions", List.of(cabinRestrictions));
 //        flightFilters.put("returnToDepartureAirport", !flightOfferSearchRequestDto.isOneWay());
@@ -34,7 +34,7 @@ public class FlightSearchRequestMapper {
         flightOfferMap.put("travelers", travelerList);
         flightOfferMap.put("searchCriteria", searchParams);
 
-        for(FlightOfferSearchRequestDto.TripDetailsDto ord : flightOfferSearchRequestDto.getTripDetails()) {
+        for(FlightAvailabilityRequest.TripDetailsDto ord : flightOfferSearchRequestDto.getTripDetails()) {
             Map<String, Object> ordMap = new HashMap<>();
             ordMap.put("id", ord.getId());
             ordMap.put("originLocationCode", ord.getFrom());
@@ -43,23 +43,9 @@ public class FlightSearchRequestMapper {
                     "date", ord.getDepartureDate(),
                     "time",  ord.getDepartureTime()
             ));
-//            ordMap.put("arrivalDateTimeRange", Map.of(
-//               "date", ord.getDepartureDate(),
-//                "time",  ord.getDepartureTime()
-//            ));
             ordList.add(ordMap);
         }
 
-//        for(FlightOfferSearchRequestDto.TravelerInfoDto trv: flightOfferSearchRequestDto.getTravelers()) {
-//            Map<String, String> travelerMap = new HashMap<>();
-//            String travelerType = trv.getTravelerType() != null ? trv.getTravelerType().toString() : "ADULT";
-//            travelerMap.put("id", trv.getId());
-//            travelerMap.put("travelerType", travelerType);
-//            if("HELD_INFANT".equals(travelerType)) {
-//                travelerMap.put("associateAdultId", trv.getAssociateAdultId());
-//            }
-//            travelerList.add(travelerMap);
-//        }
         int adults = flightOfferSearchRequestDto.getAdults();
         IntStream.rangeClosed(1, adults).forEach(i -> {
             Map<String, String> travelerMap = new HashMap<>();
