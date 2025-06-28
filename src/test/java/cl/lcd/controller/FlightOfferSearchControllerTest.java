@@ -1,6 +1,7 @@
 package cl.lcd.controller;
 
 //import cl.lcd.dto.search.FlightOfferSearchDto;
+import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.service.AmadeusFlightSearchService;
 import cl.lcd.service.AmadeusPricingService;
 import com.amadeus.resources.FlightOfferSearch;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -145,4 +147,42 @@ public class FlightOfferSearchControllerTest {
                 .andExpect(status().isOk());
     }
 */
+
+    @Test
+    void testSearchMultiFlights_ReturnsFlightOffers() throws Exception {
+        // Given: Prepare sample request DTO
+        FlightAvailabilityRequest.TripDetailsDto trip = new FlightAvailabilityRequest.TripDetailsDto();
+        trip.setId("1");
+        trip.setFrom("DEL");
+        trip.setTo("BOM");
+        trip.setDepartureDate(LocalDate.of(2025, 7, 15));
+        trip.setDepartureTime(LocalTime.of(10, 0));
+
+
+        FlightAvailabilityRequest request = new FlightAvailabilityRequest();
+        request.setCurrencyCode("INR");
+        request.setTripDetails(List.of(trip));
+        request.setAdults(1);
+        request.setChildren(0);
+        request.setInfants(0);
+        request.setMaxCount(3);
+        request.setCabin(FlightAvailabilityRequest.Cabin.ECONOMY);
+
+        // Mock service behavior
+        FlightOfferSearch mockOffer = mock(FlightOfferSearch.class);
+        FlightOfferSearch[] mockResult = new FlightOfferSearch[]{mockOffer};
+
+        when(amadeusFlightSearchService.searchMultiCityFlightOffers(any(FlightAvailabilityRequest.class)))
+                .thenReturn(mockResult);
+
+        // When: Perform POST request
+        mockMvc.perform(post("/flights/search")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+
+
 }
