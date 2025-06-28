@@ -44,7 +44,6 @@ public class BookingController {
             @ApiResponse(responseCode = "201", description = "Flight order created successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error while creating flight order"),
     })
-    @Parameter(name = "params", description = "Query parameters in the form of key=value pairs for searching locations", required = true)
     public ResponseEntity<?> createFlightOrder(@RequestBody Map<String, Object> orderRequest) {
         try {
             Gson gson = new Gson();

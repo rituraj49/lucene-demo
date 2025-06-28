@@ -1,5 +1,8 @@
 package cl.lcd.dto.search;
 
+import com.amadeus.resources.FlightOfferSearch;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.Gson;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,6 +17,12 @@ public class FlightAvailabilityResponse {
     private String totalPrice;
 
     private List<Trip> trips;
+//    @JsonIgnore
+    private String additionalInfo;
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = new Gson().toJson(additionalInfo);
+    }
 
     @Data
     public static class Trip {

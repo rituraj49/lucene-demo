@@ -24,6 +24,7 @@ public class FlightSearchResponse {
             response.setBasePrice(offer.getPrice().getBase());
             response.setTotalPrice(offer.getPrice().getTotal());
             response.setTrips(createdTrips);
+            response.setAdditionalInfo(offer.toString());
         return response;
     }
 

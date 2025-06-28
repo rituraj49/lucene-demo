@@ -42,12 +42,15 @@ public class FlightSearchController {
             throws ResponseException {
         log.info("flight offer search params received: {}", queryParams.toString());
 
-        FlightOfferSearch[] offers = amadeusFlightSearchService.flightOfferSearches(queryParams);
+        FlightOfferSearch[] flightOffers = amadeusFlightSearchService.flightOfferSearches(queryParams);
 
-        log.info("flight offer search response: {}", Arrays.toString(offers));
-        String jsonOutput = gson.toJson(offers);
+        List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
+                .map(FlightSearchResponse::createResponse)
+                .toList();
+        log.info("flight offer search response: {}", Arrays.toString(flightOffers));
+//        String jsonOutput = gson.toJson(flightOffers);
 
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
     }
 
     @PostMapping("/search")
@@ -67,7 +70,6 @@ public class FlightSearchController {
 
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
