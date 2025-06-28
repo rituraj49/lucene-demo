@@ -36,13 +36,15 @@ public class FlightSearchRequestMapper {
 
         for(FlightAvailabilityRequest.TripDetailsDto ord : flightOfferSearchRequestDto.getTripDetails()) {
             Map<String, Object> ordMap = new HashMap<>();
+            Map<String, Object> dateTimeMap = new HashMap<>();
+            dateTimeMap.put("date", ord.getDepartureDate());
+            if(ord.getDepartureTime() != null) {
+                dateTimeMap.put("time", ord.getDepartureTime());
+            }
             ordMap.put("id", ord.getId());
             ordMap.put("originLocationCode", ord.getFrom());
             ordMap.put("destinationLocationCode", ord.getTo());
-            ordMap.put("departureDateTimeRange", Map.of(
-                    "date", ord.getDepartureDate(),
-                    "time",  ord.getDepartureTime()
-            ));
+            ordMap.put("departureDateTimeRange", dateTimeMap);
             ordList.add(ordMap);
         }
 

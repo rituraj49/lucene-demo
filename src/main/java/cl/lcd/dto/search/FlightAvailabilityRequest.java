@@ -17,6 +17,8 @@ public class FlightAvailabilityRequest { // FlightAvailability
 //    private boolean isOneWay;
     private int maxCount;
     private Cabin cabin;
+    private boolean checkedBags; // TODO: this is not used in the mapper, but it is in the API
+    private boolean refundableFare;
 
     @Data
     public static class TripDetailsDto {
