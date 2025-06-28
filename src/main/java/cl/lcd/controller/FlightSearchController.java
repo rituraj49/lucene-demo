@@ -46,8 +46,8 @@ public class FlightSearchController {
 
         log.info("flight offer search response: {}", Arrays.toString(offers));
         String jsonOutput = gson.toJson(offers);
-        //System.out.println(offers.length);
-        return ResponseEntity.ok(jsonOutput);
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
     }
 
     @PostMapping("/search")
@@ -67,10 +67,9 @@ public class FlightSearchController {
 
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());//            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
-
-
 }
