@@ -1,6 +1,8 @@
 package cl.lcd.controller;
 
 import cl.lcd.dto.search.FlightAvailabilityRequest;
+import cl.lcd.dto.search.FlightAvailabilityResponse;
+import cl.lcd.mappers.flight.FlightSearchResponse;
 import cl.lcd.service.AmadeusFlightSearchService;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,19 +52,23 @@ public class FlightSearchController {
 
     @PostMapping("/search")
     @Operation(summary = "find multi city flight offer search ")
-    @ApiResponse(responseCode = "200", description = " return all available flight    [View Amadeus API Docs](https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference)")
+    @ApiResponse(responseCode = "200", description = " return all available flight")
     public ResponseEntity<?> searchStructuredFlights(@RequestBody FlightAvailabilityRequest flightRequestDto) {
         try {
             log.info("multicity search flight offer request received: {}", flightRequestDto.toString());
-            FlightOfferSearch[] result = amadeusFlightSearchService.searchMultiCityFlightOffers(flightRequestDto);
-            String jsonOutput = gson.toJson(result);
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
+            FlightOfferSearch[] flightOffers = amadeusFlightSearchService.searchMultiCityFlightOffers(flightRequestDto);
+//            String jsonOutput = gson.toJson(flightOffers);
+//            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
+            List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
+                    .map(FlightSearchResponse::createResponse)
+                    .toList();
 
+            log.info("flight offer search response: {}", flightResponseList);
+
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
         } catch (Exception e) {
-//            e.printStackTrace();
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-//            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());//            return null;
         }
     }
 
