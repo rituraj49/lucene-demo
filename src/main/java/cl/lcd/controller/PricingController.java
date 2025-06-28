@@ -41,9 +41,9 @@ public class PricingController {
 
             FlightOfferSearch[] offers = gson.fromJson(jsonBody, FlightOfferSearch[].class);
 
-            FlightPrice result = amadeusPricingService.searchFlightOffersPrice(offers);
+            FlightPrice price = amadeusPricingService.searchFlightOffersPrice(offers);
 
-            String jsonOutput = gson.toJson(result);
+            String jsonOutput = gson.toJson(price);
 
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
 
