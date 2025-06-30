@@ -59,7 +59,7 @@ public class LocationSearchController {
 	@GetMapping("search")
 	@Operation(summary = "Search for airports using in-memory Lucene index",
 			description = """
-					Search for airports using an in-memory Lucene index. The query parameter 'q' should be provided.
+					Search for airports using an in-memory Lucene index. The query parameter 'q' should be provided. payload: new york 
 					""")
 	@ApiResponse(responseCode = "200", description = "Search for airports using in-memory Lucene index")
 	@Parameter(name = "keyword", description = "Query string for searching airports", required = true)
@@ -70,11 +70,26 @@ public class LocationSearchController {
 	}
 
  	@GetMapping("amadeus-search")
-	@Operation(summary = "Search for locations using Amadeus API",
-			description = """
-					Search for locations such as airports or cities using the Amadeus API. " +
-					"Query parameters should include atleast 'subType' and 'keyword'.
-					""")
+	@Operation(
+			summary = "Find airport or city location by keyword",
+			description = "Example payloads:\n" +
+					"```json\n" +
+					"{\n" +
+					"  \"keyword\": \"BOM\",\n" +
+					"  \"subType\": \"CITY,AIRPORT\"\n" +
+					"}\n" +
+					"\n" +
+					"{\n" +
+					"  \"keyword\": \"JFK\",\n" +
+					"  \"subType\": \"AIRPORT\"\n" +
+					"}\n" +
+					"\n" +
+					"{\n" +
+					"  \"keyword\": \"HYD\",\n" +
+					"  \"subType\": \"CITY\"\n" +
+					"}\n" +
+					"```" +" you can use any one "
+	)
 	@ApiResponse(responseCode = "200", description = "Search for locations using Amadeus API")
 	@Parameter(name = "params", description = "Query parameters in the form of key=value pairs for searching locations", required = true)
 	public ResponseEntity<?> searchForLocations(@RequestParam Map<String, String> params) {
