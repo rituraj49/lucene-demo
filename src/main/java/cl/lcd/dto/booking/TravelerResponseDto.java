@@ -5,26 +5,15 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TravelerDto {
+public class TravelerResponseDto {
     private String id;
     private String dateOfBirth;
     private Gender gender;
-    private Name name;
-//    private Name lastName;
-    private Contact contact;
-    private List<IdentityDocument> documents;
-
-    @Data
-    public static class Name {
-        private String firstName;
-        private String lastName;
-    }
-
-    @Data
-    public static class Contact {
-        private String emailAddress;
-        private List<Phone> phones;
-    }
+    private String firstName;
+    private String lastName;
+    private String email;
+    private List<Phone> phones;
+    private List<IdentityDocumentResponse> documents;
 
     @Data
     public static class Phone {
@@ -34,18 +23,13 @@ public class TravelerDto {
     }
 
     @Data
-    public static class IdentityDocument {
+    public static class IdentityDocumentResponse {
         private String number;
-        private String issuanceDate;
         private String expiryDate;
         private String issuanceCountry;
-        private String issuanceLocation;
         private String nationality;
-        private String birthPlace;
         private DocumentType documentType;
-        private String validityCountry; // two-letter ISO code of country
-        private String birthCountry; // two-letter ISO code of country
-        private boolean holder; // whether the document is held by the traveler
+        private boolean holder;
     }
 
     public enum Gender {

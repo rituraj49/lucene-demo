@@ -1,5 +1,7 @@
 package cl.lcd.controller;
 
+import cl.lcd.dto.booking.FlightBookingRequest;
+import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.service.AmadeusBookingService;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOrder;
@@ -44,17 +46,13 @@ public class BookingController {
             @ApiResponse(responseCode = "201", description = "Flight order created successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error while creating flight order"),
     })
-    public ResponseEntity<?> createFlightOrder(@RequestBody Map<String, Object> orderRequest) {
+    public ResponseEntity<?> createFlightOrder(@RequestBody FlightBookingRequest orderRequest) {
         try {
-            Gson gson = new Gson();
-            String jsonString = new ObjectMapper().writeValueAsString(orderRequest);
-            JsonObject gsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
+            log.info("flight booking request received: {}", orderRequest.toString());
+            FlightBookingResponse createdOrder = amadeusBookingService.createFlightOrder(orderRequest);
 
-            FlightOrder createdOrder = amadeusBookingService.createFlightOrder(gsonObject);
-            String result = gson.toJson(createdOrder);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (ResponseException | JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
+        } catch (ResponseException e) {
             log.error("Error occurred while creating flight order: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
         }

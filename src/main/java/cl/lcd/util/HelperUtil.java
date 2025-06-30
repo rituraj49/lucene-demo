@@ -23,7 +23,7 @@ public class HelperUtil {
         List<AirportResponse> result = new ArrayList<>();
 
         for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
-//            System.out.println("map entry: " + entry.toString());
+            System.out.println("map entry: " + entry.toString());
             List<Airport> group = entry.getValue();
 
             Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
@@ -53,8 +53,7 @@ public class HelperUtil {
                         .withIgnoreLeadingWhiteSpace(true)
                         .build();
                 //            inMemoryLuceneService.indexData(airportsList);
-                List<T> list = csvToBean.parse();
-                return list;
+                return csvToBean.parse();
             } catch (Exception e) {
                 System.out.println("caught exception");
                 throw new RuntimeException(e);

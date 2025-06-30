@@ -59,7 +59,7 @@ public class LocationSearchController {
 	@GetMapping("search")
 	@Operation(summary = "Search for airports using in-memory Lucene index",
 			description = """
-					Search for airports using an in-memory Lucene index. The query parameter 'q' should be provided.
+					Search for airports using an in-memory Lucene index. The query parameter 'keyword' should be provided.
 					""")
 	@ApiResponse(responseCode = "200", description = "Search for airports using in-memory Lucene index")
 	@Parameter(name = "keyword", description = "Query string for searching airports", required = true)
@@ -76,7 +76,7 @@ public class LocationSearchController {
 					"Query parameters should include atleast 'subType' and 'keyword'.
 					""")
 	@ApiResponse(responseCode = "200", description = "Search for locations using Amadeus API")
-	@Parameter(name = "params", description = "Query parameters in the form of key=value pairs for searching locations", required = true)
+	@Parameter(name = "params", description = "Query parameters in the form of keyword=\"nyc\" and subType=\"CITY,AIRPORT\" pairs for searching locations", required = true)
 	public ResponseEntity<?> searchForLocations(@RequestParam Map<String, String> params) {
 		try {
 			log.info("params received in searchForLocations: {}", params);

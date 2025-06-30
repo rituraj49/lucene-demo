@@ -1,5 +1,7 @@
 package cl.lcd.service;
 
+import cl.lcd.dto.booking.FlightBookingRequest;
+import cl.lcd.dto.booking.FlightBookingResponse;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOrder;
 import com.google.gson.JsonObject;
@@ -17,8 +19,8 @@ public class BookingService {
      * @param flightOfferRequest The request dto.
      * @return A string containing the booking confirmation details.
      */
-    public String createBooking(JsonObject flightOfferRequest) throws ResponseException {
-        FlightOrder order = amadeusBookingService.createFlightOrder(flightOfferRequest);
+    public String createBooking(FlightBookingRequest flightOfferRequest) throws ResponseException {
+        FlightBookingResponse order = amadeusBookingService.createFlightOrder(flightOfferRequest);
         return order.toString();
     }
 }

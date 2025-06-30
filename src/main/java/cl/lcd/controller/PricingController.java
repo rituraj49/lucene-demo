@@ -1,9 +1,9 @@
 package cl.lcd.controller;
 
+import cl.lcd.dto.pricing.FlightPricingConfirmRequest;
+import cl.lcd.dto.pricing.FlightPricingConfirmResponse;
 import cl.lcd.service.AmadeusPricingService;
 import com.amadeus.resources.FlightOfferSearch;
-import com.amadeus.resources.FlightPrice;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("pricing")
@@ -35,18 +32,14 @@ public class PricingController {
     @PostMapping("/flights/confirm")
     @Operation(summary = "find price of flight offer search ")
     @ApiResponse(responseCode = "200", description = " return all available flight price   [View Amadeus API Docs](https://developers.amadeus.com/self-service/category/flights/api-doc/flight-offers-price/api-reference)")
-    public ResponseEntity<?> searchFlightOfferPrice(@RequestBody List<Map<String, Object>> flightRequest) {
+//    public ResponseEntity<?> searchFlightOfferPrice(@RequestBody List<Map<String, Object>> flightRequest) {
+    public ResponseEntity<?> searchFlightOfferPrice(@RequestBody FlightPricingConfirmRequest flightRequest) {
         try {
-            String jsonBody = new ObjectMapper().writeValueAsString(flightRequest);
+            FlightOfferSearch offer = gson.fromJson(flightRequest.getFlightOffer(), FlightOfferSearch.class);
+            FlightPricingConfirmResponse response = amadeusPricingService.searchFlightOffersPrice(offer);
+//            String jsonOutput = gson.toJson(price);
 
-            FlightOfferSearch[] offers = gson.fromJson(jsonBody, FlightOfferSearch[].class);
-
-            FlightPrice price = amadeusPricingService.searchFlightOffersPrice(offers);
-
-            String jsonOutput = gson.toJson(price);
-
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
-
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
         } catch (Exception e) {
             log.error("An Error occurred while processing pricing flight offer search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());

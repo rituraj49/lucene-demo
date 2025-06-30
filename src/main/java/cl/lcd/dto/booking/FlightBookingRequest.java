@@ -1,13 +1,12 @@
 package cl.lcd.dto.booking;
 
-import com.amadeus.shopping.FlightOffersSearch;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class FlightBookingRequest {
+//    private FlightCreateOrderDto data;
     private String flightOffer;
-
-    private List<TravelerDto> travelers;
+    private List<TravelerRequestDto> travelers;
 }

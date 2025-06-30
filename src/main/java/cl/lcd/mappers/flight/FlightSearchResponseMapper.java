@@ -1,14 +1,13 @@
 package cl.lcd.mappers.flight;
 
 import cl.lcd.dto.search.FlightAvailabilityResponse;
-import com.amadeus.resources.DatedFlight;
 import com.amadeus.resources.FlightOfferSearch;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FlightSearchResponse {
+public class FlightSearchResponseMapper {
     public static FlightAvailabilityResponse createResponse(FlightOfferSearch offer) {
         if (offer == null) {
             return null;
@@ -24,7 +23,7 @@ public class FlightSearchResponse {
             response.setBasePrice(offer.getPrice().getBase());
             response.setTotalPrice(offer.getPrice().getTotal());
             response.setTrips(createdTrips);
-            response.setAdditionalInfo(offer.toString());
+            response.setPricingAdditionalInfo(offer);
         return response;
     }
 
@@ -34,6 +33,7 @@ public class FlightSearchResponse {
             FlightAvailabilityResponse.Trip trip = new FlightAvailabilityResponse.Trip();
             List<FlightAvailabilityResponse.Leg> legs = new ArrayList<>();
             Duration totalLayover = Duration.ZERO;
+            Duration totalDuration = Duration.ZERO;
 
             FlightOfferSearch.SearchSegment[] segments = itinerary.getSegments();
             String from = segments[0].getDeparture().getIataCode();
@@ -41,6 +41,7 @@ public class FlightSearchResponse {
             int stops = segments.length - 1;
 
 //            for(FlightOfferSearch.SearchSegment segment: itinerary.getSegments()) {
+
             for(int i = 0; i < segments.length; i++) {
                 FlightOfferSearch.SearchSegment segment = segments[i];
                 FlightAvailabilityResponse.Leg leg = new FlightAvailabilityResponse.Leg();
@@ -57,14 +58,17 @@ public class FlightSearchResponse {
                 leg.setArrivalDateTime(LocalDateTime.parse(segment.getArrival().getAt()));
                 leg.setDuration(getDurationString(segment.getDuration()));
 
+                totalDuration = totalDuration.plus(Duration.parse(segment.getDuration()));
+
                 if (i < segments.length - 1) {
                     LocalDateTime arrivalTime = LocalDateTime.parse(segment.getArrival().getAt());
                     LocalDateTime nextDepartureTime = LocalDateTime.parse(segments[i + 1].getDeparture().getAt());
                     Duration layover = Duration.between(arrivalTime, nextDepartureTime);
                     totalLayover = totalLayover.plus(layover);
-
+                    totalDuration = totalDuration.plus(layover);
                     leg.setLayoverAfter(getDurationString(layover.toString()));
                 }
+
                 legs.add(leg);
             }
 
@@ -72,8 +76,9 @@ public class FlightSearchResponse {
             trip.setFrom(from);
             trip.setTo(to);
             trip.setStops(stops);
-            trip.setTotalDuration(getDurationString(itinerary.getDuration()));
-            trip.setLayoverTotalDuration(getDurationString(totalLayover.toString()));
+//            trip.setTotalDuration(getDurationString(itinerary.getDuration()));
+            trip.setTotalFlightDuration(getDurationString(totalDuration.toString()));
+            trip.setTotalLayoverDuration(getDurationString(totalLayover.toString()));
 
             trips.add(trip);
         }

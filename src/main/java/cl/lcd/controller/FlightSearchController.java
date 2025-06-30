@@ -2,7 +2,7 @@ package cl.lcd.controller;
 
 import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.dto.search.FlightAvailabilityResponse;
-import cl.lcd.mappers.flight.FlightSearchResponse;
+import cl.lcd.mappers.flight.FlightSearchResponseMapper;
 import cl.lcd.service.AmadeusFlightSearchService;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
@@ -45,7 +45,7 @@ public class FlightSearchController {
         FlightOfferSearch[] flightOffers = amadeusFlightSearchService.flightOfferSearches(queryParams);
 
         List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
-                .map(FlightSearchResponse::createResponse)
+                .map(FlightSearchResponseMapper::createResponse)
                 .toList();
         log.info("flight offer search response: {}", Arrays.toString(flightOffers));
 //        String jsonOutput = gson.toJson(flightOffers);
@@ -63,7 +63,7 @@ public class FlightSearchController {
 //            String jsonOutput = gson.toJson(flightOffers);
 //            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
             List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
-                    .map(FlightSearchResponse::createResponse)
+                    .map(FlightSearchResponseMapper::createResponse)
                     .toList();
 
             log.info("flight offer search response: {}", flightResponseList);
