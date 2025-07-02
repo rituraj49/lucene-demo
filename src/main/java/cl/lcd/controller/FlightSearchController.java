@@ -38,9 +38,29 @@ public class FlightSearchController {
     private final Gson gson = new Gson();
 
     @GetMapping("/search")
-    @Operation(summary = "find flight offer search ")
+    //@Operation(summary = "find flight offer search ")
     @ApiResponse(responseCode = "200", description = " return all available flight  ")
-    @Parameter(name = "[View Amadeus API Docs] https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference ")
+    @Operation(
+            summary = "find flight offer search",
+            description = " Example Payload:\n" +
+                    "```json\n" +
+                    "{\n" +
+                    "  \"originLocationCode\": \"SYD\",\n" +
+                    "  \"destinationLocationCode\": \"NYC\",\n" +
+                    "  \"departureDate\": \"2025-07-12\",\n" +
+                    "  \"returnDate\": \"2025-07-13\",\n" +
+                    "  \"maxPrice\": 140000,\n" +
+                    "  \"adults\": 2,\n" +
+                    "  \"children\":1, \n"+
+                    "  \"infants\":1, \n"+
+                    "  \"travelClass\": \"ECONOMY\", \n"+
+                    "  \"nonStop\": \"false\", \n"+
+                    "  \"currencyCode\": \"INR\" ,\n" +
+                    "  \"max\": 5\n" +
+                    "}\n" +
+                    "```"+" max-> show only 5 result \n  if you want to Excluded any Airline than use \"excludedAirlineCodes\":\"AI\" \n or if you want to Included Airlines than use \"includedAirlineCodes\":\"AI\" \n     "
+    )
+    //@Parameter(name = "[View Amadeus API Docs] https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference ")
     public ResponseEntity<?> flightOfferSearch(@RequestParam Map<String, String> queryParams)
             throws ResponseException {
         log.info("flight offer search params received: {}", queryParams.toString());
@@ -57,7 +77,37 @@ public class FlightSearchController {
     }
 
     @PostMapping("/search")
-    @Operation(summary = "find multi city flight offer search ")
+    //@Operation(summary = "find multi city flight offer search ")
+    @Operation(
+            summary = "Find multi-city flight offer search",
+            description = "Example Payload:\n" +
+                    "```json\n" +
+                    "{\n" +
+                    "  \"currencyCode\": \"INR\",\n" +
+                    "  \"tripDetails\": [\n" +
+                    "    {\n" +
+                    "      \"id\": \"1\",\n" +
+                    "      \"from\": \"BKK\",\n" +
+                    "      \"to\": \"BLR\",\n" +
+                    "      \"departureDate\": \"2025-07-28\",\n" +
+                    "      \"departureTime\": \"10:00:00\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"id\": \"2\",\n" +
+                    "      \"from\": \"BLR\",\n" +
+                    "      \"to\": \"BOM\",\n" +
+                    "      \"departureDate\": \"2025-07-30\",\n" +
+                    "      \"departureTime\": \"10:00:00\"\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"adults\": 1,\n" +
+                    "  \"children\": 0,\n" +
+                    "  \"infants\": 0,\n" +
+                    "  \"maxCount\": 2,\n" +
+                    "  \"cabin\": \"ECONOMY\"\n" +
+                    "}\n" +
+                    "```"
+    )
     @ApiResponse(responseCode = "200", description = " return all available flight",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = FlightAvailabilityResponse.class)))
     public ResponseEntity<?> searchStructuredFlights(@RequestBody FlightAvailabilityRequest flightRequestDto) {
