@@ -1,40 +1,93 @@
 package cl.lcd.dto.booking;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 public class TravelerRequestDto {
+
+    @Schema(example = "1")
     private String id;
+
+    @Schema(example = "1992-02-09")
     private String dateOfBirth;
+
+    @Schema(example = "MALE")
     private Gender gender;
+
+    @Schema(example = "Rahul")
     private String firstName;
+
+    @Schema(example = "Sharma")
     private String lastName;
+
+    @Schema(example = "rahul@test.com")
     private String email;
+
     private List<Phone> phones;
     private List<IdentityDocument> documents;
 
     @Data
     public static class Phone {
+        @Schema(example = "MOBILE")
         private DeviceType deviceType;
+
+        @Schema(example = "+91")
         private String countryCallingCode;
+
+        @Schema(example = "9999999999")
         private String number;
     }
 
     @Data
     public static class IdentityDocument {
+//        private String number;
+//        private String issuanceDate;
+//        private String expiryDate;
+//        private String issuanceCountry;
+//        private String issuanceLocation;
+//        private String nationality;
+//        private String birthPlace;
+//        private DocumentType documentType;
+//        private String validityCountry; // two-letter ISO code of country
+//        private String birthCountry; // two-letter ISO code of country
+//        private boolean holder; // whether the document is held by the traveler
+        @Schema(example = "AB1234567")
         private String number;
+
+        @Schema(example = "2016-03-02")
         private String issuanceDate;
+
+        @Schema(example = "2026-03-01")
         private String expiryDate;
+
+        @Schema(example = "IN")
         private String issuanceCountry;
+
+        @Schema(example = "Delhi")
         private String issuanceLocation;
+
+        @Schema(example = "Indian")
         private String nationality;
+
+        @Schema(example = "Varanasi")
         private String birthPlace;
+
+        @Schema(description = "Type of the identity document")
         private DocumentType documentType;
-        private String validityCountry; // two-letter ISO code of country
-        private String birthCountry; // two-letter ISO code of country
-        private boolean holder; // whether the document is held by the traveler
+
+        @Schema(example = "IN")
+        private String validityCountry;
+
+        @Schema(example = "IN")
+        private String birthCountry;
+
+        @Schema(example = "true")
+        private boolean holder;
+
     }
 
     public enum Gender {

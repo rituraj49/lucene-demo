@@ -12,6 +12,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,7 +45,9 @@ public class BookingController {
 					FLightOffer object in an array and Travelers details in the travelers array in JSON format.
 					""")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Flight order created successfully"),
+            @ApiResponse(responseCode = "201", description = "Flight order created successfully",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = FlightBookingResponse.class))
+            ),
             @ApiResponse(responseCode = "500", description = "Internal server error while creating flight order"),
     })
     public ResponseEntity<?> createFlightOrder(@RequestBody FlightBookingRequest orderRequest) {

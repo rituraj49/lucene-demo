@@ -7,11 +7,9 @@ import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
@@ -73,8 +71,8 @@ public class LuceneService {
 //        			doc.add(new IntField("elevation", a.getElevation(), Field.Store.YES));
 //        			doc.add(new StringField("url", a.getUrl(), Field.Store.YES));
 //        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
-        			doc.add(new StringField("city_code", a.getCity_code(), Field.Store.YES));
-        			doc.add(new StringField("country_code", a.getCountry_code(), Field.Store.YES));
+        			doc.add(new StringField("city_code", a.getCityCode(), Field.Store.YES));
+        			doc.add(new StringField("country_code", a.getCountryCode(), Field.Store.YES));
         			doc.add(new TextField("city", a.getCity(), Field.Store.YES));
 //        			doc.add(new TextField("state", a.getState(), Field.Store.YES));
 //        			doc.add(new TextField("county", a.getCounty(), Field.Store.YES));

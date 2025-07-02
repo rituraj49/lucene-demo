@@ -61,11 +61,11 @@ public class TestBookingController {
 	@Test
 	void testSearchAirports() throws Exception {
 		Airport parent = new Airport();
-		parent.setCity_code("DEL");
+		parent.setCityCode("DEL");
 		parent.setIata("DEL");
 		
 		Airport child = new Airport();
-		child.setCity_code("DEL");
+		child.setCityCode("DEL");
 		child.setIata("IGI");
 		
 		List<Airport> searchResult = List.of(parent, child);
@@ -90,11 +90,11 @@ public class TestBookingController {
 	@Test
 	void testSearchAirportsAmadeus() throws Exception {
 		Airport parent = new Airport();
-		parent.setCity_code("DEL");
+		parent.setCityCode("DEL");
 		parent.setIata("DEL");
 
 		Airport child = new Airport();
-		child.setCity_code("DEL");
+		child.setCityCode("DEL");
 		child.setIata("IGI");
 
 		List<Airport> searchResult = List.of(parent, child);
