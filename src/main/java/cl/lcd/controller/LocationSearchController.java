@@ -1,6 +1,9 @@
 package cl.lcd.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +54,12 @@ public class LocationSearchController {
 	@Parameter(name = "file", description = "CSV file containing airport data", required = true)
 	public ResponseEntity<?> bulkUploadAirports(@RequestParam("file") MultipartFile file) throws IOException {
 			log.info("Received file for bulk upload: {}", file.getOriginalFilename());
-            List<Airport> airportsList = HelperUtil.convertCsv(file, Airport.class);
-
+			try(Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+				List<Airport> airportsList = HelperUtil.convertCsv(reader, Airport.class);
+			} catch (IOException e) {
+				log.error("Error reading CSV file: {}", e.getMessage());
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error reading CSV file: " + e.getMessage());
+			}
         return ResponseEntity.status(HttpStatus.OK).body("Data uploaded successfully");
     }
 

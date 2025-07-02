@@ -1,12 +1,11 @@
 package cl.lcd.service;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 import cl.lcd.util.HelperUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +26,7 @@ import org.apache.lucene.queryparser.classic.QueryParserBase;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import com.opencsv.CSVReader;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 
 import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
@@ -57,6 +50,8 @@ public class InMemoryLuceneService {
 			this.analyzer = buildPerFieldAnalyzer();
 			indexData();
 		} catch (Exception e) {
+			log.error("Error initializing Lucene: {}", e.getMessage());
+//			e.printStackTrace();
 			throw new RuntimeException("Lucene initialization failed", e);
 		}
 	}
@@ -77,29 +72,25 @@ public class InMemoryLuceneService {
 		return new PerFieldAnalyzerWrapper(defaultAnalyzer, analyzerPerField);
 	}
 	
-	public List<Airport> readDataFromFile(String file) {
-		try(CSVReader reader = new CSVReader(new FileReader(file))) {
-			CsvToBean<Airport> csvToBean = new CsvToBeanBuilder<Airport>(reader)
-					.withType(Airport.class)
-					.withIgnoreLeadingWhiteSpace(true)
-					.build();
-			
-				return csvToBean.parse();
+	public List<Airport> readDataFromFile() throws IOException {
+		log.info("reading data from file...");
+		Path path = Paths.get("airports.csv");
+		try(Reader reader = Files.newBufferedReader(path)) {
+			return HelperUtil.convertCsv(reader, Airport.class);
 		} catch (IOException e) {
 //			e.printStackTrace();
-            log.error("Error reading data from file: {}; {}; {}", file, e.getCause(), e.getMessage());
+            log.error("Error reading data from file: {}; {}", e.getCause(), e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
 	
-//	public void indexData(List<Airport> dataList) throws IOException {
 		public void indexData() throws IOException {
-			List<Airport> dataList = readDataFromFile("airports.csv");
-
+			log.info("Indexing data start...");
+			List<Airport> dataList = readDataFromFile();
 		try(IndexWriter writer = new IndexWriter(inMemoryIndex, new IndexWriterConfig(analyzer))) {
 			int batchSize = 1000;
         	int total = dataList.size();
-        	
+
         	for(int i = 0; i <= total; i += batchSize) {
         		int end = Math.min(i + batchSize, total);
         		
@@ -109,6 +100,7 @@ public class InMemoryLuceneService {
         		}
 					for(Airport a: batch) {
 						Document doc = new Document();
+						doc.add(new TextField("subType", a.getSubType().toString(), Field.Store.YES));
 						doc.add(new TextField("iata", a.getIata(), Field.Store.YES));
 	//        			doc.add(new TextField("icao", a.getIcao(), Field.Store.YES));
 						doc.add(new TextField("name", a.getName(), Field.Store.YES));
@@ -117,21 +109,22 @@ public class InMemoryLuceneService {
 						doc.add(new DoubleField("longitude", a.getLongitude(), Field.Store.YES));
 	//        			doc.add(new IntField("elevation", a.getElevation(), Field.Store.YES));
 	//        			doc.add(new TextField("url", a.getUrl(), Field.Store.YES));
-	//        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
-						doc.add(new TextField("city_code", a.getCity_code(), Field.Store.YES));
-						doc.add(new TextField("country_code", a.getCountry_code(), Field.Store.YES));
+//	        			doc.add(new TextField("time_zone", a.getTime_zone(), Field.Store.YES));
+	        			doc.add(new TextField("time_zone_offset", a.getTimeZoneOffset(), Field.Store.YES));
+						doc.add(new TextField("city_code", a.getCityCode(), Field.Store.YES));
+						doc.add(new TextField("country_code", a.getCountryCode(), Field.Store.YES));
 						doc.add(new TextField("city", a.getCity(), Field.Store.YES));
         				doc.add(new TextField("city_autocomplete", a.getCity(), Field.Store.YES));
 //        			doc.add(new TextField("state", a.getState(), Field.Store.YES));
 //        			doc.add(new TextField("county", a.getCounty(), Field.Store.YES));
 //        			doc.add(new TextField("type", a.getType(), Field.Store.YES));
-        			writer.addDocument(doc);
+						writer.addDocument(doc);
         		}
         		log.info("added docs from {} to {}", i, end);
         	}
 		}
 	}
-	
+
 	public List<AirportResponse> search(String keyword) throws Exception {
         List<Airport> results = new ArrayList<>();
 
@@ -178,13 +171,15 @@ public class InMemoryLuceneService {
 
 			exactQueries.forEach(q -> finalQuery.add(q, BooleanClause.Occur.SHOULD));
             
-//            TopDocs hits = searcher.search(query, 10);
-            TopDocs hits = searcher.search(finalQuery.build(), 10);
+//            TopDocs initialHits = searcher.search(query, 10);
+            TopDocs initialHits = searcher.search(finalQuery.build(), 10);
 
-            for (ScoreDoc scoreDoc : hits.scoreDocs) {
+            for (ScoreDoc scoreDoc : initialHits.scoreDocs) {
                 Document doc = searcher.storedFields().document(scoreDoc.doc);
                 results.add(new Airport(
-                	LocationType.AIRPORT,
+//                	LocationType.AIRPORT,
+//						"AIRPORT",
+					LocationType.valueOf(doc.get("subType")),
                     doc.get("iata"),
 //                    doc.get("icao"),
                     doc.get("name"),
@@ -193,7 +188,7 @@ public class InMemoryLuceneService {
 //                    doc.get("longitude"), 
 //                    Integer.parseInt(doc.get("elevation")), 
 //                    doc.get("url"), 
-                    doc.get("time_zone"), 
+                    doc.get("time_zone_offset"),
                     doc.get("city_code"), 
                     doc.get("country_code"), 
                     doc.get("city") 
@@ -205,28 +200,6 @@ public class InMemoryLuceneService {
         }
 
 //        return results;
-		return HelperUtil.getGroupedData(results);
+		return HelperUtil.getGroupedDataLucene(results);
     }
-
-	public List<AirportResponse> getGroupedData(List<Airport> data) {
-		Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCity_code));
-		
-		List<AirportResponse> result = new ArrayList<>();
-		
-		for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
-			System.out.println("map entry: " + entry.toString());
-			List<Airport> group = entry.getValue();
-			
-			Airport airport = group.get(0);
-			
-			List<Airport> children = group.subList(1, group.size());
-			
-			AirportResponse parent = new AirportResponse();
-			parent.setParent(airport);
-			parent.setGroupData(children);
-			
-			result.add(parent);
-		}
-		return result;
-	}
 }

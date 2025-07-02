@@ -32,6 +32,7 @@ public class FlightAvailabilityResponse {
 
     private List<Trip> trips;
 //    @JsonIgnore
+    @Schema(description = "flight offer search json object as is")
     private String pricingAdditionalInfo;
 
     public void setPricingAdditionalInfo(FlightOfferSearch pricingAdditionalInfo) {

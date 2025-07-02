@@ -55,6 +55,7 @@ public class AmadeusLocationSearchService {
 
         List<Airport> airports = locList.stream().map(l -> {
         	LocationType type = LocationType.valueOf(l.getSubType());
+//			String type = l.getSubType();
 				return new Airport(
 					type,
 					l.getIataCode(),

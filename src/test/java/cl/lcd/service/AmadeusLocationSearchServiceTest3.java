@@ -85,8 +85,8 @@ public class AmadeusLocationSearchServiceTest3 {
             List<AirportResponse> result = amadeusLocationSeArchService
                     .searchLocations(Map.of("subType", "CITY,AIRPORT", "keyword", "delhi"));
             assertEquals(1, result.size());
-            assertEquals("DEL", result.get(0).getParent().getCity_code());
-            assertEquals("DEL", result.get(0).getGroupData().getFirst().getIata());
+            assertEquals("DEL", result.get(0).getParent().getCityCode());
+            assertEquals("DEL", result.get(0).getGroupData().get(0).getIata());
         } catch (ResponseException e) {
 //            throw new RuntimeException(e);
             System.out.println("ResponseException occurred: " + e.getMessage());

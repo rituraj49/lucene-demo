@@ -7,12 +7,6 @@ import java.util.List;
 
 @Data
 public class TravelerResponseDto {
-//    private String id;
-//    private String dateOfBirth;
-//    private Gender gender;
-//    private String firstName;
-//    private String lastName;
-//    private String email;
 
     @Schema(example = "1")
     private String id;
@@ -48,12 +42,6 @@ public class TravelerResponseDto {
 
     @Data
     public static class IdentityDocumentResponse {
-//        private String number;
-//        private String expiryDate;
-//        private String issuanceCountry;
-//        private String nationality;
-//        private DocumentType documentType;
-//        private boolean holder;
         @Schema(example = "AB1234567")
         private String number;
 

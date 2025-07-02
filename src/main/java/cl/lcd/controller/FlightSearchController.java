@@ -1,5 +1,6 @@
 package cl.lcd.controller;
 
+import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.dto.search.FlightAvailabilityResponse;
 import cl.lcd.mappers.flight.FlightSearchResponseMapper;
@@ -10,6 +11,8 @@ import com.amadeus.resources.FlightOfferSearch;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +58,8 @@ public class FlightSearchController {
 
     @PostMapping("/search")
     @Operation(summary = "find multi city flight offer search ")
-    @ApiResponse(responseCode = "200", description = " return all available flight")
+    @ApiResponse(responseCode = "200", description = " return all available flight",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = FlightAvailabilityResponse.class)))
     public ResponseEntity<?> searchStructuredFlights(@RequestBody FlightAvailabilityRequest flightRequestDto) {
         try {
             log.info("multicity search flight offer request received: {}", flightRequestDto.toString());
