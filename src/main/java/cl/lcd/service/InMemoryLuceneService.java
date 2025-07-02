@@ -90,6 +90,7 @@ public class InMemoryLuceneService {
 		try(IndexWriter writer = new IndexWriter(inMemoryIndex, new IndexWriterConfig(analyzer))) {
 			int batchSize = 1000;
         	int total = dataList.size();
+//        	int total = 10;
 
         	for(int i = 0; i <= total; i += batchSize) {
         		int end = Math.min(i + batchSize, total);
@@ -200,6 +201,6 @@ public class InMemoryLuceneService {
         }
 
 //        return results;
-		return HelperUtil.getGroupedDataLucene(results);
+		return HelperUtil.getGroupedData(results);
     }
 }

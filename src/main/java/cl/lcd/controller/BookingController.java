@@ -21,10 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -58,6 +55,23 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
         } catch (ResponseException e) {
             log.error("Error occurred while creating flight order: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
+        }
+    }
+
+    @GetMapping("flight-order/{orderId}")
+    public ResponseEntity<?> getFlightOrder(@PathVariable String orderId) {
+        try {
+            log.info("Fetching flight order with ID: {}", orderId);
+            FlightOrder flightOrder = amadeusBookingService.getFlightOrder(orderId);
+            if (flightOrder == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight order not found");
+            }
+            Gson gson = new Gson();
+            String flightOrderJson = gson.toJson(flightOrder);
+            return ResponseEntity.ok(flightOrderJson);
+        } catch (ResponseException e) {
+            log.error("Error occurred while fetching flight order: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
         }
     }

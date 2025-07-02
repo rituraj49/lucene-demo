@@ -9,8 +9,8 @@ public class LocationTypeConverter extends AbstractBeanField<LocationType, Strin
     @Override
     protected LocationType convert(String value) throws CsvDataTypeMismatchException, CsvConstraintViolationException {
         return switch (value) {
-            case "A" -> LocationType.AIRPORT;
-            case "C" -> LocationType.CITY;
+            case "A", "AP" -> LocationType.AIRPORT;
+            case "C", "CC" -> LocationType.CITY;
             default -> LocationType.OTHER;
         };
     }

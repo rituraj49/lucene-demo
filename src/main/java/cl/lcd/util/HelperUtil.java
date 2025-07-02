@@ -69,12 +69,13 @@ public class HelperUtil {
 //            try(Reader reader = new InputStreamReader(file.getInputStream())) {
                 CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
                         .withType(tClass)
-                        .withSeparator('^')
+//                        .withSeparator('^')
                         .withIgnoreLeadingWhiteSpace(true)
                         .build();
                 //            inMemoryLuceneService.indexData(airportsList);
 
-        return csvToBean.parse();
+        List<T> parsedData = csvToBean.parse();
+        return parsedData;
 //            } catch (Exception e) {
 //                System.out.println("caught exception");
 //                throw new RuntimeException(e);

@@ -13,22 +13,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Airport {
-//     @CsvCustomBindByName(column = "location_type", converter = LocationTypeConverter.class)
+     @CsvCustomBindByName(column = "type", converter = LocationTypeConverter.class)
 	 private LocationType subType;
 
-//     @CsvBindByName( column = "iata_code")
+     @CsvBindByName( column = "iata")
      private String iata;
 
-//     @CsvBindByName(column = "name")
+     @CsvBindByName(column = "name")
      private String name;
 
-//     @CsvBindByName(column = "latitude")
+     @CsvBindByName(column = "latitude")
      private double latitude;
 
-//     @CsvBindByName(column = "longitude")
+     @CsvBindByName(column = "longitude")
      private double longitude;
 
-     @CsvBindByName(column = "time_zone_offset")
+     @CsvBindByName(column = "time_zone")
      private String timeZoneOffset;
 
      @CsvBindByName(column = "city_code")

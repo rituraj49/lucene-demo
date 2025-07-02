@@ -36,4 +36,9 @@ public class AmadeusBookingService {
         return FlightBookingResponseMapper.flightBookingResponse(order);
     }
 
+    public FlightOrder getFlightOrder(String orderId) throws ResponseException {
+        log.info("Retrieving flight order with ID: {}", orderId);
+        FlightOrder order = amadeusClient.booking.flightOrder(orderId).get();
+        return order;
+    }
 }
