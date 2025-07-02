@@ -50,7 +50,7 @@ public class FlightSearchController {
         List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
                 .map(FlightSearchResponseMapper::createResponse)
                 .toList();
-        log.info("flight offer search response: {}", Arrays.toString(flightOffers));
+        log.info("{} flight offers found", flightResponseList.size());
 //        String jsonOutput = gson.toJson(flightOffers);
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
@@ -70,7 +70,7 @@ public class FlightSearchController {
                     .map(FlightSearchResponseMapper::createResponse)
                     .toList();
 
-            log.info("flight offer search response: {}", flightResponseList);
+            log.info("{} flight offers found", flightResponseList.size());
 
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
         } catch (Exception e) {

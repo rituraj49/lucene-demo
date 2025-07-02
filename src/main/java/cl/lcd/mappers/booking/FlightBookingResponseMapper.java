@@ -42,7 +42,6 @@ public class FlightBookingResponseMapper {
         List<TravelerResponseDto> travelersList = new ArrayList<>();
         for(FlightOrder.Traveler traveler: travelers) {
             TravelerResponseDto dto = new TravelerResponseDto();
-            System.out.println("traveler single: " + traveler.toString());
             List<TravelerResponseDto.Phone> phones = Arrays.stream(traveler.getContact()
                     .getPhones())
                     .map(ph -> {

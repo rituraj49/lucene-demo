@@ -1,6 +1,7 @@
 package cl.lcd.controller;
 
 //import cl.lcd.dto.search.FlightOfferSearchDto;
+import cl.lcd.dto.pricing.FlightPricingConfirmResponse;
 import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.service.AmadeusFlightSearchService;
 import cl.lcd.service.AmadeusPricingService;
@@ -86,11 +87,11 @@ public class FlightOfferSearchControllerTest {
         FlightOfferSearch[] inputOffers = gson.fromJson(inputJson, FlightOfferSearch[].class);
 
         // 3. Create mock response object
-        FlightPrice mockPrice = mock(FlightPrice.class); // or mock(FlightPrice.class);
+        FlightPricingConfirmResponse mockPrice = mock(FlightPricingConfirmResponse.class); // or mock(FlightPrice.class);
        // mockPrice.setResponse(null); // set mock fields if needed
 
         // 4. Stub the service
-        when(amadeusPricingService.searchFlightOffersPrice(any(FlightOfferSearch[].class)))
+        when(amadeusPricingService.searchFlightOffersPrice(any()))
                 .thenReturn(mockPrice);
 
         // 5. Perform the POST request

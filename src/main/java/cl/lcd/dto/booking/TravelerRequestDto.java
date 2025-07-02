@@ -35,7 +35,7 @@ public class TravelerRequestDto {
         @Schema(example = "MOBILE")
         private DeviceType deviceType;
 
-        @Schema(example = "+91")
+        @Schema(example = "91")
         private String countryCallingCode;
 
         @Schema(example = "9999999999")
@@ -44,17 +44,6 @@ public class TravelerRequestDto {
 
     @Data
     public static class IdentityDocument {
-//        private String number;
-//        private String issuanceDate;
-//        private String expiryDate;
-//        private String issuanceCountry;
-//        private String issuanceLocation;
-//        private String nationality;
-//        private String birthPlace;
-//        private DocumentType documentType;
-//        private String validityCountry; // two-letter ISO code of country
-//        private String birthCountry; // two-letter ISO code of country
-//        private boolean holder; // whether the document is held by the traveler
         @Schema(example = "AB1234567")
         private String number;
 
@@ -64,13 +53,13 @@ public class TravelerRequestDto {
         @Schema(example = "2026-03-01")
         private String expiryDate;
 
-        @Schema(example = "IN")
+        @Schema(example = "IN", description = "two-letter ISO code of country")
         private String issuanceCountry;
 
         @Schema(example = "Delhi")
         private String issuanceLocation;
 
-        @Schema(example = "Indian")
+        @Schema(example = "IN")
         private String nationality;
 
         @Schema(example = "Varanasi")

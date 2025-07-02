@@ -35,9 +35,9 @@ public class PricingController {
 //    public ResponseEntity<?> searchFlightOfferPrice(@RequestBody List<Map<String, Object>> flightRequest) {
     public ResponseEntity<?> searchFlightOfferPrice(@RequestBody FlightPricingConfirmRequest flightRequest) {
         try {
-            FlightOfferSearch offer = gson.fromJson(flightRequest.getFlightOffer(), FlightOfferSearch.class);
-            FlightPricingConfirmResponse response = amadeusPricingService.searchFlightOffersPrice(offer);
-//            String jsonOutput = gson.toJson(price);
+            log.info("flight offer pricing confirmation request received");
+
+            FlightPricingConfirmResponse response = amadeusPricingService.searchFlightOffersPrice(flightRequest);
 
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
         } catch (Exception e) {
