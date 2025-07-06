@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import cl.lcd.model.LocationResponse;
 import cl.lcd.util.HelperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,11 @@ public class AmadeusLocationSearchService {
 	/**
 	 *
 	 * @param queryParams = Map<String, String>
-	 * @return List<AirportResponse>
+	 * @return List<LocationResponse>
 	 * @throws ResponseException
 	 * queryParams should contain at least two key-value pairs. Examlpe - [{subType: CITY,AIRPORT} {keyword: delhi}]
 	 */
-    public List<AirportResponse> searchLocations(Map<String, String> queryParams) throws ResponseException {
+    public List<LocationResponse> searchLocations(Map<String, String> queryParams) throws ResponseException {
 		Params qParams = null;
 
 		qParams = Params.with("subType", queryParams.get("subType"));
@@ -69,6 +70,6 @@ public class AmadeusLocationSearchService {
 						);
 			}).toList();
 
-        return HelperUtil.getGroupedData(airports);
+        return HelperUtil.getGroupedLocationData(airports);
     }
 }

@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import cl.lcd.model.LocationResponse;
 import cl.lcd.util.HelperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
@@ -126,7 +127,7 @@ public class InMemoryLuceneService {
 		}
 	}
 
-	public List<AirportResponse> search(String keyword) throws Exception {
+	public List<LocationResponse> search(String keyword) throws Exception {
         List<Airport> results = new ArrayList<>();
 
         try (DirectoryReader reader = DirectoryReader.open(inMemoryIndex)) {
@@ -170,7 +171,7 @@ public class InMemoryLuceneService {
 			finalQuery.add(new BoostQuery(cityAutocompleteQuery, 1.0f), BooleanClause.Occur.SHOULD);
 			finalQuery.add(new BoostQuery(nameAutocompleteQuery, 1.0f), BooleanClause.Occur.SHOULD);
 
-			exactQueries.forEach(q -> finalQuery.add(q, BooleanClause.Occur.SHOULD));
+			exactQueries.forEach(q -> finalQuery.add(new BoostQuery(q, 3.0f), BooleanClause.Occur.SHOULD));
             
 //            TopDocs initialHits = searcher.search(query, 10);
             TopDocs initialHits = searcher.search(finalQuery.build(), 10);
@@ -201,6 +202,7 @@ public class InMemoryLuceneService {
         }
 
 //        return results;
-		return HelperUtil.getGroupedData(results);
+//		return HelperUtil.getGroupedData(results);
+		return HelperUtil.getGroupedLocationData(results);
     }
 }

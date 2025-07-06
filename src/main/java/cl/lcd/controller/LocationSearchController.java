@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 
+import cl.lcd.model.LocationResponse;
 import cl.lcd.service.AmadeusLocationSearchService;
 import cl.lcd.util.HelperUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,8 +71,8 @@ public class LocationSearchController {
 					""")
 	@ApiResponse(responseCode = "200", description = "Search for airports using in-memory Lucene index")
 	@Parameter(name = "keyword", description = "Query string for searching airports", required = true)
-	public ResponseEntity<List<AirportResponse>> searchAirports(@RequestParam String keyword) throws Exception {
-		List<AirportResponse> airportResponses = inMemoryLuceneService.search(keyword);
+	public ResponseEntity<List<LocationResponse>> searchAirports(@RequestParam String keyword) throws Exception {
+		List<LocationResponse> airportResponses = inMemoryLuceneService.search(keyword);
 
         return ResponseEntity.status(HttpStatus.OK).body(airportResponses);
 	}
@@ -109,7 +110,7 @@ public class LocationSearchController {
 	public ResponseEntity<?> searchForLocations(@RequestParam Map<String, String> params) {
 		try {
 			log.info("params received in searchForLocations: {}", params);
-			List<AirportResponse> response = amadeusLocationSeArchService.searchLocations(params);
+			List<LocationResponse> response = amadeusLocationSeArchService.searchLocations(params);
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 

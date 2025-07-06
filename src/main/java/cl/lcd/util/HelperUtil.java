@@ -3,6 +3,7 @@ package cl.lcd.util;
 import cl.lcd.model.Airport;
 import cl.lcd.model.AirportResponse;
 import cl.lcd.enums.LocationType;
+import cl.lcd.model.LocationResponse;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class HelperUtil {
     public static List<AirportResponse> getGroupedData(List<Airport> data) {
@@ -34,10 +37,60 @@ public class HelperUtil {
                     .toList();
 
             AirportResponse parent = new AirportResponse();
+            if (airportCity == null) {
+                airportCity = group.get(0);
+            }
+
             parent.setParent(airportCity);
             parent.setGroupData(children);
 
             result.add(parent);
+        }
+        return result;
+    }
+
+    public static List<LocationResponse> getGroupedLocationData(List<Airport> data) {
+        Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCityCode));
+
+        List<LocationResponse> result = new ArrayList<>();
+
+        for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
+            List<Airport> group = entry.getValue();
+
+            Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
+
+            Airport airportCity = match.orElse(null);
+//            if(airportCity != null) airportCity.setName("All airports within " + airportCity.getName());
+
+            if (airportCity == null) {
+                airportCity = group.get(0);
+            } else {
+                airportCity.setName("All airports within " + airportCity.getName());
+            }
+
+            List<Airport> children = group.
+                    stream()
+//                    .filter(p ->
+//                            !p.getSubType().equals(LocationType.CITY)
+//                    )
+                    .skip(1)
+                    .toList();
+
+            LocationResponse locationResponse = new LocationResponse();
+            locationResponse.setSubType(airportCity.getSubType());
+            locationResponse.setIata(airportCity.getIata());
+            locationResponse.setName(airportCity.getName());
+            locationResponse.setLatitude(airportCity.getLatitude());
+            locationResponse.setLongitude(airportCity.getLongitude());
+            locationResponse.setTimeZoneOffset(airportCity.getTimeZoneOffset());
+            locationResponse.setCityCode(airportCity.getCityCode());
+            locationResponse.setCountryCode(airportCity.getCountryCode());
+            locationResponse.setCity(airportCity.getCity());
+            locationResponse.setGroupData(children);
+//            parent.setParent(airportCity);
+//            parent.setGroupData(children);
+
+            result.add(locationResponse);
         }
         return result;
     }

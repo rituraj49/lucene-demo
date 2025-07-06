@@ -33,7 +33,7 @@ public class TravelerResponseDto {
         @Schema(example = "MOBILE")
         private DeviceType deviceType;
 
-        @Schema(example = "+91")
+        @Schema(example = "91")
         private String countryCallingCode;
 
         @Schema(example = "9999999999")

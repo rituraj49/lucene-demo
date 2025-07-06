@@ -2,6 +2,7 @@ package cl.lcd.service;
 
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
+import cl.lcd.dto.booking.TravelerRequestDto;
 import cl.lcd.mappers.booking.FlightBookingResponseMapper;
 import com.amadeus.Amadeus;
 import com.amadeus.Booking;
@@ -15,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,13 +57,27 @@ public class TestAmadeusBookingService {
     void testCreateFlightOrder() throws Exception {
         FlightBookingRequest request = mock(FlightBookingRequest.class);
         FlightOfferSearch offer = mock(FlightOfferSearch.class);
-        FlightOrder.Traveler[] travelers = new FlightOrder.Traveler[0];
+
+        FlightOrder.Traveler traveler1 = new FlightOrder.Traveler();
+        traveler1.setId("1");
+        traveler1.setDateOfBirth("1990-01-01");
+        traveler1.setGender("MALE");
+
+        FlightOrder.Traveler traveler2 = new FlightOrder.Traveler();
+        traveler2.setId("2");
+        traveler2.setDateOfBirth("1992-02-02");
+        traveler2.setGender("FEMALE");
+        FlightOrder.Traveler[] travelers = {traveler1, traveler2};
         FlightOrder order = mock(FlightOrder.class);
+
+        List<TravelerRequestDto> travelerRequestDtos = List.of(
+                new TravelerRequestDto(),
+                new TravelerRequestDto());
 
         try (MockedStatic<FlightBookingResponseMapper> mapper = mockStatic(FlightBookingResponseMapper.class)) {
             when(request.getFlightOffer()).thenReturn("{}");
             when(request.getTravelers()).thenReturn(null);
-            mapper.when(() -> FlightBookingResponseMapper.createTravelersFromDto(null)).thenReturn(travelers);
+            mapper.when(() -> FlightBookingResponseMapper.createTravelersFromDto(travelerRequestDtos)).thenReturn(travelers);
             when(flightOrders.post(any(FlightOfferSearch.class), any(FlightOrder.Traveler[].class))).thenReturn(order);
             FlightBookingResponse response = new FlightBookingResponse();
             mapper.when(() -> FlightBookingResponseMapper.flightBookingResponse(order)).thenReturn(response);

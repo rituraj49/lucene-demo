@@ -16,7 +16,6 @@ public class FlightSearchResponseMapper {
         FlightAvailabilityResponse response = new FlightAvailabilityResponse();
 
             List<FlightAvailabilityResponse.Trip> createdTrips = createTrips(offer.getItineraries());
-
             response.setOneWay(offer.isOneWay());
             response.setSeatsAvailable(offer.getNumberOfBookableSeats());
             response.setCurrencyCode(offer.getPrice().getCurrency());
