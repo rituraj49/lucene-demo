@@ -1,0 +1,27 @@
+# Maven or Gradle build output
+target/*
+!target/lucene-demo-0.0.1-SNAPSHOT.jar
+build/
+
+# IDE/editor stuff
+*.iml
+*.log
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Docker-related
+.dockerignore
+
+# Secrets (only if present locally)
+.env
+*.env
