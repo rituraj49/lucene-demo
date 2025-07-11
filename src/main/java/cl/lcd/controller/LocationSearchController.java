@@ -78,13 +78,6 @@ public class LocationSearchController {
 	}
 
  	@GetMapping("amadeus-search")
-/*
-	@Operation(summary = "Search for locations using Amadeus API",
-			description = """
-					Search for locations such as airports or cities using the Amadeus API. " +
-					"Query parameters should include atleast 'subType' and 'keyword'.
-					""")
-*/
 	@Operation(
 			summary = "Find airport or city location by keyword",
 			description = "Example payloads:\n" +

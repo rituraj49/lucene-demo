@@ -3,6 +3,7 @@ package cl.lcd.service;
 
 import cl.lcd.config.AmadeusConfigTest;
 import cl.lcd.model.AirportResponse;
+import cl.lcd.model.LocationResponse;
 import com.amadeus.exceptions.ResponseException;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -82,10 +83,10 @@ public class AmadeusLocationSearchServiceTest3 {
                         .withBodyFile("locations-response.json")));
 
         try {
-            List<AirportResponse> result = amadeusLocationSeArchService
+            List<LocationResponse> result = amadeusLocationSeArchService
                     .searchLocations(Map.of("subType", "CITY,AIRPORT", "keyword", "delhi"));
             assertEquals(1, result.size());
-            assertEquals("DEL", result.get(0).getParent().getCityCode());
+            assertEquals("DEL", result.get(0).getCityCode());
             assertEquals("DEL", result.get(0).getGroupData().get(0).getIata());
         } catch (ResponseException e) {
 //            throw new RuntimeException(e);

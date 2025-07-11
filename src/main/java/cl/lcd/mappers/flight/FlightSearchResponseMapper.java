@@ -21,6 +21,7 @@ public class FlightSearchResponseMapper {
             response.setCurrencyCode(offer.getPrice().getCurrency());
             response.setBasePrice(offer.getPrice().getBase());
             response.setTotalPrice(offer.getPrice().getTotal());
+            response.setTotalTravelers(offer.getTravelerPricings().length);
             response.setTrips(createdTrips);
             response.setPricingAdditionalInfo(offer);
         return response;

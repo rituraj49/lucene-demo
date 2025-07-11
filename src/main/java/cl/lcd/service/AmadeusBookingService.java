@@ -29,6 +29,7 @@ public class AmadeusBookingService {
     public FlightBookingResponse createFlightOrder(FlightBookingRequest flightOrderRequest) throws ResponseException {
         log.info("Creating flight order with received request");
         Gson gson = new Gson();
+
         FlightOfferSearch offer = gson.fromJson(flightOrderRequest.getFlightOffer(), FlightOfferSearch.class);
 
         FlightOrder.Traveler[] flightTravelers = FlightBookingResponseMapper.createTravelersFromDto(flightOrderRequest.getTravelers());

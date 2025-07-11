@@ -20,5 +20,4 @@ public class AmadeusConfig {
 	                .builder(apiKey, apiSecret)
 	                .build();
 	    }
-
 }

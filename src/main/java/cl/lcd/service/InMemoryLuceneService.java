@@ -140,7 +140,7 @@ public class InMemoryLuceneService {
 
             List<Query> exactQueries = List.of(
             	    new TermQuery(new Term("iata", keyword.toLowerCase())),
-            	    new TermQuery(new Term("icao", keyword.toLowerCase())),
+//            	    new TermQuery(new Term("icao", keyword.toLowerCase())),
             	    new TermQuery(new Term("city_code", keyword.toLowerCase()))
             	);
             BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
@@ -171,13 +171,14 @@ public class InMemoryLuceneService {
 			finalQuery.add(new BoostQuery(cityAutocompleteQuery, 1.0f), BooleanClause.Occur.SHOULD);
 			finalQuery.add(new BoostQuery(nameAutocompleteQuery, 1.0f), BooleanClause.Occur.SHOULD);
 
-			exactQueries.forEach(q -> finalQuery.add(new BoostQuery(q, 3.0f), BooleanClause.Occur.SHOULD));
+			DisjunctionMaxQuery disjunctionMaxQuery = new DisjunctionMaxQuery(exactQueries, 0.0f);
+			exactQueries.forEach(q -> finalQuery.add(new BoostQuery(disjunctionMaxQuery, 100.0f), BooleanClause.Occur.SHOULD));
             
 //            TopDocs initialHits = searcher.search(query, 10);
             TopDocs initialHits = searcher.search(finalQuery.build(), 10);
-
             for (ScoreDoc scoreDoc : initialHits.scoreDocs) {
-                Document doc = searcher.storedFields().document(scoreDoc.doc);
+				Document doc = searcher.storedFields().document(scoreDoc.doc);
+
                 results.add(new Airport(
 //                	LocationType.AIRPORT,
 //						"AIRPORT",

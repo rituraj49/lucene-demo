@@ -30,6 +30,9 @@ public class FlightAvailabilityResponse {
     @Schema(example = "5750.00")
     private String totalPrice;
 
+    @Schema(example = "1")
+    private int totalTravelers;
+
     private List<Trip> trips;
 //    @JsonIgnore
     @Schema(description = "flight offer search json object as is")

@@ -42,7 +42,9 @@ public class SecurityConfig {
 //                    ConfigurationSource source = request -> {
                         CorsConfiguration config = new CorsConfiguration();
                         config.setAllowedOrigins(List.of("*"));
-
+                        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                        config.setAllowedHeaders(List.of("*"));
+                        config.setAllowCredentials(false);
                         return config;
                     };
                     c.configurationSource(source);

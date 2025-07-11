@@ -76,7 +76,7 @@ public class TestAmadeusBookingService {
 
         try (MockedStatic<FlightBookingResponseMapper> mapper = mockStatic(FlightBookingResponseMapper.class)) {
             when(request.getFlightOffer()).thenReturn("{}");
-            when(request.getTravelers()).thenReturn(null);
+            when(request.getTravelers()).thenReturn(travelerRequestDtos);
             mapper.when(() -> FlightBookingResponseMapper.createTravelersFromDto(travelerRequestDtos)).thenReturn(travelers);
             when(flightOrders.post(any(FlightOfferSearch.class), any(FlightOrder.Traveler[].class))).thenReturn(order);
             FlightBookingResponse response = new FlightBookingResponse();
