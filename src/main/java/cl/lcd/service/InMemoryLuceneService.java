@@ -1,6 +1,7 @@
 package cl.lcd.service;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +28,8 @@ import org.apache.lucene.queryparser.classic.QueryParserBase;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import cl.lcd.model.Airport;
@@ -75,8 +78,10 @@ public class InMemoryLuceneService {
 	
 	public List<Airport> readDataFromFile() throws IOException {
 		log.info("reading data from file...");
-		Path path = Paths.get("airports.csv");
-		try(Reader reader = Files.newBufferedReader(path)) {
+//		Path path = Paths.get("airports.csv");
+//		try(Reader reader = Files.newBufferedReader(path)) {
+		Resource resource = new ClassPathResource("data/airports.csv");
+		try(Reader reader = new InputStreamReader(resource.getInputStream())) {
 			return HelperUtil.convertCsv(reader, Airport.class);
 		} catch (IOException e) {
 //			e.printStackTrace();
