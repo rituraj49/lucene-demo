@@ -3,6 +3,7 @@ package cl.lcd.controller;
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.service.AmadeusBookingService;
+import cl.lcd.service.UserLogService;
 import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOrder;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
@@ -35,13 +37,38 @@ public class BookingController {
     @Autowired
     AmadeusBookingService amadeusBookingService;
 
+    @Autowired
+    private UserLogService userLogService;
+
     @PostMapping("flight-order")
-    @Operation(summary = "Book flight and create flight booking order using Amadeus API",
-            description = """
-					Create a flight booking order using the Amadeus API. 
-					The request body should contain the create flight order details i.e. 
-					FLightOffer object in an array and Travelers details in the travelers array in JSON format.
-					""")
+    @Operation(
+            summary = "Book flight and create flight booking order using Amadeus API",
+            description = "Create a flight booking order using the Amadeus API.\n\n" +
+                    "The request body should contain:\n" +
+                    "- A FlightOffer object in an array\n" +
+                    "- Travelers details in the travelers array in JSON format\n\n" +
+                    "Example Travelers Documents Payload:\n" +
+                    "```json\n" +
+                    "[\n" +
+                    "  {\n" +
+                    "    \"documentType\": \"PASSPORT\",\n" +
+                    "    \"number\": \"M1234567\",\n" +
+                    "    \"birthPlace\": \"Delhi\",\n" +
+                    "    \"issuanceLocation\": \"Delhi\",\n" +
+                    "    \"issuanceCountry\": \"IN\",\n" +
+                    "    \"issuanceDate\": \"2016-03-10\",\n" +
+                    "    \"expiryDate\": \"2026-03-10\",\n" +
+                    "    \"validityCountry\": \"IN\",\n" +
+                    "    \"nationality\": \"IN\",\n" +
+                    "    \"holder\": true\n" +
+                    "  }\n" +
+                    "]\n" +
+                    "```\n\n" +
+                    "Steps:\n" +
+                    "1. Copy `bookingAdditionalInfo` value from the pricing API.\n" +
+                    "2. Paste it as the `flightOffer` value.\n" +
+                    "3. Provide travelers documents as shown above."
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Flight order created successfully",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = FlightBookingResponse.class))
@@ -53,13 +80,14 @@ public class BookingController {
             log.info("flight booking request received");
             FlightBookingResponse createdOrder = amadeusBookingService.createFlightOrder(orderRequest);
 
+            userLogService.createLoges(orderRequest, createdOrder);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
         } catch (ResponseException e) {
             log.error("Error occurred while creating flight order: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
         }
     }
-
     @GetMapping("flight-order/{orderId}")
     @Operation(summary = "Get flight order by ID",
             description = "Fetch a flight booking order using the Amadeus API by providing the order ID.")

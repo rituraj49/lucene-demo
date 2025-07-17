@@ -47,12 +47,12 @@ public class FlightSearchController {
                     "{\n" +
                     "  \"originLocationCode\": \"SYD\",\n" +
                     "  \"destinationLocationCode\": \"NYC\",\n" +
-                    "  \"departureDate\": \"2025-07-12\",\n" +
-                    "  \"returnDate\": \"2025-07-13\",\n" +
+                    "  \"departureDate\": \"2025-12-31\",\n" +
+                    "  \"returnDate\": \"2026-01-01\",\n" +
                     "  \"maxPrice\": 140000,\n" +
-                    "  \"adults\": 2,\n" +
-                    "  \"children\":1, \n"+
-                    "  \"infants\":1, \n"+
+                    "  \"adults\": 1,\n" +
+                    "  \"children\":0, \n"+
+                    "  \"infants\":0, \n"+
                     "  \"travelClass\": \"ECONOMY\", \n"+
                     "  \"nonStop\": \"false\", \n"+
                     "  \"currencyCode\": \"INR\" ,\n" +
@@ -89,14 +89,14 @@ public class FlightSearchController {
                     "      \"id\": \"1\",\n" +
                     "      \"from\": \"BKK\",\n" +
                     "      \"to\": \"BLR\",\n" +
-                    "      \"departureDate\": \"2025-07-28\",\n" +
+                    "      \"departureDate\": \"2025-12-28\",\n" +
                     "      \"departureTime\": \"10:00:00\"\n" +
                     "    },\n" +
                     "    {\n" +
                     "      \"id\": \"2\",\n" +
                     "      \"from\": \"BLR\",\n" +
                     "      \"to\": \"BOM\",\n" +
-                    "      \"departureDate\": \"2025-07-30\",\n" +
+                    "      \"departureDate\": \"2025-12-30\",\n" +
                     "      \"departureTime\": \"10:00:00\"\n" +
                     "    }\n" +
                     "  ],\n" +
