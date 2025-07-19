@@ -33,7 +33,12 @@ public class PricingController {
     private final Gson gson = new Gson();
 
     @PostMapping("/flights/confirm")
-    @Operation(summary = "find price of flight offer search ")
+    @Operation(
+            summary = "Find the price of a flight offer search",
+            description = "Step 1: First, search for flights.\n" +
+                    "Step 2: Copy the 'pricingAdditionalInfo' value from the flight offer search API response.\n" +
+                    "Step 3: Paste it as the 'flightOffer' value in this API."
+    )
     @ApiResponse(responseCode = "200", description = " return all available flight",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = FlightPricingConfirmResponse.class)))
 
