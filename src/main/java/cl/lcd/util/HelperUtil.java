@@ -68,31 +68,45 @@ public class HelperUtil {
                 airportCity.setName("All airports within " + airportCity.getName());
             }
 
-            List<Airport> children = group.
+            List<LocationResponse.SimpleAirport> children = group.
                     stream()
 //                    .filter(p ->
 //                            !p.getSubType().equals(LocationType.CITY)
 //                    )
                     .skip(1)
+                    .map(c -> {
+                        LocationResponse.SimpleAirport simpleAirport = new LocationResponse.SimpleAirport();
+                        simpleAirport.setSubType(c.getSubType());
+                        simpleAirport.setIata(c.getIata());
+                        simpleAirport.setName(c.getName());
+                        simpleAirport.setCityCode(c.getCityCode());
+                        simpleAirport.setCity(c.getCity());
+                        return simpleAirport;
+                    })
                     .toList();
 
-            LocationResponse locationResponse = new LocationResponse();
-            locationResponse.setSubType(airportCity.getSubType());
-            locationResponse.setIata(airportCity.getIata());
-            locationResponse.setName(airportCity.getName());
-            locationResponse.setLatitude(airportCity.getLatitude());
-            locationResponse.setLongitude(airportCity.getLongitude());
-            locationResponse.setTimeZoneOffset(airportCity.getTimeZoneOffset());
-            locationResponse.setCityCode(airportCity.getCityCode());
-            locationResponse.setCountryCode(airportCity.getCountryCode());
-            locationResponse.setCity(airportCity.getCity());
-            locationResponse.setGroupData(children);
+            LocationResponse locationResponse = getLocationResponse(airportCity, children);
 //            parent.setParent(airportCity);
 //            parent.setGroupData(children);
 
             result.add(locationResponse);
         }
         return result;
+    }
+
+    private static LocationResponse getLocationResponse(Airport airportCity, List<LocationResponse.SimpleAirport> children) {
+        LocationResponse locationResponse = new LocationResponse();
+        locationResponse.setSubType(airportCity.getSubType());
+        locationResponse.setIata(airportCity.getIata());
+        locationResponse.setName(airportCity.getName());
+        locationResponse.setLatitude(airportCity.getLatitude());
+        locationResponse.setLongitude(airportCity.getLongitude());
+        locationResponse.setTimeZoneOffset(airportCity.getTimeZoneOffset());
+        locationResponse.setCityCode(airportCity.getCityCode());
+        locationResponse.setCountryCode(airportCity.getCountryCode());
+        locationResponse.setCity(airportCity.getCity());
+        locationResponse.setGroupData(children);
+        return locationResponse;
     }
 
     public static List<AirportResponse> getGroupedDataLucene(List<Airport> data) {

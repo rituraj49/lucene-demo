@@ -9,12 +9,16 @@ import java.util.Map;
 
 import cl.lcd.model.LocationResponse;
 import cl.lcd.service.AmadeusLocationSearchService;
+import cl.lcd.service.ElasticsearchService;
 import cl.lcd.util.HelperUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,9 @@ public class LocationSearchController {
 
 	@Autowired
 	private AmadeusLocationSearchService amadeusLocationSeArchService;
+
+	@Autowired
+	private ElasticsearchService elasticsearchService;
 
 
 	@PostMapping("bulk-upload")
@@ -110,6 +117,55 @@ public class LocationSearchController {
 		} catch (ResponseException e) {
 			log.error("Error occurred while searching for locations: {}", e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong: " + e.getMessage());
+		}
+	}
+
+	@Operation(
+			summary = "Search airports",
+			description = """
+            Performs a text search on the `airports` index.
+            The query must be of the form `field:value`, e.g. `name:Heathrow`.
+            """
+	)
+	@Parameters({
+			@Parameter(name = "query",
+					description = "Search expression in the format `field:value`",
+					example = "country:India",
+					required = true)
+	})
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "Search results",
+					content = @Content(array = @ArraySchema(schema = @Schema(implementation = Airport.class)))),
+			@ApiResponse(responseCode = "400", description = "Invalid query",
+					content = @Content(schema = @Schema(implementation = String.class)))
+	})
+	@GetMapping("elastic-search-field")
+	public ResponseEntity<?> searchAirports(
+			@RequestParam String query,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size
+	) {
+		try {
+			List<Airport> result = elasticsearchService.searchByText(query, page, size);
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to fetch data");
+		}
+	}
+
+	@GetMapping("elastic-search")
+	public ResponseEntity<?> searchLocations(
+			@RequestParam String keyword,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "20") int size
+	) {
+		try {
+			log.info("Received keyword for search: {}", keyword);
+			List<LocationResponse> result = elasticsearchService.searchByKeyword(keyword, page, size);
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		} catch (Exception e) {
+			log.error("Error occurred while searching locations: {}", e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch data");
 		}
 	}
 }

@@ -3,6 +3,8 @@ package cl.lcd.service;
 import cl.lcd.dto.AirportCreateDto;
 import cl.lcd.enums.LocationType;
 import cl.lcd.model.Airport;
+import cl.lcd.model.LocationResponse;
+import cl.lcd.util.HelperUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Refresh;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -55,40 +58,81 @@ public class ElasticsearchService {
         );
     }
 
-    public void bulkUpload(List<Airport> airports, String indexName) throws IOException {
+    public void bulkUpload(List<LocationResponse> airports, String indexName) throws IOException {
         int batchSize = 1000;
         int total = airports.size();
-
+        Map<String, List<LocationResponse>> cityGroups = airports.stream().collect(Collectors.groupingBy(LocationResponse::getCityCode));
         for(int i=0; i <= total; i += batchSize) {
             int end = Math.min(i+batchSize, total);
 
-            List<Airport> batch = airports.subList(i, end);
+            List<LocationResponse> batch = airports.subList(i, end);
             if(batch.isEmpty()) continue;
-//            List<BulkOperation> operations = new ArrayList<>();
 
-            BulkRequest.Builder br = getBuilder(indexName, batch);
+            BulkRequest.Builder br = getBuilder(indexName, cityGroups, batch);
             BulkResponse response = client.bulk(br.build());
 
             if(response.errors()) {
-//                System.err.println("errors occurred in batch from: " + i + " to " + (end-1));
                 log.error("errors occurred in batch from: {} to {}", i, end - 1);
             } else {
-//                System.out.println("successfully inserted batch from: " + i + " to " + (end-1));
                 log.info("successfully inserted batch from: {} to {}", i, end-1);
             }
         }
     }
 
-    private static BulkRequest.Builder getBuilder(String indexName, List<Airport> batch) {
+    private static BulkRequest.Builder getBuilder(String indexName,
+                                                  Map<String, List<LocationResponse>> cityGroups,
+                                                  List<LocationResponse> batch) {
         BulkRequest.Builder br = new BulkRequest.Builder();
-        for(Airport a: batch) {
+        for(LocationResponse a: batch) {
+            List<LocationResponse> airports = cityGroups.get(a.getCityCode())
+                    .stream()
+                    .filter(ar -> !a.getIata().equals(ar.getIata()))
+                    .toList();
+
+            List<LocationResponse.SimpleAirport> simpleAirports = airports.stream().map(airport -> {
+                LocationResponse.SimpleAirport simpleAirport = new LocationResponse.SimpleAirport();
+                simpleAirport.setIata(airport.getIata());
+                simpleAirport.setName(airport.getName());
+                simpleAirport.setCityCode(airport.getCityCode());
+                simpleAirport.setCity(airport.getCity());
+                simpleAirport.setSubType(airport.getSubType());
+                return simpleAirport;
+            }).toList();
+
+            a.setGroupData(simpleAirports);
+
             br.operations(op -> op
-                    .index(idx -> idx
-                            .index(indexName)
-                            .id(a.getIata())
-                            .document(a)));
+                .index(idx -> idx
+                        .index(indexName)
+                        .id(a.getIata())
+                        .document(toLocationDocument(a)
+                    )
+                )
+            );
         }
         return br;
+    }
+
+    public static Map<String, Object> toLocationDocument(LocationResponse airport) {
+        Map<String, Object> doc = new HashMap<>();
+        doc.put("subType", airport.getSubType().toString());
+        doc.put("iata", airport.getIata());
+        doc.put("name", airport.getName());
+        doc.put("latitude", airport.getLatitude());
+        doc.put("longitude", airport.getLongitude());
+        doc.put("time_zone", airport.getTimeZoneOffset());
+        doc.put("city_code", airport.getCityCode());
+        doc.put("country_code", airport.getCountryCode());
+        doc.put("city", airport.getCity());
+        doc.put("group_data", airport.getGroupData());
+
+        if(airport.getLatitude() != null && airport.getLongitude() != null) {
+            doc.put("location", Map.of(
+                "lat", airport.getLatitude(),
+                "lon", airport.getLongitude()
+            ));
+        }
+        return doc;
     }
 
     public void createIndex(String indexName) {
@@ -207,6 +251,36 @@ public class ElasticsearchService {
         for(Hit<Airport> hit: hits) {
             airports.add(hit.source());
         }
+        return airports;
+    }
+
+    public List<LocationResponse> searchByKeyword(String keyword, int page, int size) throws IOException {
+        log.debug("searching elastic index for keyword: {}, page: {}, size: {}", keyword, page, size);
+        int from = (page - 1) * size;
+        List<LocationResponse> airports = new ArrayList<>();
+        SearchResponse<LocationResponse> sr = client.search(s -> s
+                .index("airports")
+                .from(from)
+                .size(size)
+                .query(q -> q
+                                .bool(b -> b
+                                        .should(sh -> sh.term(t -> t.field("iata.raw").value(keyword).boost(5f)))
+                                        .should(sh -> sh.term(t -> t.field("city_code.raw").value(keyword).boost(3f)))
+                                        .should(sh -> sh.match(m -> m.field("name").query(keyword).boost(2f)))
+                                        .should(sh -> sh.match(m -> m.field("city").query(keyword).boost(1f)))
+                                        .minimumShouldMatch("1")
+                                )
+                ),
+                LocationResponse.class
+        );
+
+        List<Hit<LocationResponse>> hits = sr.hits().hits();
+
+        for(Hit<LocationResponse> hit: hits) {
+            airports.add(hit.source());
+        }
+
+//        return HelperUtil.getGroupedLocationData(airports);
         return airports;
     }
 

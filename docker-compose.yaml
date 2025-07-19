@@ -1,0 +1,16 @@
+services:
+  lucene-app:
+    container_name: springboot-app
+    image: rituraj49/lucene-demo
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/keycloakdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: java
+
+      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_REALM: your-realm
+      KEYCLOAK_RESOURCE: your-client-id
+      KEYCLOAK_CREDENTIALS_SECRET: your-client-secret
