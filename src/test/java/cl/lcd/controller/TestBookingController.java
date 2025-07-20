@@ -8,6 +8,7 @@ import cl.lcd.model.AirportResponse;
 import cl.lcd.service.AmadeusBookingService;
 import cl.lcd.service.AmadeusLocationSearchService;
 import cl.lcd.service.InMemoryLuceneService;
+import cl.lcd.service.UserLogService;
 import cl.lcd.util.HelperUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,9 @@ public class TestBookingController {
 
 	@MockBean
 	AmadeusBookingService amadeusBookingService;
+
+	@MockBean
+	private UserLogService userLogService;
 
 	@Autowired
 	ObjectMapper objectMapper;
