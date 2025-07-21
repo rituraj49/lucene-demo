@@ -86,17 +86,16 @@ public class ElasticsearchController {
     @PostMapping("bulk-upload")
     public ResponseEntity<?> uploadDataset(@RequestParam("file") MultipartFile file) throws IOException {
         try(Reader reader = new InputStreamReader(file.getInputStream())) {
-            CsvToBean<LocationResponse> csvToBean = new CsvToBeanBuilder<LocationResponse>(reader)
-                    .withType(LocationResponse.class)
+            CsvToBean<Airport> csvToBean = new CsvToBeanBuilder<Airport>(reader)
+                    .withType(Airport.class)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
-            List<LocationResponse> airports = csvToBean.parse();
-            elasticsearchService.bulkUpload(airports, "airports");
+            List<Airport> airports = csvToBean.parse();
+            elasticsearchService.bulkUploadTest(airports, "airports");
 
 
         } catch (Exception e) {
-            e.printStackTrace();
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to parse file: " + e.getMessage());
+           ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to parse file: " + e.getMessage());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("data uploaded successfully");

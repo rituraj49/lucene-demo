@@ -161,9 +161,10 @@ public class LocationSearchController {
 	) {
 		try {
 			log.info("Received keyword for search: {}", keyword);
-			List<LocationResponse> result = elasticsearchService.searchByKeyword(keyword, page, size);
+			List<LocationResponse> result = elasticsearchService.searchByKeywordTest(keyword, page, size);
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error("Error occurred while searching locations: {}", e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch data");
 		}

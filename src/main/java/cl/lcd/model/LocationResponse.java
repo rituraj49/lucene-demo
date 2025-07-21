@@ -62,6 +62,8 @@ public class LocationResponse {
     private List<SimpleAirport> groupData;
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class SimpleAirport {
         private LocationType subType;
         private String iata;
