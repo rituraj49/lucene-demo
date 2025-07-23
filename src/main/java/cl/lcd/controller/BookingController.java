@@ -3,6 +3,7 @@ package cl.lcd.controller;
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.service.AmadeusBookingService;
+import cl.lcd.service.PostGreLogsServices;
 import cl.lcd.service.UserLogService;
 import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
@@ -39,6 +40,12 @@ public class BookingController {
 
     @Autowired
     private UserLogService userLogService;
+
+
+    @Autowired
+    private PostGreLogsServices postGreLogsServices;
+
+
 
     @PostMapping("flight-order")
     @Operation(
@@ -81,7 +88,7 @@ public class BookingController {
             FlightBookingResponse createdOrder = amadeusBookingService.createFlightOrder(orderRequest);
 
             userLogService.createLoges(orderRequest, createdOrder);
-
+            postGreLogsServices.createLogesPostGreDB(orderRequest, createdOrder);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
         } catch (ResponseException e) {
             log.error("Error occurred while creating flight order: {}", e.getMessage());

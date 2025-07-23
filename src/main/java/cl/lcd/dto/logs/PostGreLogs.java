@@ -1,27 +1,31 @@
 package cl.lcd.dto.logs;
 
+import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 
 import java.time.LocalDateTime;
 
-@Document(collection = "user_logs")
+
+@Entity
+@Table(name = "user_logs")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLog {
+public class PostGreLogs {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String orderId;
 
     private LocalDateTime logTimestamp = LocalDateTime.now();
 
+    @Column(length = 5000)
     private String requestPayload;
 
+    @Column(length = 5000)
     private String responsePayload;
 
     private Integer numberOfTravellers;
@@ -32,7 +36,9 @@ public class UserLog {
 
     private String toLocation;
 
-    public UserLog(String orderId, LocalDateTime logTimestamp, String requestPayload, String responsePayload, Integer numberOfTravellers, String totalAmount, String fromLocation, String toLocation) {
+    public PostGreLogs(String orderId, LocalDateTime logTimestamp, String requestPayload,
+                   String responsePayload, Integer numberOfTravellers,
+                   String totalAmount, String fromLocation, String toLocation) {
         this.orderId = orderId;
         this.logTimestamp = logTimestamp;
         this.requestPayload = requestPayload;
@@ -43,4 +49,6 @@ public class UserLog {
         this.toLocation = toLocation;
     }
 }
+
+
 
