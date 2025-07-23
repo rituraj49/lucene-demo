@@ -1,14 +1,14 @@
-package cl.lcd.service;
+package cl.lcd.service.locations;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 import cl.lcd.model.LocationResponse;
+import cl.lcd.service.EdgeNGramAnalyzer;
+import cl.lcd.service.IndexingKeywordAnalyzer;
+import cl.lcd.service.SearchAnalyzer;
 import cl.lcd.util.HelperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
@@ -33,7 +33,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import cl.lcd.model.Airport;
-import cl.lcd.model.AirportResponse;
 import cl.lcd.enums.LocationType;
 import jakarta.annotation.PostConstruct;
 

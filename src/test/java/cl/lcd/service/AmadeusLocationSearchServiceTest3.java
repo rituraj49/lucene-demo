@@ -2,8 +2,8 @@ package cl.lcd.service;
 
 
 import cl.lcd.config.AmadeusConfigTest;
-import cl.lcd.model.AirportResponse;
 import cl.lcd.model.LocationResponse;
+import cl.lcd.service.locations.AmadeusLocationSearchService;
 import com.amadeus.exceptions.ResponseException;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;

@@ -1,4 +1,4 @@
-package cl.lcd.service;
+package cl.lcd.service.booking;
 
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;

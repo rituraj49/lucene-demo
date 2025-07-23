@@ -7,26 +7,22 @@ import java.util.List;
 import java.util.Map;
 
 import cl.lcd.model.LocationResponse;
-import cl.lcd.service.AmadeusLocationSearchService;
-import cl.lcd.service.ElasticsearchService;
+import cl.lcd.service.locations.AmadeusLocationSearchService;
+import cl.lcd.service.locations.ElasticsearchService;
 import cl.lcd.util.HelperUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import cl.lcd.model.Airport;
-import cl.lcd.model.AirportResponse;
-import cl.lcd.service.InMemoryLuceneService;
+import cl.lcd.service.locations.InMemoryLuceneService;
 
 @WebMvcTest(LocationSearchController.class)
 //@Import(TestLocationSearchController.MockServiceConfig.class)

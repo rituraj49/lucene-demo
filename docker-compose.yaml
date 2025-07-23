@@ -51,7 +51,7 @@ services:
 #      timeout: 5s
 #      retries: 20
   lucene-spring:
-    container_name:
+    container_name: lucene-backend
     image: rituraj49/lucene-demo
     restart: unless-stopped
     depends_on:

@@ -1,4 +1,4 @@
-package cl.lcd.service;
+package cl.lcd.service.locations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +17,6 @@ import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.Location;
 
 import cl.lcd.model.Airport;
-import cl.lcd.model.AirportResponse;
 import cl.lcd.enums.LocationType;
 
 @Service

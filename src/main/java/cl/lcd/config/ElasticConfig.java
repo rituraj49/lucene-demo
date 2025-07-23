@@ -11,6 +11,7 @@ public class ElasticConfig {
         System.out.println("elastic search configured");
         return ElasticsearchClient.of(b -> b
                 .host("http://localhost:9200"));
+//                .host("http://host.docker.internal:9200");
     }
 //    @Bean
 //    public ElasticsearchProperties.Restclient restClient() {

@@ -1,18 +1,13 @@
 package cl.lcd.controller;
 
 //import cl.lcd.dto.search.FlightOfferSearchDto;
-import cl.lcd.dto.pricing.FlightPricingConfirmResponse;
-import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.dto.search.FlightAvailabilityResponse;
 import cl.lcd.mappers.flight.FlightSearchResponseMapper;
-import cl.lcd.service.AmadeusFlightSearchService;
-import cl.lcd.service.AmadeusPricingService;
+import cl.lcd.service.flights.AmadeusFlightSearchService;
+import cl.lcd.service.flights.AmadeusPricingService;
 import com.amadeus.resources.FlightOfferSearch;
-import com.amadeus.resources.FlightPrice;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -69,7 +58,7 @@ public class FlightOfferSearchControllerTest {
 //        FlightOfferSearch[] mockFlights = mapper.readValue(jsonResponse, FlightOfferSearch[].class);
 //
 //        // 3. Mock the service to return parsed data
-//        when(amadeusFlightSearchService.flightOfferSearches(anyMap()))
+//        when(amadeusFlightSearchService.flightOfferSearch(anyMap()))
 //                .thenReturn(mockFlights);
 //
 //        // 4. Test the endpoint (compare with the raw JSON)
@@ -84,7 +73,7 @@ public class FlightOfferSearchControllerTest {
         FlightOfferSearch mockOffer = mock(FlightOfferSearch.class);
         FlightOfferSearch[] mockOffers = new FlightOfferSearch[]{mockOffer};
 
-        when(amadeusFlightSearchService.flightOfferSearches(anyMap()))
+        when(amadeusFlightSearchService.flightOfferSearch(anyMap()))
                 .thenReturn(mockOffers);
 
         FlightAvailabilityResponse mockResponse = new FlightAvailabilityResponse();
@@ -181,7 +170,7 @@ public class FlightOfferSearchControllerTest {
         FlightOfferSearch mockOffer = mock(FlightOfferSearch.class);
         FlightOfferSearch[] mockOffers = new FlightOfferSearch[]{mockOffer};
 
-        when(amadeusFlightSearchService.flightOfferSearches(anyMap()))
+        when(amadeusFlightSearchService.flightOfferSearch(anyMap()))
                 .thenReturn(mockOffers);
 
         FlightAvailabilityResponse mockResponse = new FlightAvailabilityResponse();

@@ -1,4 +1,4 @@
-package cl.lcd.service;
+package cl.lcd.service.locations;
 
 import cl.lcd.dto.AirportCreateDto;
 import cl.lcd.enums.LocationType;
@@ -15,6 +15,7 @@ import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -38,7 +39,6 @@ public class ElasticsearchService {
                 .document(data)));
 
         IndexResponse res = client.index(airportReq);
-        System.out.println(res);
 
         return new Airport(
                 LocationType.valueOf(data.getType().toString()),
@@ -112,7 +112,7 @@ public class ElasticsearchService {
 //        return br;
 //    }
 
-    public void bulkUploadTest(List<Airport> airports, String indexName) throws IOException {
+    public void bulkUpload(List<Airport> airports, String indexName) throws IOException {
         int batchSize = 1000;
         int total = airports.size();
         Map<String, List<Airport>> cityGroups = airports.stream().collect(Collectors.groupingBy(Airport::getCityCode));
@@ -125,7 +125,7 @@ public class ElasticsearchService {
             List<Airport> batch = airports.subList(i, end);
             if(batch.isEmpty()) continue;
 
-            BulkRequest.Builder br = getBuilderTest(indexName, batch);
+            BulkRequest.Builder br = getBuilder(indexName, batch);
             BulkResponse response = client.bulk(br.build());
 
             if(response.errors()) {
@@ -167,7 +167,7 @@ public class ElasticsearchService {
         BulkResponse bulkResponse = client.bulk(br.build());
     }
 
-    private static BulkRequest.Builder getBuilderTest(String indexName,
+    private static BulkRequest.Builder getBuilder(String indexName,
                                                   List<Airport> batch) {
         BulkRequest.Builder br = new BulkRequest.Builder();
         for(Airport a: batch) {
@@ -324,37 +324,38 @@ public class ElasticsearchService {
         return airports;
     }
 
+//    public List<LocationResponse> searchByKeyword(String keyword, int page, int size) throws IOException {
+//        log.debug("searching elastic index for keyword: {}, page: {}, size: {}", keyword, page, size);
+//        int from = (page - 1) * size;
+//        List<LocationResponse> airports = new ArrayList<>();
+//        SearchResponse<LocationResponse> sr = client.search(s -> s
+//                .index("airports")
+//                .from(from)
+//                .size(size)
+//                .query(q -> q
+//                    .bool(b -> b
+//                        .should(sh -> sh.term(t -> t.field("iata.raw").value(keyword).boost(5f)))
+//                        .should(sh -> sh.term(t -> t.field("city_code.raw").value(keyword).boost(3f)))
+//                        .should(sh -> sh.match(m -> m.field("name").query(keyword).boost(2f)))
+//                        .should(sh -> sh.match(m -> m.field("city").query(keyword).boost(1f)))
+//                        .minimumShouldMatch("1")
+//                    )
+//                ),
+//                LocationResponse.class
+//        );
+//
+//        List<Hit<LocationResponse>> hits = sr.hits().hits();
+//
+//        for(Hit<LocationResponse> hit: hits) {
+//            airports.add(hit.source());
+//        }
+//
+////        return HelperUtil.getGroupedLocationData(airports);
+//        return airports;
+//    }
+
+    @Cacheable("locations")
     public List<LocationResponse> searchByKeyword(String keyword, int page, int size) throws IOException {
-        log.debug("searching elastic index for keyword: {}, page: {}, size: {}", keyword, page, size);
-        int from = (page - 1) * size;
-        List<LocationResponse> airports = new ArrayList<>();
-        SearchResponse<LocationResponse> sr = client.search(s -> s
-                .index("airports")
-                .from(from)
-                .size(size)
-                .query(q -> q
-                    .bool(b -> b
-                        .should(sh -> sh.term(t -> t.field("iata.raw").value(keyword).boost(5f)))
-                        .should(sh -> sh.term(t -> t.field("city_code.raw").value(keyword).boost(3f)))
-                        .should(sh -> sh.match(m -> m.field("name").query(keyword).boost(2f)))
-                        .should(sh -> sh.match(m -> m.field("city").query(keyword).boost(1f)))
-                        .minimumShouldMatch("1")
-                    )
-                ),
-                LocationResponse.class
-        );
-
-        List<Hit<LocationResponse>> hits = sr.hits().hits();
-
-        for(Hit<LocationResponse> hit: hits) {
-            airports.add(hit.source());
-        }
-
-//        return HelperUtil.getGroupedLocationData(airports);
-        return airports;
-    }
-
-    public List<LocationResponse> searchByKeywordTest(String keyword, int page, int size) throws IOException {
         log.info("searching elastic index for keyword: {}, page: {}, size: {}", keyword, page, size);
         int from = (page - 1) * size;
 //        List<Airport> airports = new ArrayList<>();

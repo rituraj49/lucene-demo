@@ -1,4 +1,4 @@
-package cl.lcd.service;
+package cl.lcd.service.flights;
 
 import cl.lcd.dto.search.FlightAvailabilityRequest;
 import com.amadeus.Amadeus;
@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,7 +32,7 @@ public class AmadeusFlightSearchService {
      * @return FlightOfferSearch[]
      * @throws ResponseException
      */
-    public FlightOfferSearch[] flightOfferSearches(Map<String, String> paramsMap) throws ResponseException {
+    public FlightOfferSearch[] flightOfferSearch(Map<String, String> paramsMap) throws ResponseException {
         Params params = null;
 
         for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
@@ -51,6 +52,7 @@ public class AmadeusFlightSearchService {
      * @throws ResponseException If an error occurs while searching for flight offers.
      * @throws JsonProcessingException If an error occurs while processing  the json body.
      */
+    @Cacheable("flightOffers")
     public FlightOfferSearch[] searchMultiCityFlightOffers
             (FlightAvailabilityRequest flightOfferSearchRequestDto) throws ResponseException, JsonProcessingException {
         Map<String, Object> dtoMap = mapDtoToFlightSearchRequest(flightOfferSearchRequestDto);

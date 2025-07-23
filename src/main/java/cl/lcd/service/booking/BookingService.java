@@ -1,10 +1,8 @@
-package cl.lcd.service;
+package cl.lcd.service.booking;
 
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
 import com.amadeus.exceptions.ResponseException;
-import com.amadeus.resources.FlightOrder;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
