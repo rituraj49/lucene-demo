@@ -2,6 +2,7 @@ package cl.lcd.controller;
 
 import cl.lcd.dto.AirportCreateDto;
 import cl.lcd.model.Airport;
+import cl.lcd.model.LocationResponse;
 import cl.lcd.service.ElasticsearchService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -25,9 +26,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Elastic search controller", description = "endpoints for elastic search operations.")
+@RequestMapping("elastic")
 public class ElasticsearchController {
     private ElasticsearchService elasticsearchService;
 
@@ -87,50 +90,49 @@ public class ElasticsearchController {
                     .withType(Airport.class)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
-            System.out.println("csv to bean: "+csvToBean);
             List<Airport> airports = csvToBean.parse();
-            elasticsearchService.bulkUpload(airports, "airports");
+            elasticsearchService.bulkUploadTest(airports, "airports");
+
+
         } catch (Exception e) {
-            e.printStackTrace();
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to parse file: " + e.getMessage());
+           ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to parse file: " + e.getMessage());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("data uploaded successfully");
     }
 
-    @Operation(
-            summary = "Search airports",
-            description = """
-            Performs a text search on the `airports` index.
-            The query must be of the form `field:value`, e.g. `name:Heathrow`.
-            """
-    )
-    @Parameters({
-            @Parameter(name = "query",
-                    description = "Search expression in the format `field:value`",
-                    example = "country:India",
-                    required = true)
-    })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Search results",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Airport.class)))),
-            @ApiResponse(responseCode = "400", description = "Invalid query",
-                    content = @Content(schema = @Schema(implementation = String.class)))
-    })
-    @GetMapping("search")
-    public ResponseEntity<?> searchAirports(
-            @RequestParam String query,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        try {
-//            System.out.println(query);
-            List<Airport> result = elasticsearchService.searchByText(query, page, size);
-            return ResponseEntity.status(HttpStatus.OK).body(result);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to fetch data");
-        }
-    }
+//    @Operation(
+//            summary = "Search airports",
+//            description = """
+//            Performs a text search on the `airports` index.
+//            The query must be of the form `field:value`, e.g. `name:Heathrow`.
+//            """
+//    )
+//    @Parameters({
+//            @Parameter(name = "query",
+//                    description = "Search expression in the format `field:value`",
+//                    example = "country:India",
+//                    required = true)
+//    })
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "Search results",
+//                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Airport.class)))),
+//            @ApiResponse(responseCode = "400", description = "Invalid query",
+//                    content = @Content(schema = @Schema(implementation = String.class)))
+//    })
+//    @GetMapping("search-field")
+//    public ResponseEntity<?> searchAirports(
+//            @RequestParam String query,
+//            @RequestParam(defaultValue = "1") int page,
+//            @RequestParam(defaultValue = "10") int size
+//    ) {
+//        try {
+//            List<Airport> result = elasticsearchService.searchByText(query, page, size);
+//            return ResponseEntity.status(HttpStatus.OK).body(result);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to fetch data");
+//        }
+//    }
 
     @GetMapping("airports")
     public ResponseEntity<Object> fetchAllRecords(

@@ -9,6 +9,95 @@ PUT airports
 {
 "settings": {
 "analysis": {
+"normalizer": {
+"lowercase_normalizer": {
+"filter": ["lowercase"],
+"type": "custom"
+}
+},
+"analyzer": {
+"autocomplete": {
+"type": "custom",
+"tokenizer": "whitespace",
+"filter": [
+"lowercase",
+"autocomplete_filter"
+]
+}
+},
+"filter": {
+"autocomplete_filter": {
+"type": "edge_ngram",
+"minGram": 2,
+"maxGram": 20
+}
+}
+}
+},
+"mappings": {
+"properties": {
+"iata": {
+"type": "keyword",
+"fields": {
+"raw": {
+"type": "keyword",
+"normalizer": "lowercase_normalizer"
+}
+}
+},
+"name": {
+"type": "search_as_you_type"
+},
+"latitude": {
+"type": "text",
+"fields": {
+"raw": {
+"type": "keyword"
+}
+}
+},
+"longitude": {
+"type": "text",
+"fields": {
+"raw": {
+"type": "keyword"
+}
+}
+},
+"time_zone": {
+"type": "text"
+},
+"city_code": {
+"type": "keyword",
+"fields": {
+"raw": {
+"type": "keyword",
+"normalizer": "lowercase_normalizer"
+}
+}
+},
+"country_code": {
+"type": "keyword"
+},
+"city": {
+"type": "search_as_you_type",
+"fields": {
+"raw": {
+"type": "keyword"
+}
+}
+},
+"type": {
+"type": "keyword"
+}
+}
+}
+}
+<hr>
+PUT airports
+{
+"settings": {
+"analysis": {
 "analyzer": {
 "autocomplete": {
 "type": "custom",

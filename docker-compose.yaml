@@ -1,0 +1,60 @@
+services:
+  postgres:
+    container_name: lucene-keycloak-postgres
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: java
+      POSTGRES_DB: keycloakdb
+    ports:
+      - 5434:5432
+    volumes:
+      - ./docker/postgres/data:/var/lib/postgresql/data
+  keycloak:
+    container_name: lucene-keycloak
+    image: quay.io/keycloak/keycloak:25.0.1
+    command:
+      - start-dev
+    depends_on:
+      - postgres
+    ports:
+      - 8081:8081
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_PORT: 8081
+      KC_HOSTNAME_URL: http://localhost:8081
+      KC_HOSTNAME_ADMIN_URL: http://localhost:8081
+      KC_HOSTNAME_STRICT_BACKCHANNEL: true
+      KC_HTTP_RELATIVE_PATH: /
+      KC_HTTP_ENABLED: true
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+      KC_DB: postgres
+      # KC_DB_URL_HOST: host.docker.internal // for locally installed postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_PORT: 5432
+      KC_DB_URL_DATABASE: keycloakdb
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: java
+      TWILIO_ACCOUNT_SID:
+      TWILIO_AUTH_TOKEN:
+      TWILIO_PHONE_NUMBER:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "./docker/keycloak/keycloak-2fa-email-authenticator-1.0.0.0-SNAPSHOT.jar:/opt/keycloak/providers/email-otp-authenticator.jar"
+#    healthcheck:
+#      test: [ 'CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/auth/health/live' ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 20
+  lucene-spring:
+    container_name:
+    image: rituraj49/lucene-demo
+    restart: unless-stopped
+    depends_on:
+      - keycloak
+    ports:
+      - 8080:8080
