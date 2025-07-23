@@ -1,6 +1,6 @@
 package cl.lcd.repo;
 
-import cl.lcd.dto.logs.UserLog;
+import cl.lcd.model.UserLog;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

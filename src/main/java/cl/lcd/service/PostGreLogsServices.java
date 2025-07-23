@@ -1,9 +1,10 @@
 package cl.lcd.service;
 
+
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
-import cl.lcd.model.UserLog;
-import cl.lcd.repo.UserLogRepository;
+import cl.lcd.model.PostGreLog;
+import cl.lcd.repo.PostGreRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -11,30 +12,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-
-@Service
 @Slf4j
-public class UserLogService {
+@Service
+public class PostGreLogsServices {
 
     @Autowired
-    private UserLogRepository userLogRepository;
+    private PostGreRepo postGreRepo;
+
 
     @Autowired
     private ObjectMapper objectMapper;
 
+
+
     public void saveUserLog(String orderId, LocalDateTime logTimestamp, String requestPayload, String responsePayload,
                             Integer numberOfTravellers, String totalAmount,
                             String fromLocation, String toLocation) {
-        UserLog log = new UserLog(orderId,logTimestamp, requestPayload, responsePayload,
+        PostGreLog log1 = new PostGreLog(orderId,logTimestamp, requestPayload, responsePayload,
                 numberOfTravellers, totalAmount, fromLocation, toLocation);
-        userLogRepository.save(log);
+
+//        System.out.println(log1);
+
+        postGreRepo.save(log1);
     }
 
 
-    public void createLoges(FlightBookingRequest orderRequest,  FlightBookingResponse createdOrder){
+
+
+    public void createLogesPostGreDB(FlightBookingRequest orderRequest, FlightBookingResponse createdOrder){
         try {
-
-
 
             String requestJson = objectMapper.writeValueAsString(orderRequest);
             String responseJson = objectMapper.writeValueAsString(createdOrder);
@@ -59,6 +65,7 @@ public class UserLogService {
             );
 
 
+
         }catch (JsonProcessingException e) {
             log.error("Error converting request/response to JSON: {}", e.getMessage());
             e.printStackTrace();
@@ -68,4 +75,7 @@ public class UserLogService {
 
 
 
+
+
 }
+
