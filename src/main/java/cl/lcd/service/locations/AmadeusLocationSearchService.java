@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import cl.lcd.model.LocationResponse;
+import cl.lcd.model.LocationResponseWrapper;
 import cl.lcd.util.HelperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.amadeus.Amadeus;
@@ -37,9 +39,10 @@ public class AmadeusLocationSearchService {
 	 * @param queryParams = Map<String, String>
 	 * @return List<LocationResponse>
 	 * @throws ResponseException
-	 * queryParams should contain at least two key-value pairs. Examlpe - [{subType: CITY,AIRPORT} {keyword: delhi}]
+	 * queryParams should contain at least two key-value pairs. Example - [{subType: CITY,AIRPORT} {keyword: delhi}]
 	 */
-    public List<LocationResponse> searchLocations(Map<String, String> queryParams) throws ResponseException {
+	@Cacheable(cacheNames = "locations")
+    public LocationResponseWrapper searchLocations(Map<String, String> queryParams) throws ResponseException {
 		Params qParams = null;
 
 		qParams = Params.with("subType", queryParams.get("subType"));
@@ -69,6 +72,8 @@ public class AmadeusLocationSearchService {
 						);
 			}).toList();
 
-        return HelperUtil.getGroupedLocationData(airports);
+        List<LocationResponse> locationResponseList = HelperUtil.getGroupedLocationData(airports);
+
+		return new LocationResponseWrapper(locationResponseList);
     }
 }

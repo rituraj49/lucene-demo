@@ -3,6 +3,7 @@ package cl.lcd.controller;
 import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.dto.search.FlightAvailabilityResponse;
 import cl.lcd.mappers.flight.FlightSearchResponseMapper;
+import cl.lcd.model.FlightResponseWrapper;
 import cl.lcd.service.flights.AmadeusFlightSearchService;
 import cl.lcd.service.flights.FlightService;
 import com.amadeus.exceptions.ResponseException;
@@ -74,7 +75,9 @@ public class FlightSearchController {
         log.info("{} flight offers found", flightResponseList.size());
 //        String jsonOutput = gson.toJson(flightOffers);
 
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
+        FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
     }
 
     @PostMapping("/search")
@@ -123,7 +126,9 @@ public class FlightSearchController {
 
             log.info("{} flight offers found", flightResponseList.size());
 
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
+            FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
+
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
         } catch (Exception e) {
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());

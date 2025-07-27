@@ -52,7 +52,7 @@ public class AmadeusFlightSearchService {
      * @throws ResponseException If an error occurs while searching for flight offers.
      * @throws JsonProcessingException If an error occurs while processing  the json body.
      */
-    @Cacheable("flightOffers")
+//    @Cacheable(cacheNames = "flightOffers")
     public FlightOfferSearch[] searchMultiCityFlightOffers
             (FlightAvailabilityRequest flightOfferSearchRequestDto) throws ResponseException, JsonProcessingException {
         Map<String, Object> dtoMap = mapDtoToFlightSearchRequest(flightOfferSearchRequestDto);

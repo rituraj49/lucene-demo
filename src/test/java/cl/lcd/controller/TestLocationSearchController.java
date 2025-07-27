@@ -1,5 +1,6 @@
 package cl.lcd.controller;
 
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -7,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import cl.lcd.model.LocationResponse;
+import cl.lcd.model.LocationResponseWrapper;
+import cl.lcd.model.SimpleAirportWrapper;
 import cl.lcd.service.locations.AmadeusLocationSearchService;
 import cl.lcd.service.locations.ElasticsearchService;
 import cl.lcd.util.HelperUtil;
@@ -78,21 +81,24 @@ public class TestLocationSearchController {
 		child.setIata("IGI");
 
 //		List<Airport> searchResult = List.of(parent, child);
-
+		SimpleAirportWrapper simpleAirportWrapper = new SimpleAirportWrapper();
+		simpleAirportWrapper.setSimpleAirports(List.of(child));
 		LocationResponse response = new LocationResponse();
 		response.setIata(parent.getIata());
-		response.setGroupData(List.of(child));
+		response.setGroupData(simpleAirportWrapper);
 
 		List<LocationResponse> groupedResult = List.of(response);
 
-		Mockito.when(inMemoryLuceneService.search("del")).thenReturn(groupedResult);
+		LocationResponseWrapper wrapper = new LocationResponseWrapper(groupedResult);
+
+		Mockito.when(inMemoryLuceneService.search("del")).thenReturn(wrapper);
 //		Mockito.when(helperUtil.getGroupedData(searchResult)).thenReturn(groupedResult);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/locations/search")
 				.param("keyword", "del")
 				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$[0].iata").value("DEL"));
+		.andExpect(jsonPath("$.locationResponses[0].iata").value("DEL"));
 //		.andExpect(jsonPath("$[0].groupData[0].iata").value("IGI"));
 	}
 
@@ -106,15 +112,18 @@ public class TestLocationSearchController {
 		child.setCityCode("DEL");
 		child.setIata("IGI");
 
+		SimpleAirportWrapper simpleAirportWrapper = new SimpleAirportWrapper();
+		simpleAirportWrapper.setSimpleAirports(List.of(child));
 //		List<Airport> searchResult = List.of(parent, child);
 
 		LocationResponse response = new LocationResponse();
 		response.setIata(parent.getIata());
-		response.setGroupData(List.of(child));
+		response.setGroupData(simpleAirportWrapper);
 
 		List<LocationResponse> groupedResult = List.of(response);
 
-		Mockito.when(amadeusLocationSeArchService.searchLocations(Mockito.<Map<String, String>>any())).thenReturn(groupedResult);
+		LocationResponseWrapper wrapper = new LocationResponseWrapper(groupedResult);
+		Mockito.when(amadeusLocationSeArchService.searchLocations(Mockito.<Map<String, String>>any())).thenReturn(wrapper);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/locations/amadeus-search")
 				.param("keyword", "del")

@@ -1,10 +1,7 @@
 package cl.lcd.util;
 
-import cl.lcd.model.Airport;
-import cl.lcd.model.AirportResponse;
+import cl.lcd.model.*;
 import cl.lcd.enums.LocationType;
-import cl.lcd.model.CityGroup;
-import cl.lcd.model.LocationResponse;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -16,36 +13,36 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 public class HelperUtil {
-    public static List<AirportResponse> getGroupedData(List<Airport> data) {
-        Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCityCode));
-
-        List<AirportResponse> result = new ArrayList<>();
-
-        for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
-            List<Airport> group = entry.getValue();
-
-            Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
-
-            Airport airportCity = match.orElse(null);
-
-            List<Airport> children = group.
-                    stream()
-                    .filter(p ->
-                            !p.getSubType().equals(LocationType.CITY))
-                    .toList();
-
-            AirportResponse parent = new AirportResponse();
-            if (airportCity == null) {
-                airportCity = group.get(0);
-            }
-
-            parent.setParent(airportCity);
-            parent.setGroupData(children);
-
-            result.add(parent);
-        }
-        return result;
-    }
+//    public static List<AirportResponse> getGroupedData(List<Airport> data) {
+//        Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCityCode));
+//
+//        List<AirportResponse> result = new ArrayList<>();
+//
+//        for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
+//            List<Airport> group = entry.getValue();
+//
+//            Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
+//
+//            Airport airportCity = match.orElse(null);
+//
+//            List<Airport> children = group.
+//                    stream()
+//                    .filter(p ->
+//                            !p.getSubType().equals(LocationType.CITY))
+//                    .toList();
+//
+//            AirportResponse parent = new AirportResponse();
+//            if (airportCity == null) {
+//                airportCity = group.get(0);
+//            }
+//
+//            parent.setParent(airportCity);
+//            parent.setGroupData(children);
+//
+//            result.add(parent);
+//        }
+//        return result;
+//    }
 
     public static List<LocationResponse> getGroupedLocationData(List<Airport> data) {
         Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCityCode));
@@ -66,7 +63,7 @@ public class HelperUtil {
                 airportCity.setName("All airports within " + airportCity.getName());
             }
 
-            List<LocationResponse.SimpleAirport> children = group.
+            List<LocationResponse.SimpleAirport> subAirports = group.
                     stream()
 //                    .filter(p ->
 //                            !p.getSubType().equals(LocationType.CITY)
@@ -83,6 +80,9 @@ public class HelperUtil {
                     })
                     .toList();
 
+            SimpleAirportWrapper children = new SimpleAirportWrapper();
+            children.setSimpleAirports(subAirports);
+
             LocationResponse locationResponse = getLocationResponse(airportCity, children);
 //            parent.setParent(airportCity);
 //            parent.setGroupData(children);
@@ -92,7 +92,7 @@ public class HelperUtil {
         return result;
     }
 
-    private static LocationResponse getLocationResponse(Airport airportCity, List<LocationResponse.SimpleAirport> children) {
+    private static LocationResponse getLocationResponse(Airport airportCity, SimpleAirportWrapper children) {
         LocationResponse locationResponse = new LocationResponse();
         locationResponse.setSubType(airportCity.getSubType());
         locationResponse.setIata(airportCity.getIata());
@@ -168,8 +168,10 @@ public class HelperUtil {
                                             "CITY".equalsIgnoreCase(String.valueOf(sa.getSubType())) ? 0 : 1))
                                     .toList())
                             .orElse(List.of());
-
-                    response.setGroupData(subAirports);
+//                    List<LocationResponse.SimpleAirport> finalSubAirports = new ArrayList<>(subAirports);
+                    SimpleAirportWrapper finalSubAirports = new SimpleAirportWrapper();
+                    finalSubAirports.setSimpleAirports(subAirports);
+                    response.setGroupData(finalSubAirports);
 
                     return response;
                 }).toList();

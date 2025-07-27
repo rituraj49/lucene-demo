@@ -59,7 +59,8 @@ public class LocationResponse {
     private String city;
 
     @JsonProperty("group_data")
-    private List<SimpleAirport> groupData;
+    private SimpleAirportWrapper groupData;
+//    private List<SimpleAirport> groupData;
 
     @Data
     @AllArgsConstructor

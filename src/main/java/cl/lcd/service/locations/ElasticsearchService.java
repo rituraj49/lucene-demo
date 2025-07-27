@@ -5,10 +5,12 @@ import cl.lcd.enums.LocationType;
 import cl.lcd.model.Airport;
 import cl.lcd.model.CityGroup;
 import cl.lcd.model.LocationResponse;
+import cl.lcd.model.LocationResponseWrapper;
 import cl.lcd.util.HelperUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.Refresh;
+import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
@@ -354,11 +356,10 @@ public class ElasticsearchService {
 //        return airports;
 //    }
 
-    @Cacheable("locations")
-    public List<LocationResponse> searchByKeyword(String keyword, int page, int size) throws IOException {
-        log.info("searching elastic index for keyword: {}, page: {}, size: {}", keyword, page, size);
+//    @Cacheable(cacheNames = "locations", key = "#keyword" )
+    public LocationResponseWrapper searchByKeyword(String keyword, int page, int size) throws IOException {
+        log.info("cache missed: calling search elastic index for keyword: {}, page: {}, size: {}", keyword, page, size);
         int from = (page - 1) * size;
-//        List<Airport> airports = new ArrayList<>();
         SearchResponse<Airport> sr = client.search(s -> s
                 .index("airports")
                 .from(from)
@@ -371,23 +372,29 @@ public class ElasticsearchService {
                         .should(sh -> sh.match(m -> m.field("city").query(keyword).boost(1f)))
                         .minimumShouldMatch("1")
                     )
+                )
+                .sort(
+                        so -> so.score(o -> o.order(SortOrder.Desc)
+                        )
                 ),
                 Airport.class
         );
 
         List<Hit<Airport>> hits = sr.hits().hits();
 
-//      sorting by relevancy in descending order
-        List<Airport> airports = hits.stream().sorted((h1, h2) -> Double.compare(
-                        Optional.ofNullable(h2.score()).orElse(0.0),
-                        Optional.ofNullable(h1.score()).orElse(0.0)
-                ))
-                .map(Hit::source)
-                .toList();
+        List<Airport> airports = new ArrayList<>();
 
-//        for(Hit<Airport> hit: hits) {
-//            airports.add(hit.source());
-//        }
+//      sorting by relevancy in descending order
+//        List<Airport> airports = hits.stream().sorted((h1, h2) -> Double.compare(
+//                        Optional.ofNullable(h2.score()).orElse(0.0),
+//                        Optional.ofNullable(h1.score()).orElse(0.0)
+//                ))
+//                .map(Hit::source)
+//                .toList();
+
+        for(Hit<Airport> hit: hits) {
+            airports.add(hit.source());
+        }
 
         Set<String> cityCodes = airports.stream().map(Airport::getCityCode).collect(Collectors.toSet());
         SearchResponse<CityGroup> cityGroupSearchResponse = client.search(s -> s
@@ -410,8 +417,10 @@ public class ElasticsearchService {
         for(Hit<CityGroup> c: cityGroupHits) {
             cityGroupList.add(c.source());
         }
-        return HelperUtil.getGroupedCityData(airports, cityGroupList);
-
+        List<LocationResponse> locationResponseList = HelperUtil.getGroupedCityData(airports, cityGroupList);
+        LocationResponseWrapper wrapper = new LocationResponseWrapper();
+        wrapper.setLocationResponses(locationResponseList);
+        return wrapper;
 //        return airports;
     }
 

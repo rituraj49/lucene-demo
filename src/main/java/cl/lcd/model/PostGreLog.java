@@ -3,6 +3,7 @@ package cl.lcd.model;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Profile("!nodb")
 public class PostGreLog {
 
     @Id
