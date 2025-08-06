@@ -6,6 +6,7 @@ import cl.lcd.mappers.flight.FlightSearchResponseMapper;
 import cl.lcd.model.FlightResponseWrapper;
 import cl.lcd.service.flights.AmadeusFlightSearchService;
 import cl.lcd.service.flights.FlightService;
+import cl.lcd.service.mailing.EmailService;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
 //import com.amadeus.service.AmadeusLocationSearchService;
@@ -66,7 +67,6 @@ public class FlightSearchController {
     public ResponseEntity<?> flightOfferSearch(@RequestParam Map<String, String> queryParams)
             throws ResponseException {
         log.info("flight offer search params received: {}", queryParams.toString());
-
         FlightOfferSearch[] flightOffers = flightService.flightSearch(queryParams);
 
         List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)

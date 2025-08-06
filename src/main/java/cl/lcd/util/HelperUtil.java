@@ -4,6 +4,8 @@ import cl.lcd.model.*;
 import cl.lcd.enums.LocationType;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -175,6 +177,10 @@ public class HelperUtil {
 
                     return response;
                 }).toList();
+    }
+
+    public static String getEmailBody(TemplateEngine templateEngine, String templateName, Context context) {
+        return templateEngine.process(templateName, context);
     }
 
 }

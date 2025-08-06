@@ -1,0 +1,43 @@
+networks:
+  monitor-net:
+
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus-config.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitor-net
+
+  loki:
+    image: grafana/loki:2.9.0
+    volumes:
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml
+#      - "C:/Personal_Files/Java/Projects_sts/lucene-demo/docker/loki/loki-config.yaml":/etc/loki/loki-config.yaml
+      - ./docker/loki/data/chunks:/loki/chunks
+      - ./docker/loki/data/index:/loki/index
+      - ./docker/loki/data/index_cache:/loki/index_cache
+      - ./docker/loki/data/compactor:/loki/compactor
+      - ./docker/loki/data/wal:/wal
+    command: -config.file=/etc/loki/loki-config.yaml
+    ports:
+      - "3100:3100"
+    networks:
+      - monitor-net
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - monitor-net
+    depends_on:
+      - prometheus
+      - loki
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./docker/grafana/data:/var/lib/grafana

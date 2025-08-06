@@ -1,15 +1,20 @@
-package cl.lcd.dto.search;
+package cl.lcd.messaging.event;
 
+import cl.lcd.dto.search.FlightAvailabilityResponse;
 import com.amadeus.resources.FlightOfferSearch;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class FlightAvailabilityResponse {
+@AllArgsConstructor
+@NoArgsConstructor
+public class KafkaFlightAvailabilityResponse {
     @Schema(example = "false")
     private boolean oneWay;
 
@@ -28,14 +33,7 @@ public class FlightAvailabilityResponse {
     @Schema(example = "1")
     private int totalTravelers;
 
-    private List<Trip> trips;
-
-    @Schema(description = "flight offer search json object as is")
-    private String pricingAdditionalInfo;
-
-    public void setPricingAdditionalInfo(FlightOfferSearch pricingAdditionalInfo) {
-        this.pricingAdditionalInfo = new Gson().toJson(pricingAdditionalInfo);
-    }
+    private List<FlightAvailabilityResponse.Trip> trips;
 
     @Data
     public static class Trip {
@@ -53,7 +51,7 @@ public class FlightAvailabilityResponse {
 
         @Schema(example = "2h 15m")
         private String totalLayoverDuration;
-        private List<Leg> legs;
+        private List<FlightAvailabilityResponse.Leg> legs;
     }
 
     @Data
@@ -90,7 +88,7 @@ public class FlightAvailabilityResponse {
 
         @Schema(example = "2h 15m")
         private String duration;
-//        private int includedCheckedBags;
+        //        private int includedCheckedBags;
 //        private BagWeight includedCabinBagsWeight;
         @Schema(example = "10h 25m")
         private String layoverAfter;

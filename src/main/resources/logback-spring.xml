@@ -1,0 +1,33 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>http://localhost:3100/loki/api/v1/push</url>
+        </http>
+        <encoder class="com.github.loki4j.logback.JsonEncoder">
+            <labels>
+                <label name="app">spring-boot-app</label>
+                <label name="level">%level</label>
+            </labels>
+            <pattern>
+                {
+                "timestamp": "%date{ISO8601}",
+                "level": "%level",
+                "thread": "%thread",
+                "logger": "%logger",
+                "message": "%message"
+                }
+            </pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+<!--        <appender-ref ref="LOKI"/>-->
+    </root>
+</configuration>

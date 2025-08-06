@@ -6,6 +6,7 @@ import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.service.booking.AmadeusBookingService;
 //import cl.lcd.service.UserLogService;
 import cl.lcd.service.booking.BookingService;
+import cl.lcd.service.mailing.EmailService;
 import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
 import io.swagger.v3.oas.annotations.Operation;
