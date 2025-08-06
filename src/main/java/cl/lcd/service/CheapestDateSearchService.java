@@ -54,9 +54,9 @@ public class CheapestDateSearchService {
                 responseList.add(resp);
             }
 
-            for(FlightDateResponse resp : responseList){
+           /* for(FlightDateResponse resp : responseList){
                 System.out.println(resp);
-            }
+            }*/
 
 
             return responseList;

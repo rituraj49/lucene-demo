@@ -59,7 +59,15 @@ public class AmadeusFlightSearchService {
         log.info("Flight search request body sent to amadeus: {}", body);
         FlightOfferSearch[] offers = amadeusClient.shopping.flightOffersSearch.post(body);
 
-        List<FlightOfferSearch> offerList = List.of(offers);
+        //List<FlightOfferSearch> offerList = List.of(offers);
+
+        if (offers != null) {
+            List<FlightOfferSearch> offerList = List.of(offers);
+            // Do something with offerList if needed
+        } else {
+            log.warn("No flight offers returned from Amadeus");
+        }
+
 
         return offers;
     }

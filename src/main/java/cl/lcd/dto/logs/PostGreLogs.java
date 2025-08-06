@@ -22,23 +22,24 @@ public class PostGreLogs {
 
     private LocalDateTime logTimestamp = LocalDateTime.now();
 
-    @Column(length = 5000)
+    @Column(length = 7000)
     private String requestPayload;
 
-    @Column(length = 5000)
+    @Column(length = 7000)
     private String responsePayload;
 
     private Integer numberOfTravellers;
 
     private String totalAmount;
 
+    private String currencyCode;
     private String fromLocation;
 
     private String toLocation;
 
     public PostGreLogs(String orderId, LocalDateTime logTimestamp, String requestPayload,
                    String responsePayload, Integer numberOfTravellers,
-                   String totalAmount, String fromLocation, String toLocation) {
+                   String totalAmount, String fromLocation, String toLocation,String currencyCode) {
         this.orderId = orderId;
         this.logTimestamp = logTimestamp;
         this.requestPayload = requestPayload;
@@ -47,7 +48,18 @@ public class PostGreLogs {
         this.totalAmount = totalAmount;
         this.fromLocation = fromLocation;
         this.toLocation = toLocation;
+        this.currencyCode=currencyCode;
     }
+
+
+    @PrePersist
+    public void setLogTimestamp() {
+        if (logTimestamp == null) {
+            this.logTimestamp = LocalDateTime.now();
+        }
+    }
+
+
 }
 
 

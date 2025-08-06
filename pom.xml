@@ -77,6 +77,21 @@
 			<version>5.11</version>
 		</dependency>
 
+		<!-- Spring Boot Starter Mail -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+		<!-- Java Mail API -->
+		<dependency>
+			<groupId>jakarta.mail</groupId>
+			<artifactId>jakarta.mail-api</artifactId>
+		</dependency>
+
+
+
+
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -111,6 +126,39 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+
+
+<!--
+
+
+
+		<dependency>
+			<groupId>com.github.loki4j</groupId>
+			<artifactId>loki-logback-appender</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+
+-->
+
+
+
+		<!-- Loki4j logging -->
+		<dependency>
+			<groupId>com.github.loki4j</groupId>
+			<artifactId>loki-logback-appender</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 
 
 		<dependency>

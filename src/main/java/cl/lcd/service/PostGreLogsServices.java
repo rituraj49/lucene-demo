@@ -27,9 +27,9 @@ public class PostGreLogsServices {
 
     public void saveUserLog(String orderId, LocalDateTime logTimestamp, String requestPayload, String responsePayload,
                             Integer numberOfTravellers, String totalAmount,
-                            String fromLocation, String toLocation) {
+                            String fromLocation, String toLocation , String currencyCode) {
         PostGreLogs log1 = new PostGreLogs(orderId,logTimestamp, requestPayload, responsePayload,
-                numberOfTravellers, totalAmount, fromLocation, toLocation);
+                numberOfTravellers, totalAmount, fromLocation, toLocation,currencyCode);
 
         System.out.println(log1);
 
@@ -51,6 +51,7 @@ public class PostGreLogsServices {
             String totalAmount = createdOrder.getFlightOffer().getTotalPrice();
             String from = createdOrder.getFlightOffer().getTrips().get(0).getFrom();
             String to = createdOrder.getFlightOffer().getTrips().get(0).getTo();
+            String currencyCode=createdOrder.getFlightOffer().getCurrencyCode();
 
             // Save log
             saveUserLog(
@@ -61,7 +62,8 @@ public class PostGreLogsServices {
                     numberOfTravellers,
                     totalAmount,
                     from,
-                    to
+                    to,
+                    currencyCode
             );
 
 
