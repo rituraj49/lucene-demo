@@ -67,9 +67,17 @@ public class LocationResponse {
     @NoArgsConstructor
     public static class SimpleAirport {
         private LocationType subType;
+
         private String iata;
+
         private String name;
+
         private String city;
+
+        @JsonProperty("city_code")
         private String cityCode;
+
+        @JsonProperty("country_code")
+        private String countryCode;
     }
 }

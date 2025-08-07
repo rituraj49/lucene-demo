@@ -17,7 +17,11 @@ public class FlightBookingListener {
     @Autowired
     EmailService emailService;
 
-    @KafkaListener(topics = "lucene.flight.booking.topic", groupId = "lucene-flights-booking-group")
+    @KafkaListener(
+            topics = "lucene.flight.booking.topic",
+            groupId = "lucene-flights-booking-group",
+            autoStartup = "${kafka.listener.enabled:true}"
+    )
     public void emailSender(FlightBookingEvent bookingEvent) {
         System.out.println("received kafka event" + bookingEvent.getOrderId());
         List<String> toEmails = bookingEvent.getTravelers().stream().map(TravelerResponseDto::getEmail).toList();

@@ -77,6 +77,7 @@ public class HelperUtil {
                         simpleAirport.setIata(c.getIata());
                         simpleAirport.setName(c.getName());
                         simpleAirport.setCityCode(c.getCityCode());
+                        simpleAirport.setCountryCode(c.getCountryCode());
                         simpleAirport.setCity(c.getCity());
                         return simpleAirport;
                     })

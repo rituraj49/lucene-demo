@@ -148,7 +148,8 @@ public class ElasticsearchService {
                             a.getIata(),
                             a.getName(),
                             a.getCity(),
-                            a.getCityCode()
+                            a.getCityCode(),
+                            a.getCountryCode()
                     )).toList();
             cityGroup.setAirportGroup(simpleAirportList);
             return cityGroup;

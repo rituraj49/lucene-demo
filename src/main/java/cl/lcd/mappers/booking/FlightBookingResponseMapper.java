@@ -20,6 +20,19 @@ public class FlightBookingResponseMapper {
      * @param order = FlightOrder
      * @return FlightBookingResponse
      */
+    public static FlightBookingResponse flightBookingResponse(FlightOrder order, List<TravelerRequestDto> travelerRequestDtos) {
+        FlightBookingResponse response = new FlightBookingResponse();
+//        FlightAvailabilityResponse flightAvailabilityResponse = new FlightAvailabilityResponse();
+        FlightAvailabilityResponse flightAvailabilityResponse = FlightSearchResponseMapper.createResponse(order.getFlightOffers()[0]);
+        List<TravelerResponseDto> travelers = createTravelerResponse(order.getTravelers(), travelerRequestDtos);
+        flightAvailabilityResponse.setPricingAdditionalInfo(null);
+        //        flightAvailabilityResponse.setOneWay(order.getFlightOffers()[0].isOneWay());
+        response.setOrderId(order.getId());
+        response.setFlightOffer(flightAvailabilityResponse);
+        response.setTravelers(travelers);
+        return response;
+    }
+
     public static FlightBookingResponse flightBookingResponse(FlightOrder order) {
         FlightBookingResponse response = new FlightBookingResponse();
 //        FlightAvailabilityResponse flightAvailabilityResponse = new FlightAvailabilityResponse();
@@ -38,10 +51,12 @@ public class FlightBookingResponseMapper {
      * @param travelers = FlightOrder.Traveler[] travelers
      * @return List<TravelerResponseDto>
      */
-    public static List<TravelerResponseDto> createTravelerResponse(FlightOrder.Traveler[] travelers) {
+    public static List<TravelerResponseDto> createTravelerResponse(FlightOrder.Traveler[] travelers, List<TravelerRequestDto> travelerRequestDtos) {
         List<TravelerResponseDto> travelersList = new ArrayList<>();
-        for(FlightOrder.Traveler traveler: travelers) {
+//        for(FlightOrder.Traveler traveler: travelers) {
+        for(int i = 0; i < travelers.length; i++) {
             TravelerResponseDto dto = new TravelerResponseDto();
+            FlightOrder.Traveler traveler = travelers[i];
             List<TravelerResponseDto.Phone> phones = Arrays.stream(traveler.getContact()
                     .getPhones())
                     .map(ph -> {
@@ -69,6 +84,7 @@ public class FlightBookingResponseMapper {
             dto.setFirstName(traveler.getName().getFirstName());
             dto.setLastName(traveler.getName().getLastName());
             dto.setPhones(phones);
+            dto.setEmail(travelerRequestDtos.get(i).getEmail());
             dto.setDateOfBirth(traveler.getDateOfBirth());
             dto.setDocuments(docs);
 
@@ -76,6 +92,49 @@ public class FlightBookingResponseMapper {
         }
         return travelersList;
     }
+
+    public static List<TravelerResponseDto> createTravelerResponse(FlightOrder.Traveler[] travelers) {
+        List<TravelerResponseDto> travelersList = new ArrayList<>();
+//        for(FlightOrder.Traveler traveler: travelers) {
+        for(int i = 0; i < travelers.length; i++) {
+            TravelerResponseDto dto = new TravelerResponseDto();
+            FlightOrder.Traveler traveler = travelers[i];
+            List<TravelerResponseDto.Phone> phones = Arrays.stream(traveler.getContact()
+                    .getPhones())
+                    .map(ph -> {
+                        TravelerResponseDto.Phone phone = new TravelerResponseDto.Phone();
+                        phone.setNumber(ph.getNumber());
+                        phone.setDeviceType(TravelerResponseDto.DeviceType.valueOf(ph.getDeviceType().toString()));
+                        phone.setCountryCallingCode(ph.getCountryCallingCode());
+                        return phone;
+                    }).toList();
+
+            List<TravelerResponseDto.IdentityDocumentResponse> docs = Arrays.stream(traveler.getDocuments())
+                .map(doc -> {
+                    TravelerResponseDto.IdentityDocumentResponse idoc = new TravelerResponseDto.IdentityDocumentResponse();
+                    idoc.setDocumentType(TravelerResponseDto.DocumentType.valueOf(doc.getDocumentType().toString()));
+                    idoc.setNumber(doc.getNumber());
+                    idoc.setExpiryDate(doc.getExpiryDate());
+                    idoc.setIssuanceCountry(doc.getIssuanceCountry());
+                    idoc.setNationality(doc.getNationality());
+                    idoc.setHolder(doc.isHolder());
+
+                    return idoc;
+            }).toList();
+            dto.setId(traveler.getId());
+            dto.setGender(TravelerResponseDto.Gender.valueOf(traveler.getGender()));
+            dto.setFirstName(traveler.getName().getFirstName());
+            dto.setLastName(traveler.getName().getLastName());
+            dto.setPhones(phones);
+//            dto.setEmail(travelerRequestDtos.get(i).getEmail());
+            dto.setDateOfBirth(traveler.getDateOfBirth());
+            dto.setDocuments(docs);
+
+            travelersList.add(dto);
+        }
+        return travelersList;
+    }
+
     /**
      * Creates an array of FlightOrder.Traveler objects from an array of TravelerRequestDto objects.
      * @param travelerRequestDtoList = List<TravelerRequestDto>

@@ -51,7 +51,7 @@ public class AmadeusBookingService {
 
         FlightOrder order = amadeusClient.booking.flightOrders.post(offer, flightTravelers);
 
-        FlightBookingResponse bookingResponse = FlightBookingResponseMapper.flightBookingResponse(order);
+        FlightBookingResponse bookingResponse = FlightBookingResponseMapper.flightBookingResponse(order, flightOrderRequest.getTravelers());
 
         emitFlightBookingEvent(bookingResponse);
 
@@ -66,9 +66,8 @@ public class AmadeusBookingService {
 
     public Response cancelFlightOrder(String orderId) throws ResponseException {
         log.info("Cancelling flight order with ID: {}", orderId);
-        Response res = amadeusClient.booking.flightOrder(orderId).delete();
-//        System.out.println("response: " + res);
-        return res;
+        //        System.out.println("response: " + res);
+        return amadeusClient.booking.flightOrder(orderId).delete();
     }
 
     public void emitFlightBookingEvent(FlightBookingResponse booking) {
