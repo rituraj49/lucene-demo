@@ -1,7 +1,10 @@
 <configuration>
+
+    <!-- Console Logging -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread]  %X{traceId} %-5level %logger{36} - %msg%n</pattern>
+
         </encoder>
     </appender>
 
@@ -9,6 +12,17 @@
         <http>
             <url>http://localhost:3100/loki/api/v1/push</url>
         </http>
+        <format>
+            <label>
+                <pattern>app=my-hotel-svc-app, environment=production, region=eu-west-1, level=%level</pattern>
+                <readMarkers>true</readMarkers>
+            </label>
+            <message>
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss} [%thread]  %X{traceId}  %magenta(%-5level) %green([%-50.50class]) >>> %cyan(%msg) %n
+                </pattern>
+            </message>
+        </format>
         <encoder class="com.github.loki4j.logback.JsonEncoder">
             <labels>
                 <label name="app">spring-boot-app</label>
@@ -28,6 +42,7 @@
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="LOKI"/>
 <!--        <appender-ref ref="LOKI"/>-->
     </root>
 </configuration>

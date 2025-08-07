@@ -3,7 +3,7 @@ package cl.lcd.service;
 
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
-import cl.lcd.model.PostGreLog;
+import cl.lcd.dto.logs.PostGreLog;
 import cl.lcd.repo.PostGreRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,11 +29,11 @@ public class PostGreLogsServices {
 
     public void saveUserLog(String orderId, LocalDateTime logTimestamp, String requestPayload, String responsePayload,
                             Integer numberOfTravellers, String totalAmount,
-                            String fromLocation, String toLocation) {
+                            String fromLocation, String toLocation, String currencyCode) {
         PostGreLog log1 = new PostGreLog(orderId,logTimestamp, requestPayload, responsePayload,
-                numberOfTravellers, totalAmount, fromLocation, toLocation);
+                numberOfTravellers, totalAmount, fromLocation, toLocation,currencyCode);
 
-//        System.out.println(log1);
+        System.out.println(log1);
 
         postGreRepo.save(log1);
     }
@@ -53,6 +53,7 @@ public class PostGreLogsServices {
             String totalAmount = createdOrder.getFlightOffer().getTotalPrice();
             String from = createdOrder.getFlightOffer().getTrips().get(0).getFrom();
             String to = createdOrder.getFlightOffer().getTrips().get(0).getTo();
+            String currencyCode=createdOrder.getFlightOffer().getCurrencyCode();
 
             // Save log
             saveUserLog(
@@ -63,7 +64,8 @@ public class PostGreLogsServices {
                     numberOfTravellers,
                     totalAmount,
                     from,
-                    to
+                    to,
+                    currencyCode
             );
 
 

@@ -57,8 +57,8 @@ public class CheapestDateSearchService {
 
         } catch (Exception e) {
 //            e.printStackTrace();
-//            throw new Exception("Error fetching cheapest flight dates: " + e.getMessage(), e);
             log.error("something went wrong while getting cheapest dates {}:", e.getMessage());
+//            throw new Exception("Error fetching cheapest flight dates: " + e.getMessage(), e);
         }
         return List.of();
     }

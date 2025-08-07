@@ -1,4 +1,4 @@
-package cl.lcd.model;
+package cl.lcd.dto.logs;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -24,23 +24,24 @@ public class PostGreLog {
 
     private LocalDateTime logTimestamp = LocalDateTime.now();
 
-    @Column(length = 5000)
+    @Column(length = 7000)
     private String requestPayload;
 
-    @Column(length = 5000)
+    @Column(length = 7000)
     private String responsePayload;
 
     private Integer numberOfTravellers;
 
     private String totalAmount;
 
+    private String currencyCode;
     private String fromLocation;
 
     private String toLocation;
 
     public PostGreLog(String orderId, LocalDateTime logTimestamp, String requestPayload,
-                      String responsePayload, Integer numberOfTravellers,
-                      String totalAmount, String fromLocation, String toLocation) {
+                   String responsePayload, Integer numberOfTravellers,
+                   String totalAmount, String fromLocation, String toLocation,String currencyCode) {
         this.orderId = orderId;
         this.logTimestamp = logTimestamp;
         this.requestPayload = requestPayload;
@@ -49,7 +50,18 @@ public class PostGreLog {
         this.totalAmount = totalAmount;
         this.fromLocation = fromLocation;
         this.toLocation = toLocation;
+        this.currencyCode=currencyCode;
     }
+
+
+    @PrePersist
+    public void setLogTimestamp() {
+        if (logTimestamp == null) {
+            this.logTimestamp = LocalDateTime.now();
+        }
+    }
+
+
 }
 
 
