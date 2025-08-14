@@ -1,12 +1,18 @@
 package cl.lcd.service.flights;
 
 import cl.lcd.dto.search.FlightAvailabilityRequest;
+import cl.lcd.dto.search.FlightAvailabilityResponse;
+import cl.lcd.mappers.flight.FlightSearchResponseMapper;
 import com.amadeus.Amadeus;
 import com.amadeus.Params;
+import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
+import com.amadeus.resources.Resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -32,7 +38,7 @@ public class AmadeusFlightSearchService {
      * @return FlightOfferSearch[]
      * @throws ResponseException
      */
-    public FlightOfferSearch[] flightOfferSearch(Map<String, String> paramsMap) throws ResponseException {
+    public List<FlightAvailabilityResponse> flightOfferSearch(Map<String, String> paramsMap) throws ResponseException {
         Params params = null;
 
         for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
@@ -42,7 +48,23 @@ public class AmadeusFlightSearchService {
                 params.and(entry.getKey(), entry.getValue());
             }
         }
-        return amadeusClient.shopping.flightOffersSearch.get(params);
+        Response rawResponse = amadeusClient.get("/v2/shopping/flight-offers", params);
+        JsonObject json = rawResponse.getResult().getAsJsonObject();
+//        JsonObject root = json.getAsJsonObject();
+        JsonObject dictionaries = json.getAsJsonObject("dictionaries");
+
+        FlightOfferSearch[] flightOffers = (FlightOfferSearch[])
+                Resource.fromArray(rawResponse, FlightOfferSearch[].class);
+//        System.out.println(dictionaries.getAsJsonObject("carriers"));
+//       var res = amadeusClient.shopping.flightOffersSearch.get(params);
+//       var res = amadeusClient.shopping.flightOffersSearch.get(params);
+//       log.info(Arrays.toString(res));
+        List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
+//                .map(FlightSearchResponseMapper::createResponse)
+                .map(f -> FlightSearchResponseMapper.createResponse(f, dictionaries))
+                .toList();
+
+        return flightResponseList;
     }
 
     /**

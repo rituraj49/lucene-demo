@@ -54,23 +54,25 @@ public class HelperUtil {
         for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
             List<Airport> group = entry.getValue();
 
-            Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
+            Airport airportCity = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst()
+                    .orElse(group.get(0));
 
-            Airport airportCity = match.orElse(null);
+//            Airport airportCity = match.orElse(null);
 //            if(airportCity != null) airportCity.setName("All airports within " + airportCity.getName());
 
-            if (airportCity == null) {
-                airportCity = group.get(0);
-            } else {
+//            if (airportCity == null) {
+//                airportCity = group.get(0);
+//            } else {
+//                airportCity.setName("All airports within " + airportCity.getName());
+//            }
+            if(LocationType.CITY.equals(airportCity.getSubType())) {
                 airportCity.setName("All airports within " + airportCity.getName());
             }
 
             List<LocationResponse.SimpleAirport> subAirports = group.
                     stream()
-//                    .filter(p ->
-//                            !p.getSubType().equals(LocationType.CITY)
-//                    )
-                    .skip(1)
+//                    .skip(1)
+                    .filter(p -> !airportCity.getIata().equals(p.getIata()))
                     .map(c -> {
                         LocationResponse.SimpleAirport simpleAirport = new LocationResponse.SimpleAirport();
                         simpleAirport.setSubType(c.getSubType());

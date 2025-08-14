@@ -67,11 +67,12 @@ public class FlightSearchController {
     public ResponseEntity<?> flightOfferSearch(@RequestParam Map<String, String> queryParams)
             throws ResponseException {
         log.info("flight offer search params received: {}", queryParams.toString());
-        FlightOfferSearch[] flightOffers = flightService.flightSearch(queryParams);
+//        FlightOfferSearch[] flightOffers = flightService.flightSearch(queryParams);
+        List<FlightAvailabilityResponse> flightResponseList = flightService.flightSearch(queryParams);
 
-        List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
-                .map(FlightSearchResponseMapper::createResponse)
-                .toList();
+//        List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
+//                .map(FlightSearchResponseMapper::createResponse)
+//                .toList();
         log.info("{} flight offers found", flightResponseList.size());
 //        String jsonOutput = gson.toJson(flightOffers);
 
@@ -128,7 +129,7 @@ public class FlightSearchController {
 
             FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
 
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("flightResponseWrapper");
         } catch (Exception e) {
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());

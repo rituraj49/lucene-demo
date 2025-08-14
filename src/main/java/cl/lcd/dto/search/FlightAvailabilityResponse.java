@@ -1,8 +1,10 @@
 package cl.lcd.dto.search;
 
+import cl.lcd.enums.TripType;
 import com.amadeus.resources.FlightOfferSearch;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -25,6 +27,8 @@ public class FlightAvailabilityResponse {
     @Schema(example = "5750.00")
     private String totalPrice;
 
+    private List<Fees> fees;
+
     @Schema(example = "1")
     private int totalTravelers;
 
@@ -38,7 +42,22 @@ public class FlightAvailabilityResponse {
     }
 
     @Data
+    @AllArgsConstructor
+    public static class Fees {
+        private String amount;
+
+        private String type;
+    }
+
+    @Data
     public static class Trip {
+
+        @Schema(example = "1")
+        private int tripNo;
+
+        @Schema(example = "ONE_WAY")
+        private TripType tripType;
+
         @Schema(example = "DEL")
         private String from;
 
@@ -65,7 +84,16 @@ public class FlightAvailabilityResponse {
         private String flightNumber;
 
         @Schema(example = "AI")
+        private String carrierCode;
+
+        @Schema(example = "Air India")
+        private String carrierName;
+
+        @Schema(example = "AI")
         private String operatingCarrierCode;
+
+        @Schema(example = "Air India")
+        private String operatingCarrierName;
 
         @Schema(example = "788")
         private String aircraftCode;
