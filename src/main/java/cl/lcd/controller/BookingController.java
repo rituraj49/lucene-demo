@@ -4,6 +4,7 @@ import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.service.AmadeusBookingService;
 import cl.lcd.service.PostGreLogsServices;
+import cl.lcd.service.ReservationService;
 import cl.lcd.service.UserLogService;
 import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
@@ -41,6 +42,9 @@ public class BookingController {
     @Autowired
     private UserLogService userLogService;
 
+
+    @Autowired
+    private ReservationService reservationService;
 
     @Autowired
     private PostGreLogsServices postGreLogsServices;
@@ -89,10 +93,15 @@ public class BookingController {
 
             userLogService.createLoges(orderRequest, createdOrder);
             postGreLogsServices.createLogesPostGreDB(orderRequest, createdOrder);
+            reservationService.createReservation(createdOrder);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
         } catch (ResponseException e) {
             log.error("Error occurred while creating flight order: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
+        } catch (JsonProcessingException e) {
+            log.error("Error occurred in JSON Object flight order: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JSON input");
         }
     }
     @GetMapping("flight-order/{orderId}")
