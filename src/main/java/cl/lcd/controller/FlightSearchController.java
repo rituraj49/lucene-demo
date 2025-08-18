@@ -129,7 +129,8 @@ public class FlightSearchController {
 
             FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
 
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("flightResponseWrapper");
+           // return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("flightResponseWrapper");
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
         } catch (Exception e) {
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());

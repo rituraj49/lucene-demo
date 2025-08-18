@@ -1,4 +1,5 @@
 package cl.lcd.model;
+/*
 
 import lombok.*;
 import org.springframework.context.annotation.Profile;
@@ -46,3 +47,4 @@ public class UserLog {
     }
 }
 
+*/
