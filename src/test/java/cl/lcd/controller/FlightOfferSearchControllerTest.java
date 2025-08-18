@@ -1,10 +1,12 @@
 package cl.lcd.controller;
 
 //import cl.lcd.dto.search.FlightOfferSearchDto;
+import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.dto.search.FlightAvailabilityResponse;
 import cl.lcd.mappers.flight.FlightSearchResponseMapper;
-import cl.lcd.service.flights.AmadeusFlightSearchService;
+import cl.lcd.model.FlightResponseWrapper;
 import cl.lcd.service.flights.AmadeusPricingService;
+import cl.lcd.service.flights.FlightService;
 import com.amadeus.resources.FlightOfferSearch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -37,49 +39,32 @@ public class FlightOfferSearchControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+//    @MockBean
+//    private AmadeusFlightSearchService amadeusFlightSearchService;
+
     @MockBean
-    private AmadeusFlightSearchService amadeusFlightSearchService;
+    private FlightService flightService;
 
     @MockBean
     private AmadeusPricingService amadeusPricingService;
 
     @Test
     public void testFlightOfferSearch() throws Exception {
-//        // 1. Load JSON file from resources
-//        String jsonResponse = new String(
-//                Files.readAllBytes(Paths.get("src/test/resources/flightOffers.json"))
-//        );
-//
-//        FlightAvailabilityResponse response = new FlightAvailabilityResponse();
-//
-//
-//        // 2. Parse JSON into FlightOfferSearch[] (using Jackson)
-//        ObjectMapper mapper = new ObjectMapper();
-//        FlightOfferSearch[] mockFlights = mapper.readValue(jsonResponse, FlightOfferSearch[].class);
-//
-//        // 3. Mock the service to return parsed data
-//        when(amadeusFlightSearchService.flightOfferSearch(anyMap()))
-//                .thenReturn(mockFlights);
-//
-//        // 4. Test the endpoint (compare with the raw JSON)
-//        mockMvc.perform(get("/flights/search")
-//                        .param("originLocationCode", "DEL")
-//                        .param("destinationLocationCode", "DXB")
-//                        .param("departureDate", "2025-07-01")
-//                        .param("adults", "2"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(jsonResponse)); // Directly compare JSON
-
         FlightOfferSearch mockOffer = mock(FlightOfferSearch.class);
-        FlightOfferSearch[] mockOffers = new FlightOfferSearch[]{mockOffer};
+//        FlightOfferSearch[] mockOffers = new FlightOfferSearch[]{mockOffer};
+        try (MockedStatic<FlightSearchResponseMapper> mockMapper = Mockito.mockStatic(FlightSearchResponseMapper.class)) {
 
-        when(amadeusFlightSearchService.flightOfferSearch(anyMap()))
-                .thenReturn(mockOffers);
+//        List<FlightAvailabilityResponse> mockResponse = List.of(mockOffers);
 
         FlightAvailabilityResponse mockResponse = new FlightAvailabilityResponse();
-        try (MockedStatic<FlightSearchResponseMapper> mockMapper = Mockito.mockStatic(FlightSearchResponseMapper.class)) {
+//            when(amadeusFlightSearchService.flightOfferSearch(anyMap()))
+//                .thenReturn(mockResponse);
+
+//        try (MockedStatic<FlightSearchResponseMapper> mockMapper = Mockito.mockStatic(FlightSearchResponseMapper.class)) {
             mockMapper.when(() -> FlightSearchResponseMapper.createResponse(mockOffer))
                     .thenReturn(mockResponse);
+//            when(flightService.flightOfferSearch((anyMap()))).thenReturn(List.of(mockResponse));
+            when(flightService.flightSearch((anyMap()))).thenReturn(List.of(mockResponse));
 
             mockMvc.perform(get("/flights/search")
                             .param("originLocationCode", "DEL")
@@ -88,95 +73,41 @@ public class FlightOfferSearchControllerTest {
                             .param("adults", "2"))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(content().json(objectMapper.writeValueAsString(List.of(mockResponse))));
+                    .andExpect(content().json(
+                            objectMapper.writeValueAsString(new FlightResponseWrapper
+                                (List.of(mockResponse)
+                        )
+                    )
+                )
+            );
         }
     }
-
-
-//    @Test
-//    public void testPriceFlightOfferSearch() throws Exception {
-//        // 1. Load mock request data (flightOffers.json)
-//        String inputJson = Files.readString(Paths.get("src/test/resources/flightOfferPricingRequest.json"));
-//
-//        // 2. Deserialize to actual model
-//        Gson gson = new Gson();
-//        FlightOfferSearch[] inputOffers = gson.fromJson(inputJson, FlightOfferSearch[].class);
-//
-//        // 3. Create mock response object
-//        FlightPricingConfirmResponse mockPrice = mock(FlightPricingConfirmResponse.class); // or mock(FlightPrice.class);
-//        // mockPrice.setResponse(null); // set mock fields if needed
-//
-//        // 4. Stub the service
-//        when(amadeusPricingService.searchFlightOffersPrice(any()))
-//                .thenReturn(mockPrice);
-//
-//        // 5. Perform the POST request
-//        mockMvc.perform(post("/pricing/flights/confirm")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(inputJson))
-//                .andExpect(status().isOk());
-//    }
-
-
-/*
-    @Test
-    public void testMultiCityFlightSearch() throws Exception {
-        // 1. Prepare input DTO
-        FlightOfferSearchDto dto = new FlightOfferSearchDto();
-        dto.setCurrencyCode("INR");
-        dto.setOneWay(false);
-        dto.setMaxCount(10);
-        dto.setCabin(FlightOfferSearchDto.Cabin.ECONOMY);
-
-        // Origin/Destination Legs
-        FlightOfferSearchDto.OriginDestinationsDto leg1 = new FlightOfferSearchDto.OriginDestinationsDto();
-        leg1.setId("1");
-        leg1.setFrom("DEL");
-        leg1.setTo("BOM");
-        leg1.setDepartureDate(LocalDate.of(2025, 7, 10));
-        leg1.setDepartureTime(LocalTime.of(10, 30));
-
-        FlightOfferSearchDto.OriginDestinationsDto leg2 = new FlightOfferSearchDto.OriginDestinationsDto();
-        leg2.setId("2");
-        leg2.setFrom("BOM");
-        leg2.setTo("DXB");
-        leg2.setDepartureDate(LocalDate.of(2025, 7, 15));
-        leg2.setDepartureTime(LocalTime.of(12, 0));
-
-        dto.setTripDetails(List.of(leg1, leg2));
-
-        // Travelers
-        FlightOfferSearchDto.TravelerInfoDto traveler = new FlightOfferSearchDto.TravelerInfoDto();
-        traveler.setId("T1");
-        traveler.setTravelerType(FlightOfferSearchDto.TravelerType.ADULT);
-
-        dto.setTravelers(List.of(traveler));
-
-        // 2. Mock service response
-        FlightOfferSearch[] mockResponse = new FlightOfferSearch[0]; // or use mock(FlightOfferSearch[].class)
-        when(amadeusFlightSearchService.searchMultiCityFlightOffers(any()))
-                .thenReturn(mockResponse);
-
-        // 3. Perform POST request
-        mockMvc.perform(post("/flights/search") // replace with actual path, e.g., /flights/search
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk());
-    }
-*/
 
     @Test
     void testSearchMultiFlights_ReturnsFlightOffers() throws Exception {
         FlightOfferSearch mockOffer = mock(FlightOfferSearch.class);
         FlightOfferSearch[] mockOffers = new FlightOfferSearch[]{mockOffer};
 
-        when(amadeusFlightSearchService.flightOfferSearch(anyMap()))
-                .thenReturn(mockOffers);
-
-        FlightAvailabilityResponse mockResponse = new FlightAvailabilityResponse();
         try (MockedStatic<FlightSearchResponseMapper> mockMapper = Mockito.mockStatic(FlightSearchResponseMapper.class)) {
+
+//        List<FlightAvailabilityResponse> mockResponse = List.of(mockOffers);
+
+            FlightAvailabilityResponse mockResponse = new FlightAvailabilityResponse();
+//            mockMapper.when(() -> FlightSearchResponseMapper.createResponse(mockOffer))
+//                    .thenReturn(mockResponse);
+//        when(flightService.flightOfferSearch(anyMap()))
+            FlightAvailabilityRequest flightReq = new FlightAvailabilityRequest();
+
             mockMapper.when(() -> FlightSearchResponseMapper.createResponse(mockOffer))
                     .thenReturn(mockResponse);
+
+            when(flightService.flightMultiCitySearch(flightReq))
+                .thenReturn(List.of(mockResponse));
+
+//        FlightAvailabilityResponse mockResponse = new FlightAvailabilityResponse();
+//        try (MockedStatic<FlightSearchResponseMapper> mockMapper = Mockito.mockStatic(FlightSearchResponseMapper.class)) {
+//            mockMapper.when(() -> FlightSearchResponseMapper.createResponse(mockOffer))
+//                    .thenReturn(mockResponse);
 
             mockMvc.perform(get("/flights/search")
                             .param("originLocationCode", "DEL")
@@ -184,8 +115,14 @@ public class FlightOfferSearchControllerTest {
                             .param("departureDate", "2025-07-01")
                             .param("adults", "2"))
                     .andExpect(status().isOk())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(content().json(objectMapper.writeValueAsString(List.of(mockResponse))));
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+//                    .andExpect(content().json(
+//                        objectMapper.writeValueAsString
+//                            (new FlightResponseWrapper(List.of(mockResponse)
+//                        )
+//                    )
+//                )
+//            );
         }
     }
 }

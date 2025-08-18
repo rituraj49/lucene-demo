@@ -36,7 +36,7 @@ public class CacheConfigTest {
     @Test
     void testSerializationAndDeserializationWithWrapper() {
         LocationResponse.SimpleAirport simpleAirport = new LocationResponse.SimpleAirport(
-                LocationType.AIRPORT, "JFK", "John F. Kennedy Intl", "New York", "NYC"
+                LocationType.AIRPORT, "JFK", "John F. Kennedy Intl", "New York", "NYC", "US"
         );
 
         List<LocationResponse.SimpleAirport> simpleAirportsList = new ArrayList<>();

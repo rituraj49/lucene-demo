@@ -25,7 +25,7 @@ public class FlightService {
         return amadeusFlightSearchService.flightOfferSearch(paramsMap);
     }
 
-    public FlightOfferSearch[] flightMultiCitySearch
+    public List<FlightAvailabilityResponse> flightMultiCitySearch
             (FlightAvailabilityRequest flightRequestDto) throws ResponseException, JsonProcessingException {
         return amadeusFlightSearchService.searchMultiCityFlightOffers(flightRequestDto);
     }

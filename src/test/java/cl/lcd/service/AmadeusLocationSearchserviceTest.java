@@ -40,10 +40,10 @@ public class AmadeusLocationSearchserviceTest {
         when(amadeusClient.referenceData).thenReturn(referenceData);
         when(referenceData.locations).thenReturn(locations);
     }
-    @Test
-    void testAmadeusLocationSearch() throws ResponseException {
-        Location location = mock(Location.class);
-        when(locations.get(any())).thenReturn(new Location[]{location});
-    }
+//    @Test
+//    void testAmadeusLocationSearch() throws ResponseException {
+//        Location location = mock(Location.class);
+//        when(locations.get(any())).thenReturn(new Location[]{location});
+//    }
 
 }

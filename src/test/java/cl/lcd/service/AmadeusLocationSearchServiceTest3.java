@@ -2,7 +2,6 @@ package cl.lcd.service;
 
 
 import cl.lcd.config.AmadeusConfigTest;
-import cl.lcd.model.LocationResponse;
 import cl.lcd.model.LocationResponseWrapper;
 import cl.lcd.service.locations.AmadeusLocationSearchService;
 import com.amadeus.exceptions.ResponseException;
@@ -21,7 +20,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -59,7 +57,7 @@ public class AmadeusLocationSearchServiceTest3 {
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
 
-        HttpResponse res = http.send(req, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> res = http.send(req, HttpResponse.BodyHandlers.ofString());
         System.out.println("res :" + res.statusCode());
         Assertions.assertEquals(200, res.statusCode());
     }

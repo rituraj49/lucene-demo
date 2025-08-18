@@ -130,7 +130,7 @@ public class TestLocationSearchController {
 				.param("subType", "CITY,AIRPORT")
 				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$[0].iata").value("DEL"));
+		.andExpect(jsonPath("$.locationResponses[0].iata").value("DEL"));
 //		.andExpect(jsonPath("$[0].groupData[0].iata").value("IGI"));
 	}
 }
