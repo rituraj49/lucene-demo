@@ -1,0 +1,2 @@
+ docker build -t rituraj49/lucene-demo:latest .
+ docker push rituraj49/lucene-demo

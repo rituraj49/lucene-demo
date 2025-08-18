@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class BookingController {
 
-    @Autowired
-    AmadeusBookingService amadeusBookingService;
+//    @Autowired
+//    AmadeusBookingService amadeusBookingService;
 
     @Autowired
     BookingService bookingService;

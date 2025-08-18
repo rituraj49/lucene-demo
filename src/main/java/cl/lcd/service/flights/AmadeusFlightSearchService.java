@@ -75,7 +75,7 @@ public class AmadeusFlightSearchService {
      * @throws JsonProcessingException If an error occurs while processing  the json body.
      */
 //    @Cacheable(cacheNames = "flightOffers")
-    public FlightOfferSearch[] searchMultiCityFlightOffers
+    public List<FlightAvailabilityResponse> searchMultiCityFlightOffers
             (FlightAvailabilityRequest flightOfferSearchRequestDto) throws ResponseException, JsonProcessingException {
         Map<String, Object> dtoMap = mapDtoToFlightSearchRequest(flightOfferSearchRequestDto);
 
@@ -85,15 +85,17 @@ public class AmadeusFlightSearchService {
 
         //List<FlightOfferSearch> offerList = List.of(offers);
 
-        if (offers != null) {
-            List<FlightOfferSearch> offerList = List.of(offers);
-            // Do something with offerList if needed
-        } else {
-            log.warn("No flight offers returned from Amadeus");
-        }
+//        if (offers != null) {
+//            List<FlightOfferSearch> offerList = List.of(offers);
+//            // Do something with offerList if needed
+//        } else {
+//            log.warn("No flight offers returned from Amadeus");
+//        }
 
-
-        return offers;
+//        return offers;
+        return Arrays.stream(offers)
+                    .map(FlightSearchResponseMapper::createResponse)
+                    .toList();
     }
 
 // https://test.api.amadeus.com/v1/shopping/flight-offers/pricing

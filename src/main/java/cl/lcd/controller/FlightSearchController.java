@@ -33,8 +33,8 @@ import java.util.Map;
 @Slf4j
 public class FlightSearchController {
 
-    @Autowired
-    private AmadeusFlightSearchService amadeusFlightSearchService;
+//    @Autowired
+//    private AmadeusFlightSearchService amadeusFlightSearchService;
 
     @Autowired
     private FlightService flightService;
@@ -118,18 +118,19 @@ public class FlightSearchController {
     public ResponseEntity<?> searchStructuredFlights(@RequestBody FlightAvailabilityRequest flightRequestDto) {
         try {
             log.info("multicity search flight offer request received: {}", flightRequestDto.toString());
-            FlightOfferSearch[] flightOffers = flightService.flightMultiCitySearch(flightRequestDto);
+//            FlightOfferSearch[] flightOffers = flightService.flightMultiCitySearch(flightRequestDto);
+            List<FlightAvailabilityResponse> flightResponseList = flightService.flightMultiCitySearch(flightRequestDto);
 //            String jsonOutput = gson.toJson(flightOffers);
 //            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
-            List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
-                    .map(FlightSearchResponseMapper::createResponse)
-                    .toList();
+//            List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
+//                    .map(FlightSearchResponseMapper::createResponse)
+//                    .toList();
 
             log.info("{} flight offers found", flightResponseList.size());
 
             FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
 
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("flightResponseWrapper");
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
         } catch (Exception e) {
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
