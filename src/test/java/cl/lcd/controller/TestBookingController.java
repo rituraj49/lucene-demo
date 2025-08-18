@@ -4,7 +4,7 @@ import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.dto.booking.TravelerRequestDto;
 import cl.lcd.service.booking.AmadeusBookingService;
-import cl.lcd.service.UserLogService;
+//import cl.lcd.service.UserLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,8 +31,8 @@ public class TestBookingController {
 	@MockBean
 	AmadeusBookingService amadeusBookingService;
 
-	@MockBean
-	private UserLogService userLogService;
+//	@MockBean
+//	private UserLogService userLogService;
 
 	@Autowired
 	ObjectMapper objectMapper;

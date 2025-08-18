@@ -1,23 +1,22 @@
 services:
   postgres:
-    container_name: lucene-keycloak-postgres
+    container_name: lucene-postgres
     image: postgres:16
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: java
       POSTGRES_DB: lucenedb
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      #      run this line only when initializing database initially with 2 databases
-      #      - ./init.sql:/docker-entrypoint-initdb.d/init-multiple-dbs.sql
-      - ./docker/postgres/data:/var/lib/postgresql/data
+      - ./docker/postgres-lucene/data:/var/lib/postgresql/data
   lucene-spring:
     container_name: lucene-backend
-    image: rituraj49/lucene-demo
+#    build: .
+    image: rituraj49/lucene-demo:latest
     restart: unless-stopped
     depends_on:
-      - keycloak
+      - postgres
     ports:
       - 8080:8080
