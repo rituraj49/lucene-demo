@@ -16,8 +16,8 @@ public class OrderReportScheduler {
     private OrderCsvGenerator orderCsvGenerator;
 
 
-    //@Scheduled(cron = "0 * * * * *")  // for every min
-    @Scheduled(cron = "0 0 0 * * *" )
+    @Scheduled(cron = "0 * * * * *")  // for every min
+    //@Scheduled(cron = "0 0 0 * * *" )
     public void sendDailyOrderReport() {
         try {
             File csvFile = orderCsvGenerator.generateTodayOrdersCsv();
