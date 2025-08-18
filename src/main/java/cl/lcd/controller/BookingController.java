@@ -2,7 +2,7 @@ package cl.lcd.controller;
 
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
-import cl.lcd.service.AmadeusBookingService;
+import cl.lcd.service.booking.AmadeusBookingService;
 import cl.lcd.service.PostGreLogsServices;
 import cl.lcd.service.ReservationService;
 import cl.lcd.service.UserLogService;
@@ -11,6 +11,7 @@ import cl.lcd.service.mailing.EmailService;
 
 import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,17 +36,14 @@ public class BookingController {
     @Autowired
     BookingService bookingService;
 
-//    @Autowired
-//    private UserLogService userLogService;
+    @Autowired
+    private UserLogService userLogService;
 
     @Autowired
     private ReservationService reservationService;
 
     @Autowired
     private PostGreLogsServices postGreLogsServices;
-
-
-
 
     @PostMapping("flight-order")
     @Operation(

@@ -28,6 +28,4 @@ public class CheapestDateSearchController {
         log.info("CheapestDateSearchController method params: {}", params);
         return cheapestDateSearchService.getCheapestFlightDates(params);
     }
-
-
 }
