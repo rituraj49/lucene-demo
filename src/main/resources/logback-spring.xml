@@ -1,6 +1,3 @@
-<!--  Logback configuration file  -->
-<!-- This will send logs to Loki and also print them in the console -->
-
 <configuration>
 
     <!-- Console Logging -->
@@ -10,9 +7,6 @@
 
         </encoder>
     </appender>
-
-
-    <!-- Loki Logging -->
 
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
         <http>
@@ -29,14 +23,26 @@
                 </pattern>
             </message>
         </format>
+        <encoder class="com.github.loki4j.logback.JsonEncoder">
+            <labels>
+                <label name="app">spring-boot-app</label>
+                <label name="level">%level</label>
+            </labels>
+            <pattern>
+                {
+                "timestamp": "%date{ISO8601}",
+                "level": "%level",
+                "thread": "%thread",
+                "logger": "%logger",
+                "message": "%message"
+                }
+            </pattern>
+        </encoder>
     </appender>
 
-
-
-    <!-- Root Logger -->
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="LOKI"/>
+<!--        <appender-ref ref="LOKI"/>-->
+<!--        <appender-ref ref="LOKI"/>-->
     </root>
-
 </configuration>

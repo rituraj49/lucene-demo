@@ -1,12 +1,11 @@
 package cl.lcd.util;
 
-import cl.lcd.model.Airport;
-import cl.lcd.model.AirportResponse;
+import cl.lcd.model.*;
 import cl.lcd.enums.LocationType;
-import cl.lcd.model.CityGroup;
-import cl.lcd.model.LocationResponse;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -16,36 +15,36 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 public class HelperUtil {
-    public static List<AirportResponse> getGroupedData(List<Airport> data) {
-        Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCityCode));
-
-        List<AirportResponse> result = new ArrayList<>();
-
-        for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
-            List<Airport> group = entry.getValue();
-
-            Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
-
-            Airport airportCity = match.orElse(null);
-
-            List<Airport> children = group.
-                    stream()
-                    .filter(p ->
-                            !p.getSubType().equals(LocationType.CITY))
-                    .toList();
-
-            AirportResponse parent = new AirportResponse();
-            if (airportCity == null) {
-                airportCity = group.get(0);
-            }
-
-            parent.setParent(airportCity);
-            parent.setGroupData(children);
-
-            result.add(parent);
-        }
-        return result;
-    }
+//    public static List<AirportResponse> getGroupedData(List<Airport> data) {
+//        Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCityCode));
+//
+//        List<AirportResponse> result = new ArrayList<>();
+//
+//        for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
+//            List<Airport> group = entry.getValue();
+//
+//            Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
+//
+//            Airport airportCity = match.orElse(null);
+//
+//            List<Airport> children = group.
+//                    stream()
+//                    .filter(p ->
+//                            !p.getSubType().equals(LocationType.CITY))
+//                    .toList();
+//
+//            AirportResponse parent = new AirportResponse();
+//            if (airportCity == null) {
+//                airportCity = group.get(0);
+//            }
+//
+//            parent.setParent(airportCity);
+//            parent.setGroupData(children);
+//
+//            result.add(parent);
+//        }
+//        return result;
+//    }
 
     public static List<LocationResponse> getGroupedLocationData(List<Airport> data) {
         Map<String, List<Airport>> groupedData = data.stream().collect(Collectors.groupingBy(Airport::getCityCode));
@@ -55,33 +54,39 @@ public class HelperUtil {
         for(Map.Entry<String, List<Airport>> entry : groupedData.entrySet()) {
             List<Airport> group = entry.getValue();
 
-            Optional<Airport> match = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst();
+            Airport airportCity = group.stream().filter(p -> LocationType.CITY.equals(p.getSubType())).findFirst()
+                    .orElse(group.get(0));
 
-            Airport airportCity = match.orElse(null);
+//            Airport airportCity = match.orElse(null);
 //            if(airportCity != null) airportCity.setName("All airports within " + airportCity.getName());
 
-            if (airportCity == null) {
-                airportCity = group.get(0);
-            } else {
+//            if (airportCity == null) {
+//                airportCity = group.get(0);
+//            } else {
+//                airportCity.setName("All airports within " + airportCity.getName());
+//            }
+            if(LocationType.CITY.equals(airportCity.getSubType())) {
                 airportCity.setName("All airports within " + airportCity.getName());
             }
 
-            List<LocationResponse.SimpleAirport> children = group.
+            List<LocationResponse.SimpleAirport> subAirports = group.
                     stream()
-//                    .filter(p ->
-//                            !p.getSubType().equals(LocationType.CITY)
-//                    )
-                    .skip(1)
+//                    .skip(1)
+                    .filter(p -> !airportCity.getIata().equals(p.getIata()))
                     .map(c -> {
                         LocationResponse.SimpleAirport simpleAirport = new LocationResponse.SimpleAirport();
                         simpleAirport.setSubType(c.getSubType());
                         simpleAirport.setIata(c.getIata());
                         simpleAirport.setName(c.getName());
                         simpleAirport.setCityCode(c.getCityCode());
+                        simpleAirport.setCountryCode(c.getCountryCode());
                         simpleAirport.setCity(c.getCity());
                         return simpleAirport;
                     })
                     .toList();
+
+            SimpleAirportWrapper children = new SimpleAirportWrapper();
+            children.setSimpleAirports(subAirports);
 
             LocationResponse locationResponse = getLocationResponse(airportCity, children);
 //            parent.setParent(airportCity);
@@ -92,7 +97,7 @@ public class HelperUtil {
         return result;
     }
 
-    private static LocationResponse getLocationResponse(Airport airportCity, List<LocationResponse.SimpleAirport> children) {
+    private static LocationResponse getLocationResponse(Airport airportCity, SimpleAirportWrapper children) {
         LocationResponse locationResponse = new LocationResponse();
         locationResponse.setSubType(airportCity.getSubType());
         locationResponse.setIata(airportCity.getIata());
@@ -168,11 +173,17 @@ public class HelperUtil {
                                             "CITY".equalsIgnoreCase(String.valueOf(sa.getSubType())) ? 0 : 1))
                                     .toList())
                             .orElse(List.of());
-
-                    response.setGroupData(subAirports);
+//                    List<LocationResponse.SimpleAirport> finalSubAirports = new ArrayList<>(subAirports);
+                    SimpleAirportWrapper finalSubAirports = new SimpleAirportWrapper();
+                    finalSubAirports.setSimpleAirports(subAirports);
+                    response.setGroupData(finalSubAirports);
 
                     return response;
                 }).toList();
+    }
+
+    public static String getEmailBody(TemplateEngine templateEngine, String templateName, Context context) {
+        return templateEngine.process(templateName, context);
     }
 
 }

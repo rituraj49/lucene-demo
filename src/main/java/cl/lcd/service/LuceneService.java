@@ -29,13 +29,13 @@ import cl.lcd.model.Airport;
 @Service
 public class LuceneService {
 
-    private final LuceneDemoApplication luceneDemoApplication;
+//    private final LuceneDemoApplication luceneDemoApplication;
 
 	private static final String INDEX_DIR = "airports";
 
-    LuceneService(LuceneDemoApplication luceneDemoApplication) {
-        this.luceneDemoApplication = luceneDemoApplication;
-    }
+//    LuceneService(LuceneDemoApplication luceneDemoApplication) {
+//        this.luceneDemoApplication = luceneDemoApplication;
+//    }
 	
 	private Directory getDirectory() throws IOException {
 		return FSDirectory.open(Paths.get(INDEX_DIR));

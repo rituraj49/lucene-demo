@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import cl.lcd.model.LocationResponse;
-import cl.lcd.service.AmadeusLocationSearchService;
-import cl.lcd.service.ElasticsearchService;
+import cl.lcd.model.LocationResponseWrapper;
+import cl.lcd.service.locations.AmadeusLocationSearchService;
+import cl.lcd.service.locations.ElasticsearchService;
 import cl.lcd.util.HelperUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,8 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amadeus.exceptions.ResponseException;
 
 import cl.lcd.model.Airport;
-import cl.lcd.model.AirportResponse;
-import cl.lcd.service.InMemoryLuceneService;
+import cl.lcd.service.locations.InMemoryLuceneService;
 
 @RestController
 @Slf4j
@@ -78,8 +78,9 @@ public class LocationSearchController {
 					""")
 	@ApiResponse(responseCode = "200", description = "Search for airports using in-memory Lucene index")
 	@Parameter(name = "keyword", description = "Query string for searching airports", required = true)
-	public ResponseEntity<List<LocationResponse>> searchAirports(@RequestParam String keyword) throws Exception {
-		List<LocationResponse> airportResponses = inMemoryLuceneService.search(keyword);
+	public ResponseEntity<?> searchAirports(@RequestParam String keyword) throws Exception {
+//		List<LocationResponse> airportResponses = inMemoryLuceneService.search(keyword);
+		LocationResponseWrapper airportResponses = inMemoryLuceneService.search(keyword);
 
         return ResponseEntity.status(HttpStatus.OK).body(airportResponses);
 	}
@@ -110,7 +111,8 @@ public class LocationSearchController {
 	public ResponseEntity<?> searchForLocations(@RequestParam Map<String, String> params) {
 		try {
 			log.info("params received in searchForLocations: {}", params);
-			List<LocationResponse> response = amadeusLocationSeArchService.searchLocations(params);
+//			List<LocationResponse> response = amadeusLocationSeArchService.searchLocations(params);
+			LocationResponseWrapper response = amadeusLocationSeArchService.searchLocations(params);
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
@@ -161,7 +163,9 @@ public class LocationSearchController {
 	) {
 		try {
 			log.info("Received keyword for search: {}", keyword);
-			List<LocationResponse> result = elasticsearchService.searchByKeywordTest(keyword, page, size);
+//			List<LocationResponse> result = elasticsearchService.searchByKeyword(keyword, page, size);
+			LocationResponseWrapper result = elasticsearchService.searchByKeyword(keyword, page, size);
+
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} catch (Exception e) {
 			e.printStackTrace();

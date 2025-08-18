@@ -1,0 +1,57 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body style="font-family: Segoe UI; background-color: #37c0c4; padding: 20px; color: #333;">
+<div style="max-width: 700px; margin: auto; background: #c8e7e8; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+    <h2 style="color: #37c0c4; border-bottom: 1px solid #ccc; padding-bottom: 10px;">Booking Confirmation</h2>
+
+    <p><strong>Order ID:</strong> <span th:text="${booking.orderId}">123456</span></p>
+    <p><strong>Total Price:</strong> ₹<span th:text="${booking.flightOffer.totalPrice}">5750.00</span>
+        (<span th:text="${booking.flightOffer.currencyCode}">INR</span>)</p>
+    <p><strong>Travelers:</strong> <span th:text="${#lists.size(booking.travelers)}"></span></p>
+
+    <hr style="margin: 30px 0;"/>
+
+    <h3 style="color: #444;">Traveler Details</h3>
+    <div th:each="traveler : ${booking.travelers}" style="margin-bottom: 20px; background-color: #f1f1f1; padding: 15px; border-radius: 6px;">
+        <p style="margin: 0;">
+            <strong>Name:</strong> <span th:text="${traveler.firstName + ' ' + traveler.lastName}"></span><br/>
+            <strong>Gender:</strong> <span th:text="${traveler.gender}"></span><br/>
+            <strong>Email:</strong> <span th:text="${traveler.email}"></span><br/>
+            <strong>Date of Birth:</strong> <span th:text="${traveler.dateOfBirth}"></span>
+        </p>
+    </div>
+
+    <h3 style="color: #444;">Flight Details</h3>
+    <div th:each="trip : ${booking.flightOffer.trips}" style="margin-bottom: 30px;">
+        <div style="background-color: #e8f0fe; padding: 15px; border-radius: 6px;">
+            <p style="margin: 0 0 10px 0;">
+                <strong>Route:</strong> <span th:text="${trip.from}"></span> → <span th:text="${trip.to}"></span><br/>
+                <strong>Stops:</strong> <span th:text="${trip.stops}"></span><br/>
+                <strong>Duration:</strong> <span th:text="${trip.totalFlightDuration}"></span><br/>
+                <strong>Layover:</strong> <span th:text="${trip.totalLayoverDuration}"></span>
+            </p>
+
+            <h4 style="margin-top: 15px;">Flight Legs:</h4>
+            <ul style="padding-left: 18px; margin: 0;">
+                <li th:each="leg : ${trip.legs}" style="margin-bottom: 10px;">
+                    <strong th:text="${leg.flightNumber}">AI203</strong>:
+                    <span th:text="${leg.departureAirport}"></span> <span th:if="${leg.departureTerminal != null}">(<span th:text="${leg.departureTerminal}"></span>)</span>
+                    at <span th:text="${#temporals.format(leg.departureDateTime, 'yyyy-MM-dd HH:mm')}"></span>
+                    →
+                    <span th:text="${leg.arrivalAirport}"></span> <span th:if="${leg.arrivalTerminal != null}">(<span th:text="${leg.arrivalTerminal}"></span>)</span>
+                    at <span th:text="${#temporals.format(leg.arrivalDateTime, 'yyyy-MM-dd HH:mm')}"></span><br/>
+                    Duration: <span th:text="${leg.duration}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <p style="text-align: center; margin-top: 30px; font-weight:bold;">Thank you for booking with us!</p>
+</div>
+</body>
+</html>

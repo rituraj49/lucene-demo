@@ -53,18 +53,14 @@ public class CheapestDateSearchService {
 
                 responseList.add(resp);
             }
-
-           /* for(FlightDateResponse resp : responseList){
-                System.out.println(resp);
-            }*/
-
-
             return responseList;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("Error fetching cheapest flight dates: " + e.getMessage(), e);
+//            e.printStackTrace();
+            log.error("something went wrong while getting cheapest dates {}:", e.getMessage());
+//            throw new Exception("Error fetching cheapest flight dates: " + e.getMessage(), e);
         }
+        return List.of();
     }
 
 }

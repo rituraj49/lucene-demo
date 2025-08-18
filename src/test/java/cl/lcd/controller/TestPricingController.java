@@ -1,13 +1,8 @@
 package cl.lcd.controller;
 
-import cl.lcd.dto.booking.FlightBookingRequest;
-import cl.lcd.dto.booking.FlightBookingResponse;
-import cl.lcd.dto.booking.TravelerRequestDto;
 import cl.lcd.dto.pricing.FlightPricingConfirmRequest;
 import cl.lcd.dto.pricing.FlightPricingConfirmResponse;
-import cl.lcd.service.AmadeusPricingService;
-import com.amadeus.exceptions.ResponseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import cl.lcd.service.flights.AmadeusPricingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,8 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

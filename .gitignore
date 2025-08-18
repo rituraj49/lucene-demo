@@ -4,6 +4,15 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+secrets-dev.properties
+
+/docker/loki/data/*
+!/docker/loki/data/chunks/.gitkeep
+!/docker/loki/data/index/.gitkeep
+!/docker/loki/data/index_cache/.gitkeep
+!/docker/loki/data/compactor/.gitkeep
+!/docker/loki/data/wal/.gitkeep
+
 docker
 
 ### STS ###

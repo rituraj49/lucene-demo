@@ -59,16 +59,25 @@ public class LocationResponse {
     private String city;
 
     @JsonProperty("group_data")
-    private List<SimpleAirport> groupData;
+    private SimpleAirportWrapper groupData;
+//    private List<SimpleAirport> groupData;
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SimpleAirport {
         private LocationType subType;
+
         private String iata;
+
         private String name;
+
         private String city;
+
+        @JsonProperty("city_code")
         private String cityCode;
+
+        @JsonProperty("country_code")
+        private String countryCode;
     }
 }

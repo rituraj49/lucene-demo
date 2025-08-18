@@ -1,6 +1,7 @@
-package cl.lcd.dto.logs;
+package cl.lcd.model;
 
 import lombok.*;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Profile("!nodb")
 public class UserLog {
 
     @Id

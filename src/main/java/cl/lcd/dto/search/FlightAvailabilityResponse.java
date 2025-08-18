@@ -1,8 +1,10 @@
 package cl.lcd.dto.search;
 
+import cl.lcd.enums.TripType;
 import com.amadeus.resources.FlightOfferSearch;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,11 +12,6 @@ import java.util.List;
 
 @Data
 public class FlightAvailabilityResponse {
-//    private boolean oneWay;
-//    private int seatsAvailable;
-//    private String currencyCode;
-//    private String basePrice;
-//    private String totalPrice;
     @Schema(example = "false")
     private boolean oneWay;
 
@@ -30,11 +27,13 @@ public class FlightAvailabilityResponse {
     @Schema(example = "5750.00")
     private String totalPrice;
 
+    private List<Fees> fees;
+
     @Schema(example = "1")
     private int totalTravelers;
 
     private List<Trip> trips;
-//    @JsonIgnore
+
     @Schema(description = "flight offer search json object as is")
     private String pricingAdditionalInfo;
 
@@ -43,12 +42,22 @@ public class FlightAvailabilityResponse {
     }
 
     @Data
+    @AllArgsConstructor
+    public static class Fees {
+        private String amount;
+
+        private String type;
+    }
+
+    @Data
     public static class Trip {
-//        private String from;
-//        private String to;
-//        private int stops;
-//        private String totalFlightDuration;
-//        private String totalLayoverDuration;
+
+        @Schema(example = "1")
+        private int tripNo;
+
+        @Schema(example = "ONE_WAY")
+        private TripType tripType;
+
         @Schema(example = "DEL")
         private String from;
 
@@ -68,17 +77,6 @@ public class FlightAvailabilityResponse {
 
     @Data
     public static class Leg {
-//        private String legNo;
-//        private String flightNumber;
-//        private String operatingCarrierCode;
-//        private String aircraftCode;
-//        private String departureAirport;
-//        private String departureTerminal;
-//        private LocalDateTime departureDateTime;
-//        private String arrivalAirport;
-//        private String arrivalTerminal;
-//        private LocalDateTime arrivalDateTime;
-//        private String duration;
         @Schema(example = "1")
         private String legNo;
 
@@ -86,7 +84,16 @@ public class FlightAvailabilityResponse {
         private String flightNumber;
 
         @Schema(example = "AI")
+        private String carrierCode;
+
+        @Schema(example = "Air India")
+        private String carrierName;
+
+        @Schema(example = "AI")
         private String operatingCarrierCode;
+
+        @Schema(example = "Air India")
+        private String operatingCarrierName;
 
         @Schema(example = "788")
         private String aircraftCode;

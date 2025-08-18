@@ -4,6 +4,7 @@ import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.dto.booking.TravelerRequestDto;
 import cl.lcd.mappers.booking.FlightBookingResponseMapper;
+import cl.lcd.service.booking.AmadeusBookingService;
 import com.amadeus.Amadeus;
 import com.amadeus.Booking;
 import com.amadeus.booking.FlightOrders;
@@ -21,7 +22,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class TestAmadeusBookingService {

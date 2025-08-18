@@ -2,14 +2,10 @@ package cl.lcd.controller;
 
 import cl.lcd.dto.AirportCreateDto;
 import cl.lcd.model.Airport;
-import cl.lcd.model.LocationResponse;
-import cl.lcd.service.ElasticsearchService;
+import cl.lcd.service.locations.ElasticsearchService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +22,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Elastic search controller", description = "endpoints for elastic search operations.")
@@ -91,7 +86,7 @@ public class ElasticsearchController {
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
             List<Airport> airports = csvToBean.parse();
-            elasticsearchService.bulkUploadTest(airports, "airports");
+            elasticsearchService.bulkUpload(airports, "airports");
 
 
         } catch (Exception e) {

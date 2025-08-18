@@ -10,7 +10,7 @@ import java.io.File;
 public class OrderReportScheduler {
 
     @Autowired
-    private EmailService emailService;
+    private EmailServiceScheduler emailServiceScheduler;
 
     @Autowired
     private OrderCsvGenerator orderCsvGenerator;
@@ -21,7 +21,7 @@ public class OrderReportScheduler {
     public void sendDailyOrderReport() {
         try {
             File csvFile = orderCsvGenerator.generateTodayOrdersCsv();
-            emailService.sendEmailWithAttachment(
+            emailServiceScheduler.sendEmailWithAttachment(
                     "mr.dhananjaykr2003@gmail.com",
                     "Daily Orders Report",
                     "Attached is today's order report.",

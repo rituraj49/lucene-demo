@@ -3,6 +3,7 @@ package cl.lcd.dto.logs;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +13,8 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostGreLogs {
+@Profile("!nodb")
+public class PostGreLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,7 @@ public class PostGreLogs {
 
     private String toLocation;
 
-    public PostGreLogs(String orderId, LocalDateTime logTimestamp, String requestPayload,
+    public PostGreLog(String orderId, LocalDateTime logTimestamp, String requestPayload,
                    String responsePayload, Integer numberOfTravellers,
                    String totalAmount, String fromLocation, String toLocation,String currencyCode) {
         this.orderId = orderId;

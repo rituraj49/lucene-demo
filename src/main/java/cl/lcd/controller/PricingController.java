@@ -2,9 +2,8 @@ package cl.lcd.controller;
 
 import cl.lcd.dto.pricing.FlightPricingConfirmRequest;
 import cl.lcd.dto.pricing.FlightPricingConfirmResponse;
-import cl.lcd.dto.search.FlightAvailabilityResponse;
-import cl.lcd.service.AmadeusPricingService;
-import com.amadeus.resources.FlightOfferSearch;
+import cl.lcd.service.flights.AmadeusPricingService;
+import cl.lcd.service.flights.FlightService;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,6 +29,9 @@ public class PricingController {
     @Autowired
     AmadeusPricingService amadeusPricingService;
 
+    @Autowired
+    FlightService flightService;
+
     private final Gson gson = new Gson();
 
     @PostMapping("/flights/confirm")
@@ -48,7 +50,8 @@ public class PricingController {
         try {
             log.info("flight offer pricing confirmation request received");
 
-            FlightPricingConfirmResponse response = amadeusPricingService.searchFlightOffersPrice(flightRequest);
+//            FlightPricingConfirmResponse response = amadeusPricingService.searchFlightOffersPrice(flightRequest);
+            FlightPricingConfirmResponse response = flightService.confirmFlightPrice(flightRequest);
 
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
         } catch (Exception e) {

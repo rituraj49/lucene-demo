@@ -1,22 +1,21 @@
 package cl.lcd.service;
 
-import cl.lcd.controller.BookingController;
 import cl.lcd.dto.booking.FlightBookingRequest;
 import cl.lcd.dto.booking.FlightBookingResponse;
-import cl.lcd.dto.logs.UserLog;
+import cl.lcd.model.UserLog;
 import cl.lcd.repo.UserLogRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
 @Slf4j
+@Profile("!nodb")
 public class UserLogService {
 
     @Autowired

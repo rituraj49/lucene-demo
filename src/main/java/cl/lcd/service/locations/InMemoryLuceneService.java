@@ -1,14 +1,15 @@
-package cl.lcd.service;
+package cl.lcd.service.locations;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 import cl.lcd.model.LocationResponse;
+import cl.lcd.model.LocationResponseWrapper;
+import cl.lcd.service.EdgeNGramAnalyzer;
+import cl.lcd.service.IndexingKeywordAnalyzer;
+import cl.lcd.service.SearchAnalyzer;
 import cl.lcd.util.HelperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
@@ -28,12 +29,12 @@ import org.apache.lucene.queryparser.classic.QueryParserBase;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import cl.lcd.model.Airport;
-import cl.lcd.model.AirportResponse;
 import cl.lcd.enums.LocationType;
 import jakarta.annotation.PostConstruct;
 
@@ -132,7 +133,8 @@ public class InMemoryLuceneService {
 		}
 	}
 
-	public List<LocationResponse> search(String keyword) throws Exception {
+//	@Cacheable(cacheNames = "locations", key = "#keyword" )
+	public LocationResponseWrapper search(String keyword) throws Exception {
         List<Airport> results = new ArrayList<>();
 
         try (DirectoryReader reader = DirectoryReader.open(inMemoryIndex)) {
@@ -209,6 +211,8 @@ public class InMemoryLuceneService {
 
 //        return results;
 //		return HelperUtil.getGroupedData(results);
-		return HelperUtil.getGroupedLocationData(results);
+		List<LocationResponse> locationResponseList = HelperUtil.getGroupedLocationData(results);
+
+		return new LocationResponseWrapper(locationResponseList);
     }
 }

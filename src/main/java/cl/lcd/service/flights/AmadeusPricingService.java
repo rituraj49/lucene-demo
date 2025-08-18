@@ -1,4 +1,4 @@
-package cl.lcd.service;
+package cl.lcd.service.flights;
 
 import cl.lcd.dto.pricing.FlightPricingConfirmRequest;
 import cl.lcd.dto.pricing.FlightPricingConfirmResponse;
@@ -12,8 +12,6 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 
 @Service
 @Slf4j

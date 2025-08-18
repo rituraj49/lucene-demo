@@ -6,16 +6,12 @@ import cl.lcd.service.AmadeusBookingService;
 import cl.lcd.service.PostGreLogsServices;
 import cl.lcd.service.ReservationService;
 import cl.lcd.service.UserLogService;
+import cl.lcd.service.booking.BookingService;
+import cl.lcd.service.mailing.EmailService;
+
 import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
-import com.amadeus.resources.FlightOrder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,9 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-
 @RestController
 @RequestMapping("booking")
 @Tag(name = "Booking controller class ")
@@ -40,14 +33,17 @@ public class BookingController {
     AmadeusBookingService amadeusBookingService;
 
     @Autowired
-    private UserLogService userLogService;
+    BookingService bookingService;
 
+//    @Autowired
+//    private UserLogService userLogService;
 
     @Autowired
     private ReservationService reservationService;
 
     @Autowired
     private PostGreLogsServices postGreLogsServices;
+
 
 
 
@@ -89,7 +85,8 @@ public class BookingController {
     public ResponseEntity<?> createFlightOrder(@RequestBody FlightBookingRequest orderRequest) {
         try {
             log.info("flight booking request received");
-            FlightBookingResponse createdOrder = amadeusBookingService.createFlightOrder(orderRequest);
+//            FlightBookingResponse createdOrder = amadeusBookingService.createFlightOrder(orderRequest);
+            FlightBookingResponse createdOrder = bookingService.bookFlight(orderRequest);
 
             userLogService.createLoges(orderRequest, createdOrder);
             postGreLogsServices.createLogesPostGreDB(orderRequest, createdOrder);
@@ -117,7 +114,8 @@ public class BookingController {
     public ResponseEntity<?> getFlightOrder(@PathVariable String orderId) {
         try {
             log.info("Fetching flight order with ID: {}", orderId);
-            FlightBookingResponse flightOrder = amadeusBookingService.getFlightOrder(orderId);
+//            FlightBookingResponse flightOrder = amadeusBookingService.getFlightOrder(orderId);
+            FlightBookingResponse flightOrder = bookingService.getFlightBooking(orderId);
             if (flightOrder == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight order not found");
             }
@@ -140,13 +138,15 @@ public class BookingController {
     public ResponseEntity<?> deleteFlightOrder(@PathVariable String orderId) {
         try {
             log.info("received request to delete flight order with ID: {}", orderId);
-            FlightBookingResponse order = amadeusBookingService.getFlightOrder(orderId);
+//            FlightBookingResponse order = amadeusBookingService.getFlightOrder(orderId);
+            FlightBookingResponse order = bookingService.getFlightBooking(orderId);
             if (order == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight order not found");
             }
             log.info("Deleting flight order with ID: {}", orderId);
-            Response response = amadeusBookingService.cancelFlightOrder(orderId);
-            log.info("Flight order with ID: {} deleted successfully", orderId);
+//            Response response = amadeusBookingService.cancelFlightOrder(orderId);
+            Response response = bookingService.cancelFlightBooking(orderId);
+            log.info("Flight order with ID: {} cancelled successfully", orderId);
             return ResponseEntity.status(response.getStatusCode()).build();
         } catch (ResponseException e) {
             log.error("Error occurred while deleting flight order: {}", e.getMessage());

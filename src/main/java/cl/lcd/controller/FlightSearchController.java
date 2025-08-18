@@ -1,16 +1,17 @@
 package cl.lcd.controller;
 
-import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.dto.search.FlightAvailabilityResponse;
 import cl.lcd.mappers.flight.FlightSearchResponseMapper;
-import cl.lcd.service.AmadeusFlightSearchService;
+import cl.lcd.model.FlightResponseWrapper;
+import cl.lcd.service.flights.AmadeusFlightSearchService;
+import cl.lcd.service.flights.FlightService;
+import cl.lcd.service.mailing.EmailService;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
 //import com.amadeus.service.AmadeusLocationSearchService;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,9 +36,11 @@ public class FlightSearchController {
     @Autowired
     private AmadeusFlightSearchService amadeusFlightSearchService;
 
+    @Autowired
+    private FlightService flightService;
+
     private final Gson gson = new Gson();
 
-    @GetMapping("/search")
     //@Operation(summary = "find flight offer search ")
     @ApiResponse(responseCode = "200", description = " return all available flight  ")
     @Operation(
@@ -60,20 +63,22 @@ public class FlightSearchController {
                     "}\n" +
                     "```"+" max-> show only 5 result \n  if you want to Excluded any Airline than use \"excludedAirlineCodes\":\"AI\" \n or if you want to Included Airlines than use \"includedAirlineCodes\":\"AI\" \n     "
     )
-    //@Parameter(name = "[View Amadeus API Docs] https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference ")
+    @GetMapping("/search")
     public ResponseEntity<?> flightOfferSearch(@RequestParam Map<String, String> queryParams)
             throws ResponseException {
         log.info("flight offer search params received: {}", queryParams.toString());
+//        FlightOfferSearch[] flightOffers = flightService.flightSearch(queryParams);
+        List<FlightAvailabilityResponse> flightResponseList = flightService.flightSearch(queryParams);
 
-        FlightOfferSearch[] flightOffers = amadeusFlightSearchService.flightOfferSearches(queryParams);
-
-        List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
-                .map(FlightSearchResponseMapper::createResponse)
-                .toList();
+//        List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
+//                .map(FlightSearchResponseMapper::createResponse)
+//                .toList();
         log.info("{} flight offers found", flightResponseList.size());
 //        String jsonOutput = gson.toJson(flightOffers);
 
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
+        FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
     }
 
     @PostMapping("/search")
@@ -113,7 +118,7 @@ public class FlightSearchController {
     public ResponseEntity<?> searchStructuredFlights(@RequestBody FlightAvailabilityRequest flightRequestDto) {
         try {
             log.info("multicity search flight offer request received: {}", flightRequestDto.toString());
-            FlightOfferSearch[] flightOffers = amadeusFlightSearchService.searchMultiCityFlightOffers(flightRequestDto);
+            FlightOfferSearch[] flightOffers = flightService.flightMultiCitySearch(flightRequestDto);
 //            String jsonOutput = gson.toJson(flightOffers);
 //            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
             List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
@@ -122,7 +127,9 @@ public class FlightSearchController {
 
             log.info("{} flight offers found", flightResponseList.size());
 
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseList);
+            FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
+
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("flightResponseWrapper");
         } catch (Exception e) {
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());

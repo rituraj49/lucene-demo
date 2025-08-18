@@ -1,6 +1,6 @@
 package cl.lcd.service;
 
-import cl.lcd.dto.logs.PostGreLogs;
+import cl.lcd.dto.logs.PostGreLog;
 import cl.lcd.repo.PostGreRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,14 +22,14 @@ public class OrderCsvGenerator {
         LocalDateTime start = LocalDate.now().atStartOfDay();
         LocalDateTime end = start.plusDays(1);
 
-        List<PostGreLogs> logs = orderRepository.findByLogTimestampBetween(start, end);
+        List<PostGreLog> logs = orderRepository.findByLogTimestampBetween(start, end);
 
         File csvFile = File.createTempFile("user-logs-", ".csv");
 
         try (PrintWriter writer = new PrintWriter(csvFile)) {
             writer.println("Order ID,From,To,Travellers,Amount, CurrencyCode,Timestamp");
 
-            for (PostGreLogs log : logs) {
+            for (PostGreLog log : logs) {
                 writer.printf("\"%s\",\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\"%n",
                         log.getOrderId(),
                         log.getFromLocation(),
