@@ -5,7 +5,7 @@ import cl.lcd.dto.booking.FlightBookingResponse;
 import cl.lcd.service.booking.AmadeusBookingService;
 import cl.lcd.service.PostGreLogsServices;
 import cl.lcd.service.ReservationService;
-import cl.lcd.service.UserLogService;
+//import cl.lcd.service.UserLogService;
 import cl.lcd.service.booking.BookingService;
 import cl.lcd.service.mailing.EmailService;
 
@@ -36,8 +36,8 @@ public class BookingController {
     @Autowired
     BookingService bookingService;
 
-    @Autowired
-    private UserLogService userLogService;
+  //  @Autowired
+   // private UserLogService userLogService;
 
     @Autowired
     private ReservationService reservationService;
@@ -86,7 +86,7 @@ public class BookingController {
 //            FlightBookingResponse createdOrder = amadeusBookingService.createFlightOrder(orderRequest);
             FlightBookingResponse createdOrder = bookingService.bookFlight(orderRequest);
 
-            userLogService.createLoges(orderRequest, createdOrder);
+  //          userLogService.createLoges(orderRequest, createdOrder);
             postGreLogsServices.createLogesPostGreDB(orderRequest, createdOrder);
             reservationService.createReservation(createdOrder);
 

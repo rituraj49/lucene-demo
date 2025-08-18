@@ -1,4 +1,5 @@
 package cl.lcd.repo;
+/*
 
 import cl.lcd.model.UserLog;
 import org.springframework.context.annotation.Profile;
@@ -9,3 +10,4 @@ import org.springframework.stereotype.Repository;
 @Profile("!nodb")
 public interface UserLogRepository extends MongoRepository<UserLog, String> {
 }
+*/
