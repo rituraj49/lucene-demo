@@ -40,10 +40,9 @@ public class FlightSearchResponseMapper {
             return null;
         }
 
-        JsonObject carriers = dictionaries.getAsJsonObject("carriers");
         FlightAvailabilityResponse response = new FlightAvailabilityResponse();
 
-        List<FlightAvailabilityResponse.Trip> createdTrips = createTrips(offer.getItineraries(), carriers);
+        List<FlightAvailabilityResponse.Trip> createdTrips = createTrips(offer.getItineraries(), dictionaries);
         response.setOneWay(offer.isOneWay());
         response.setSeatsAvailable(offer.getNumberOfBookableSeats());
         response.setCurrencyCode(offer.getPrice().getCurrency());
@@ -132,7 +131,7 @@ public class FlightSearchResponseMapper {
     }
 
     private static List<FlightAvailabilityResponse.Trip> createTrips(
-            FlightOfferSearch.Itinerary[] itineraries, JsonObject carriers) {
+            FlightOfferSearch.Itinerary[] itineraries, JsonObject dictionaries) {
         List<FlightAvailabilityResponse.Trip> trips = new ArrayList<>();
 //        for(FlightOfferSearch.Itinerary itinerary : itineraries) {
         for(int i = 0; i < itineraries.length; i++) {
@@ -157,17 +156,28 @@ public class FlightSearchResponseMapper {
 //                String operatingCarrierName = jsonOCName;
 //                JsonElement jsonCName = carriers.get(segment.getCarrierCode());
 //                String carrierName = jsonCName;
+                JsonObject carriers = dictionaries.getAsJsonObject("carriers");
+
                 String operatingCarrierName = Optional.ofNullable(segment.getOperating())
                                 .map(o -> o.getCarrierCode())
+                                .filter(carriers::has)
+//                                .filter(c -> carriers.has(c))
+                                .map(code -> carriers.get(code).getAsString())
+                                .orElse("AIRLINE");
+
+                String carrierName = Optional.ofNullable(segment.getCarrierCode())
+//                                .map(o -> o.getCarrierCode())
                                 .filter(carriers::has)
                                 .map(code -> carriers.get(code).getAsString())
                                 .orElse("AIRLINE");
 
-                String carrierName = Optional.ofNullable(segment.getOperating())
-                                .map(o -> o.getCarrierCode())
-                                .filter(carriers::has)
-                                .map(code -> carriers.get(code).getAsString())
-                                .orElse("AIRLINE");
+                JsonObject aircrafts = dictionaries.getAsJsonObject(("aircraft"));
+
+                String aircraftName = Optional.ofNullable(segment.getAircraft())
+                        .map(a -> a.getCode())
+                                .filter(aircrafts::has)
+                                        .map(ac -> aircrafts.get(ac).getAsString())
+                                                .orElse("AIRCRAFT");
 
                 leg.setLegNo(segment.getId());
                 leg.setFlightNumber(segment.getNumber());
@@ -179,6 +189,7 @@ public class FlightSearchResponseMapper {
 
                 leg.setCarrierName(carrierName);
                 leg.setAircraftCode(segment.getAircraft().getCode());
+                leg.setAircraft(aircraftName);
                 leg.setDepartureAirport(segment.getDeparture().getIataCode());
                 leg.setDepartureTerminal(segment.getDeparture().getTerminal());
                 leg.setDepartureDateTime(LocalDateTime.parse(segment.getDeparture().getAt()));

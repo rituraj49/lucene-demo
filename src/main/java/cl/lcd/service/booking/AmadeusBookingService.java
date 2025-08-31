@@ -12,15 +12,13 @@ import cl.lcd.service.mailing.EmailService;
 import com.amadeus.Amadeus;
 import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
-import com.amadeus.resources.FlightOfferSearch;
-import com.amadeus.resources.FlightOrder;
+import com.amadeus.resources.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -51,7 +49,6 @@ public class AmadeusBookingService {
         FlightOrder.Traveler[] flightTravelers = FlightBookingResponseMapper.createTravelersFromDto(flightOrderRequest.getTravelers());
 
         FlightOrder order = amadeusClient.booking.flightOrders.post(offer, flightTravelers);
-
         FlightBookingResponse bookingResponse = FlightBookingResponseMapper.flightBookingResponse(order, flightOrderRequest.getTravelers());
 
         emitFlightBookingEvent(bookingResponse);

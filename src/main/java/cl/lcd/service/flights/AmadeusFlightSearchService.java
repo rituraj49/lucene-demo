@@ -59,12 +59,12 @@ public class AmadeusFlightSearchService {
 //       var res = amadeusClient.shopping.flightOffersSearch.get(params);
 //       var res = amadeusClient.shopping.flightOffersSearch.get(params);
 //       log.info(Arrays.toString(res));
-        List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
+        //                .map(FlightSearchResponseMapper::createResponse)
+
+        return Arrays.stream(flightOffers)
 //                .map(FlightSearchResponseMapper::createResponse)
                 .map(f -> FlightSearchResponseMapper.createResponse(f, dictionaries))
                 .toList();
-
-        return flightResponseList;
     }
 
     /**
@@ -81,9 +81,14 @@ public class AmadeusFlightSearchService {
 
         String body = objectMapper.writeValueAsString(dtoMap);
         log.info("Flight search request body sent to amadeus: {}", body);
-        FlightOfferSearch[] offers = amadeusClient.shopping.flightOffersSearch.post(body);
+//        FlightOfferSearch[] offers = amadeusClient.shopping.flightOffersSearch.post(body);
 
-        //List<FlightOfferSearch> offerList = List.of(offers);
+        Response rawResponse = amadeusClient.post("/v2/shopping/flight-offers", body);
+
+        FlightOfferSearch[] offers = (FlightOfferSearch[]) Resource.fromArray(rawResponse, FlightOfferSearch[].class);
+        JsonObject json = rawResponse.getResult().getAsJsonObject();
+        JsonObject dictionaries = json.getAsJsonObject("dictionaries");
+        // List<FlightOfferSearch> offerList = List.of(offers);
 
 //        if (offers != null) {
 //            List<FlightOfferSearch> offerList = List.of(offers);
@@ -94,9 +99,9 @@ public class AmadeusFlightSearchService {
 
 //        return offers;
         return Arrays.stream(offers)
-                    .map(FlightSearchResponseMapper::createResponse)
+//                    .map(FlightSearchResponseMapper::createResponse)
+                    .map(fl -> FlightSearchResponseMapper.createResponse(fl, dictionaries))
                     .toList();
     }
 
-// https://test.api.amadeus.com/v1/shopping/flight-offers/pricing
 }

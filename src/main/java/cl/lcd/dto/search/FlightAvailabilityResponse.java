@@ -98,6 +98,9 @@ public class FlightAvailabilityResponse {
         @Schema(example = "788")
         private String aircraftCode;
 
+        @Schema(example = "AIRBUS A320")
+        private String aircraft;
+
         @Schema(example = "DEL")
         private String departureAirport;
 

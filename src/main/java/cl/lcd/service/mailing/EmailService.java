@@ -32,13 +32,14 @@ public class EmailService {
         for(String to: toEmailsList) {
             MimeMessage message = mailSender.createMimeMessage();
             try {
+                System.out.println("to email: "+to);
                 var helper = new org.springframework.mail.javamail.MimeMessageHelper(message, true);
-//                helper.setTo(to);
-                helper.setTo("rthakur.0211@gmail.com");
+                helper.setTo(to);
+//                helper.setTo("rthakur.0211@gmail.com");
                 helper.setSubject(subject);
                 helper.setText(body, true);
                 mailSender.send(message);
-                System.out.println("mail sent to " + to + " with subject: " + subject);
+                log.info("mail sent to {} with subject: {}", to, subject);
             } catch (Exception e) {
                 log.error("Error sending email to {}: {}", to, e.getMessage());
                 e.printStackTrace();
