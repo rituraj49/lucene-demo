@@ -1,0 +1,224 @@
+ [
+    {
+      "oneWay": false,
+      "seatsAvailable": 9,
+      "currencyCode": "INR",
+      "basePrice": "48275.00",
+      "totalPrice": "55930.00",
+      "fees": [
+        {
+          "amount": "0.00",
+          "type": "SUPPLIER"
+        },
+        {
+          "amount": "0.00",
+          "type": "TICKETING"
+        }
+      ],
+      "totalTravelers": 1,
+      "trips": [
+        {
+          "tripNo": 1,
+          "tripType": "RETURN",
+          "from": "BKK",
+          "to": "BLR",
+          "stops": 1,
+          "totalFlightDuration": "9h 40m",
+          "totalLayoverDuration": "2h 15m",
+          "legs": [
+            {
+              "legNo": "1",
+              "flightNumber": "2122",
+              "carrierCode": "AI",
+              "carrierName": null,
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": null,
+              "aircraftCode": "321",
+              "departureAirport": "BKK",
+              "departureTerminal": null,
+              "departureDateTime": "2025-12-28T15:15:00",
+              "arrivalAirport": "DEL",
+              "arrivalTerminal": "3",
+              "arrivalDateTime": "2025-12-28T18:15:00",
+              "duration": "4h 30m",
+              "layoverAfter": "2h 15m"
+            },
+            {
+              "legNo": "2",
+              "flightNumber": "2807",
+              "carrierCode": "AI",
+              "carrierName": null,
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": null,
+              "aircraftCode": "32N",
+              "departureAirport": "DEL",
+              "departureTerminal": "3",
+              "departureDateTime": "2025-12-28T20:30:00",
+              "arrivalAirport": "BLR",
+              "arrivalTerminal": "1",
+              "arrivalDateTime": "2025-12-28T23:25:00",
+              "duration": "2h 55m",
+              "layoverAfter": null
+            }
+          ]
+        },
+        {
+          "tripNo": 2,
+          "tripType": "RETURN",
+          "from": "BLR",
+          "to": "BOM",
+          "stops": 1,
+          "totalFlightDuration": "6h 10m",
+          "totalLayoverDuration": "0h 55m",
+          "legs": [
+            {
+              "legNo": "3",
+              "flightNumber": "2406",
+              "carrierCode": "AI",
+              "carrierName": null,
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": null,
+              "aircraftCode": "32N",
+              "departureAirport": "BLR",
+              "departureTerminal": "2",
+              "departureDateTime": "2025-12-30T11:35:00",
+              "arrivalAirport": "DEL",
+              "arrivalTerminal": "3",
+              "arrivalDateTime": "2025-12-30T14:25:00",
+              "duration": "2h 50m",
+              "layoverAfter": "0h 55m"
+            },
+            {
+              "legNo": "4",
+              "flightNumber": "2933",
+              "carrierCode": "AI",
+              "carrierName": null,
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": null,
+              "aircraftCode": "321",
+              "departureAirport": "DEL",
+              "departureTerminal": "3",
+              "departureDateTime": "2025-12-30T15:20:00",
+              "arrivalAirport": "BOM",
+              "arrivalTerminal": "2",
+              "arrivalDateTime": "2025-12-30T17:45:00",
+              "duration": "2h 25m",
+              "layoverAfter": null
+            }
+          ]
+        }
+      ],
+      "pricingAdditionalInfo": "{\"type\":\"flight-offer\",\"id\":\"1\",\"source\":\"GDS\",\"instantTicketingRequired\":false,\"disablePricing\":false,\"nonHomogeneous\":false,\"oneWay\":false,\"paymentCardRequired\":false,\"lastTicketingDate\":\"2025-09-03\",\"numberOfBookableSeats\":9,\"itineraries\":[{\"duration\":\"PT9H40M\",\"segments\":[{\"departure\":{\"iataCode\":\"BKK\",\"at\":\"2025-12-28T15:15:00\"},\"arrival\":{\"iataCode\":\"DEL\",\"terminal\":\"3\",\"at\":\"2025-12-28T18:15:00\"},\"carrierCode\":\"AI\",\"number\":\"2122\",\"aircraft\":{\"code\":\"321\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT4H30M\",\"id\":\"1\",\"numberOfStops\":0,\"blacklistedInEU\":false},{\"departure\":{\"iataCode\":\"DEL\",\"terminal\":\"3\",\"at\":\"2025-12-28T20:30:00\"},\"arrival\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2025-12-28T23:25:00\"},\"carrierCode\":\"AI\",\"number\":\"2807\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT2H55M\",\"id\":\"2\",\"numberOfStops\":0,\"blacklistedInEU\":false}]},{\"duration\":\"PT6H10M\",\"segments\":[{\"departure\":{\"iataCode\":\"BLR\",\"terminal\":\"2\",\"at\":\"2025-12-30T11:35:00\"},\"arrival\":{\"iataCode\":\"DEL\",\"terminal\":\"3\",\"at\":\"2025-12-30T14:25:00\"},\"carrierCode\":\"AI\",\"number\":\"2406\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT2H50M\",\"id\":\"3\",\"numberOfStops\":0,\"blacklistedInEU\":false},{\"departure\":{\"iataCode\":\"DEL\",\"terminal\":\"3\",\"at\":\"2025-12-30T15:20:00\"},\"arrival\":{\"iataCode\":\"BOM\",\"terminal\":\"2\",\"at\":\"2025-12-30T17:45:00\"},\"carrierCode\":\"AI\",\"number\":\"2933\",\"aircraft\":{\"code\":\"321\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT2H25M\",\"id\":\"4\",\"numberOfStops\":0,\"blacklistedInEU\":false}]}],\"price\":{\"currency\":\"INR\",\"total\":\"55930.00\",\"base\":\"48275.00\",\"fees\":[{\"amount\":\"0.00\",\"type\":\"SUPPLIER\"},{\"amount\":\"0.00\",\"type\":\"TICKETING\"}],\"grandTotal\":\"55930.00\"},\"pricingOptions\":{\"includedCheckedBagsOnly\":true,\"fareType\":[\"PUBLISHED\"],\"refundableFare\":false,\"noRestrictionFare\":false,\"noPenaltyFare\":false},\"validatingAirlineCodes\":[\"AI\"],\"travelerPricings\":[{\"travelerId\":\"1\",\"fareOption\":\"STANDARD\",\"travelerType\":\"ADULT\",\"price\":{\"currency\":\"INR\",\"total\":\"55930.00\",\"base\":\"48275.00\"},\"fareDetailsBySegment\":[{\"segmentId\":\"1\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"WP3YXSBK\",\"brandedFare\":\"ECOVALU\",\"class\":\"W\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":25,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"2\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"GU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"G\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":25,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"3\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"UU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"U\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":25,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"4\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"WP3YXSBK\",\"brandedFare\":\"ECOVALU\",\"class\":\"W\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":25,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]}]}]}"
+    },
+    {
+      "oneWay": false,
+      "seatsAvailable": 9,
+      "currencyCode": "INR",
+      "basePrice": "48275.00",
+      "totalPrice": "55930.00",
+      "fees": [
+        {
+          "amount": "0.00",
+          "type": "SUPPLIER"
+        },
+        {
+          "amount": "0.00",
+          "type": "TICKETING"
+        }
+      ],
+      "totalTravelers": 1,
+      "trips": [
+        {
+          "tripNo": 1,
+          "tripType": "RETURN",
+          "from": "BKK",
+          "to": "BLR",
+          "stops": 1,
+          "totalFlightDuration": "9h 40m",
+          "totalLayoverDuration": "2h 15m",
+          "legs": [
+            {
+              "legNo": "1",
+              "flightNumber": "2122",
+              "carrierCode": "AI",
+              "carrierName": null,
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": null,
+              "aircraftCode": "321",
+              "departureAirport": "BKK",
+              "departureTerminal": null,
+              "departureDateTime": "2025-12-28T15:15:00",
+              "arrivalAirport": "DEL",
+              "arrivalTerminal": "3",
+              "arrivalDateTime": "2025-12-28T18:15:00",
+              "duration": "4h 30m",
+              "layoverAfter": "2h 15m"
+            },
+            {
+              "legNo": "2",
+              "flightNumber": "2807",
+              "carrierCode": "AI",
+              "carrierName": null,
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": null,
+              "aircraftCode": "32N",
+              "departureAirport": "DEL",
+              "departureTerminal": "3",
+              "departureDateTime": "2025-12-28T20:30:00",
+              "arrivalAirport": "BLR",
+              "arrivalTerminal": "1",
+              "arrivalDateTime": "2025-12-28T23:25:00",
+              "duration": "2h 55m",
+              "layoverAfter": null
+            }
+          ]
+        },
+        {
+          "tripNo": 2,
+          "tripType": "RETURN",
+          "from": "BLR",
+          "to": "BOM",
+          "stops": 1,
+          "totalFlightDuration": "7h 30m",
+          "totalLayoverDuration": "2h 25m",
+          "legs": [
+            {
+              "legNo": "5",
+              "flightNumber": "2406",
+              "carrierCode": "AI",
+              "carrierName": null,
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": null,
+              "aircraftCode": "32N",
+              "departureAirport": "BLR",
+              "departureTerminal": "2",
+              "departureDateTime": "2025-12-30T11:35:00",
+              "arrivalAirport": "DEL",
+              "arrivalTerminal": "3",
+              "arrivalDateTime": "2025-12-30T14:25:00",
+              "duration": "2h 50m",
+              "layoverAfter": "2h 25m"
+            },
+            {
+              "legNo": "6",
+              "flightNumber": "2941",
+              "carrierCode": "AI",
+              "carrierName": null,
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": null,
+              "aircraftCode": "32N",
+              "departureAirport": "DEL",
+              "departureTerminal": "3",
+              "departureDateTime": "2025-12-30T16:50:00",
+              "arrivalAirport": "BOM",
+              "arrivalTerminal": "2",
+              "arrivalDateTime": "2025-12-30T19:05:00",
+              "duration": "2h 15m",
+              "layoverAfter": null
+            }
+          ]
+        }
+      ],
+      "pricingAdditionalInfo": "{\"type\":\"flight-offer\",\"id\":\"2\",\"source\":\"GDS\",\"instantTicketingRequired\":false,\"disablePricing\":false,\"nonHomogeneous\":false,\"oneWay\":false,\"paymentCardRequired\":false,\"lastTicketingDate\":\"2025-09-03\",\"numberOfBookableSeats\":9,\"itineraries\":[{\"duration\":\"PT9H40M\",\"segments\":[{\"departure\":{\"iataCode\":\"BKK\",\"at\":\"2025-12-28T15:15:00\"},\"arrival\":{\"iataCode\":\"DEL\",\"terminal\":\"3\",\"at\":\"2025-12-28T18:15:00\"},\"carrierCode\":\"AI\",\"number\":\"2122\",\"aircraft\":{\"code\":\"321\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT4H30M\",\"id\":\"1\",\"numberOfStops\":0,\"blacklistedInEU\":false},{\"departure\":{\"iataCode\":\"DEL\",\"terminal\":\"3\",\"at\":\"2025-12-28T20:30:00\"},\"arrival\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2025-12-28T23:25:00\"},\"carrierCode\":\"AI\",\"number\":\"2807\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT2H55M\",\"id\":\"2\",\"numberOfStops\":0,\"blacklistedInEU\":false}]},{\"duration\":\"PT7H30M\",\"segments\":[{\"departure\":{\"iataCode\":\"BLR\",\"terminal\":\"2\",\"at\":\"2025-12-30T11:35:00\"},\"arrival\":{\"iataCode\":\"DEL\",\"terminal\":\"3\",\"at\":\"2025-12-30T14:25:00\"},\"carrierCode\":\"AI\",\"number\":\"2406\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT2H50M\",\"id\":\"5\",\"numberOfStops\":0,\"blacklistedInEU\":false},{\"departure\":{\"iataCode\":\"DEL\",\"terminal\":\"3\",\"at\":\"2025-12-30T16:50:00\"},\"arrival\":{\"iataCode\":\"BOM\",\"terminal\":\"2\",\"at\":\"2025-12-30T19:05:00\"},\"carrierCode\":\"AI\",\"number\":\"2941\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT2H15M\",\"id\":\"6\",\"numberOfStops\":0,\"blacklistedInEU\":false}]}],\"price\":{\"currency\":\"INR\",\"total\":\"55930.00\",\"base\":\"48275.00\",\"fees\":[{\"amount\":\"0.00\",\"type\":\"SUPPLIER\"},{\"amount\":\"0.00\",\"type\":\"TICKETING\"}],\"grandTotal\":\"55930.00\"},\"pricingOptions\":{\"includedCheckedBagsOnly\":true,\"fareType\":[\"PUBLISHED\"],\"refundableFare\":false,\"noRestrictionFare\":false,\"noPenaltyFare\":false},\"validatingAirlineCodes\":[\"AI\"],\"travelerPricings\":[{\"travelerId\":\"1\",\"fareOption\":\"STANDARD\",\"travelerType\":\"ADULT\",\"price\":{\"currency\":\"INR\",\"total\":\"55930.00\",\"base\":\"48275.00\"},\"fareDetailsBySegment\":[{\"segmentId\":\"1\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"WP3YXSBK\",\"brandedFare\":\"ECOVALU\",\"class\":\"W\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":25,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"2\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"GU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"G\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":25,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"5\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"UU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"U\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":25,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"6\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"WP3YXSBK\",\"brandedFare\":\"ECOVALU\",\"class\":\"W\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":25,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]}]}]}"
+    }
+  ]

@@ -10,7 +10,6 @@ import cl.lcd.mappers.booking.FlightBookingResponseMapper;
 import cl.lcd.messaging.event.KafkaFlightAvailabilityResponse;
 import cl.lcd.service.mailing.EmailService;
 import com.amadeus.Amadeus;
-import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.FlightOrder;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -58,6 +56,7 @@ public class AmadeusBookingService {
 
         return bookingResponse;
     }
+/*
 
     public FlightBookingResponse getFlightOrder(String orderId) throws ResponseException {
         log.info("Retrieving flight order with ID: {}", orderId);
@@ -70,6 +69,7 @@ public class AmadeusBookingService {
         //        System.out.println("response: " + res);
         return amadeusClient.booking.flightOrder(orderId).delete();
     }
+*/
 
     public void emitFlightBookingEvent(FlightBookingResponse booking) {
         List<String> toEmails = booking.getTravelers().stream().map(TravelerResponseDto::getEmail).toList();

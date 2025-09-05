@@ -7,6 +7,7 @@ import cl.lcd.service.PostGreLogsServices;
 import cl.lcd.service.ReservationService;
 //import cl.lcd.service.UserLogService;
 import cl.lcd.service.booking.BookingService;
+import cl.lcd.service.booking.BookingServiceInterface;
 import cl.lcd.service.mailing.EmailService;
 
 import com.amadeus.Response;
@@ -20,10 +21,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+//@Profile("dev")
 @RestController
 @RequestMapping("booking")
 @Tag(name = "Booking controller class ")
@@ -33,9 +40,10 @@ public class BookingController {
 //    @Autowired
 //    AmadeusBookingService amadeusBookingService;
 
+  //  @Autowired
+   // BookingService bookingService;
     @Autowired
-    BookingService bookingService;
-
+    private BookingServiceInterface bookingServiceI;
   //  @Autowired
    // private UserLogService userLogService;
 
@@ -84,22 +92,39 @@ public class BookingController {
         try {
             log.info("flight booking request received");
 //            FlightBookingResponse createdOrder = amadeusBookingService.createFlightOrder(orderRequest);
-            FlightBookingResponse createdOrder = bookingService.bookFlight(orderRequest);
+            FlightBookingResponse createdOrder = bookingServiceI.bookFlight(orderRequest);
 
   //          userLogService.createLoges(orderRequest, createdOrder);
             postGreLogsServices.createLogesPostGreDB(orderRequest, createdOrder);
             reservationService.createReservation(createdOrder);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
-        } catch (ResponseException e) {
-            log.error("Error occurred while creating flight order: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
-        } catch (JsonProcessingException e) {
+        }/* catch (ResponseException e) {
+            //log.error("Error occurred while creating flight order: {}", e.getMessage());
+            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
+            System.out.println("Amadeus Pricing API down, serving offline response...");
+
+            try {
+                // Read fallback text file
+                Path filePath = new ClassPathResource("booking_confirm_response.text").getFile().toPath();
+                String text = Files.readString(filePath);
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(text);
+
+            } catch (Exception ex) {
+                return ResponseEntity.status(500).body("Error loading fallback response");
+            }
+
+        }*/ catch (JsonProcessingException e) {
             log.error("Error occurred in JSON Object flight order: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JSON input");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-    @GetMapping("flight-order/{orderId}")
+    /*@GetMapping("flight-order/{orderId}")
     @Operation(summary = "Get flight order by ID",
             description = "Fetch a flight booking order using the Amadeus API by providing the order ID.")
     @ApiResponses({
@@ -150,5 +175,5 @@ public class BookingController {
             log.error("Error occurred while deleting flight order: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
         }
-    }
+    }*/
 }
