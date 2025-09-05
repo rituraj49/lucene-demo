@@ -90,10 +90,10 @@ public class FlightSearchResponseMapper {
                 leg.setAircraftCode(segment.getAircraft().getCode());
                 leg.setDepartureAirport(segment.getDeparture().getIataCode());
                 leg.setDepartureTerminal(segment.getDeparture().getTerminal());
-                leg.setDepartureDateTime(LocalDateTime.parse(segment.getDeparture().getAt()));
+                leg.setDepartureDateTime(segment.getDeparture().getAt());
                 leg.setArrivalAirport(segment.getArrival().getIataCode());
                 leg.setArrivalTerminal(segment.getArrival().getTerminal());
-                leg.setArrivalDateTime(LocalDateTime.parse(segment.getArrival().getAt()));
+                leg.setArrivalDateTime(segment.getArrival().getAt());
                 leg.setDuration(getDurationString(segment.getDuration()));
                 totalDuration = totalDuration.plus(Duration.parse(segment.getDuration()));
 
@@ -105,7 +105,6 @@ public class FlightSearchResponseMapper {
                     totalDuration = totalDuration.plus(layover);
                     leg.setLayoverAfter(getDurationString(layover.toString()));
                 }
-
                 legs.add(leg);
             }
 
@@ -181,10 +180,10 @@ public class FlightSearchResponseMapper {
                 leg.setAircraftCode(segment.getAircraft().getCode());
                 leg.setDepartureAirport(segment.getDeparture().getIataCode());
                 leg.setDepartureTerminal(segment.getDeparture().getTerminal());
-                leg.setDepartureDateTime(LocalDateTime.parse(segment.getDeparture().getAt()));
+                leg.setDepartureDateTime(segment.getDeparture().getAt());
                 leg.setArrivalAirport(segment.getArrival().getIataCode());
                 leg.setArrivalTerminal(segment.getArrival().getTerminal());
-                leg.setArrivalDateTime(LocalDateTime.parse(segment.getArrival().getAt()));
+                leg.setArrivalDateTime(segment.getArrival().getAt());
                 leg.setDuration(getDurationString(segment.getDuration()));
                 totalDuration = totalDuration.plus(Duration.parse(segment.getDuration()));
 

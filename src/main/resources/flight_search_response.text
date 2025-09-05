@@ -1,0 +1,387 @@
+ [
+    {
+      "oneWay": false,
+      "seatsAvailable": 9,
+      "currencyCode": "INR",
+      "basePrice": "7658.00",
+      "totalPrice": "10109.00",
+      "fees": [
+        {
+          "amount": "0.00",
+          "type": "SUPPLIER"
+        },
+        {
+          "amount": "0.00",
+          "type": "TICKETING"
+        }
+      ],
+      "totalTravelers": 1,
+      "trips": [
+        {
+          "tripNo": 1,
+          "tripType": "RETURN",
+          "from": "BLR",
+          "to": "HYD",
+          "stops": 0,
+          "totalFlightDuration": "0h 55m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "3",
+              "flightNumber": "2897",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "BLR",
+              "departureTerminal": "1",
+              "departureDateTime": "2025-12-31T08:20:00",
+              "arrivalAirport": "HYD",
+              "arrivalTerminal": null,
+              "arrivalDateTime": "2025-12-31T09:15:00",
+              "duration": "0h 55m",
+              "layoverAfter": null
+            }
+          ]
+        },
+        {
+          "tripNo": 2,
+          "tripType": "RETURN",
+          "from": "HYD",
+          "to": "BLR",
+          "stops": 0,
+          "totalFlightDuration": "1h 10m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "4",
+              "flightNumber": "2898",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "HYD",
+              "departureTerminal": null,
+              "departureDateTime": "2026-01-01T10:10:00",
+              "arrivalAirport": "BLR",
+              "arrivalTerminal": "1",
+              "arrivalDateTime": "2026-01-01T11:20:00",
+              "duration": "1h 10m",
+              "layoverAfter": null
+            }
+          ]
+        }
+      ],
+      "pricingAdditionalInfo": "{\"type\":\"flight-offer\",\"id\":\"1\",\"source\":\"GDS\",\"instantTicketingRequired\":false,\"disablePricing\":false,\"nonHomogeneous\":false,\"oneWay\":false,\"paymentCardRequired\":false,\"lastTicketingDate\":\"2025-09-03\",\"numberOfBookableSeats\":9,\"itineraries\":[{\"duration\":\"PT55M\",\"segments\":[{\"departure\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2025-12-31T08:20:00\"},\"arrival\":{\"iataCode\":\"HYD\",\"at\":\"2025-12-31T09:15:00\"},\"carrierCode\":\"AI\",\"number\":\"2897\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT55M\",\"id\":\"3\",\"numberOfStops\":0,\"blacklistedInEU\":false}]},{\"duration\":\"PT1H10M\",\"segments\":[{\"departure\":{\"iataCode\":\"HYD\",\"at\":\"2026-01-01T10:10:00\"},\"arrival\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2026-01-01T11:20:00\"},\"carrierCode\":\"AI\",\"number\":\"2898\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT1H10M\",\"id\":\"4\",\"numberOfStops\":0,\"blacklistedInEU\":false}]}],\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\",\"fees\":[{\"amount\":\"0.00\",\"type\":\"SUPPLIER\"},{\"amount\":\"0.00\",\"type\":\"TICKETING\"}],\"grandTotal\":\"10109.00\"},\"pricingOptions\":{\"includedCheckedBagsOnly\":true,\"fareType\":[\"PUBLISHED\"],\"refundableFare\":false,\"noRestrictionFare\":false,\"noPenaltyFare\":false},\"validatingAirlineCodes\":[\"AI\"],\"travelerPricings\":[{\"travelerId\":\"1\",\"fareOption\":\"STANDARD\",\"travelerType\":\"ADULT\",\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\"},\"fareDetailsBySegment\":[{\"segmentId\":\"3\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"4\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]}]}]}"
+    },
+    {
+      "oneWay": false,
+      "seatsAvailable": 9,
+      "currencyCode": "INR",
+      "basePrice": "7658.00",
+      "totalPrice": "10109.00",
+      "fees": [
+        {
+          "amount": "0.00",
+          "type": "SUPPLIER"
+        },
+        {
+          "amount": "0.00",
+          "type": "TICKETING"
+        }
+      ],
+      "totalTravelers": 1,
+      "trips": [
+        {
+          "tripNo": 1,
+          "tripType": "RETURN",
+          "from": "BLR",
+          "to": "HYD",
+          "stops": 0,
+          "totalFlightDuration": "0h 55m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "3",
+              "flightNumber": "2897",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "BLR",
+              "departureTerminal": "1",
+              "departureDateTime": "2025-12-31T08:20:00",
+              "arrivalAirport": "HYD",
+              "arrivalTerminal": null,
+              "arrivalDateTime": "2025-12-31T09:15:00",
+              "duration": "0h 55m",
+              "layoverAfter": null
+            }
+          ]
+        },
+        {
+          "tripNo": 2,
+          "tripType": "RETURN",
+          "from": "HYD",
+          "to": "BLR",
+          "stops": 0,
+          "totalFlightDuration": "1h 20m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "5",
+              "flightNumber": "2888",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "HYD",
+              "departureTerminal": null,
+              "departureDateTime": "2026-01-01T05:30:00",
+              "arrivalAirport": "BLR",
+              "arrivalTerminal": "1",
+              "arrivalDateTime": "2026-01-01T06:50:00",
+              "duration": "1h 20m",
+              "layoverAfter": null
+            }
+          ]
+        }
+      ],
+      "pricingAdditionalInfo": "{\"type\":\"flight-offer\",\"id\":\"2\",\"source\":\"GDS\",\"instantTicketingRequired\":false,\"disablePricing\":false,\"nonHomogeneous\":false,\"oneWay\":false,\"paymentCardRequired\":false,\"lastTicketingDate\":\"2025-09-03\",\"numberOfBookableSeats\":9,\"itineraries\":[{\"duration\":\"PT55M\",\"segments\":[{\"departure\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2025-12-31T08:20:00\"},\"arrival\":{\"iataCode\":\"HYD\",\"at\":\"2025-12-31T09:15:00\"},\"carrierCode\":\"AI\",\"number\":\"2897\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT55M\",\"id\":\"3\",\"numberOfStops\":0,\"blacklistedInEU\":false}]},{\"duration\":\"PT1H20M\",\"segments\":[{\"departure\":{\"iataCode\":\"HYD\",\"at\":\"2026-01-01T05:30:00\"},\"arrival\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2026-01-01T06:50:00\"},\"carrierCode\":\"AI\",\"number\":\"2888\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT1H20M\",\"id\":\"5\",\"numberOfStops\":0,\"blacklistedInEU\":false}]}],\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\",\"fees\":[{\"amount\":\"0.00\",\"type\":\"SUPPLIER\"},{\"amount\":\"0.00\",\"type\":\"TICKETING\"}],\"grandTotal\":\"10109.00\"},\"pricingOptions\":{\"includedCheckedBagsOnly\":true,\"fareType\":[\"PUBLISHED\"],\"refundableFare\":false,\"noRestrictionFare\":false,\"noPenaltyFare\":false},\"validatingAirlineCodes\":[\"AI\"],\"travelerPricings\":[{\"travelerId\":\"1\",\"fareOption\":\"STANDARD\",\"travelerType\":\"ADULT\",\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\"},\"fareDetailsBySegment\":[{\"segmentId\":\"3\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"5\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]}]}]}"
+    },
+    {
+      "oneWay": false,
+      "seatsAvailable": 9,
+      "currencyCode": "INR",
+      "basePrice": "7658.00",
+      "totalPrice": "10109.00",
+      "fees": [
+        {
+          "amount": "0.00",
+          "type": "SUPPLIER"
+        },
+        {
+          "amount": "0.00",
+          "type": "TICKETING"
+        }
+      ],
+      "totalTravelers": 1,
+      "trips": [
+        {
+          "tripNo": 1,
+          "tripType": "RETURN",
+          "from": "BLR",
+          "to": "HYD",
+          "stops": 0,
+          "totalFlightDuration": "1h 10m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "1",
+              "flightNumber": "2887",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "BLR",
+              "departureTerminal": "1",
+              "departureDateTime": "2025-12-31T17:00:00",
+              "arrivalAirport": "HYD",
+              "arrivalTerminal": null,
+              "arrivalDateTime": "2025-12-31T18:10:00",
+              "duration": "1h 10m",
+              "layoverAfter": null
+            }
+          ]
+        },
+        {
+          "tripNo": 2,
+          "tripType": "RETURN",
+          "from": "HYD",
+          "to": "BLR",
+          "stops": 0,
+          "totalFlightDuration": "1h 10m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "4",
+              "flightNumber": "2898",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "HYD",
+              "departureTerminal": null,
+              "departureDateTime": "2026-01-01T10:10:00",
+              "arrivalAirport": "BLR",
+              "arrivalTerminal": "1",
+              "arrivalDateTime": "2026-01-01T11:20:00",
+              "duration": "1h 10m",
+              "layoverAfter": null
+            }
+          ]
+        }
+      ],
+      "pricingAdditionalInfo": "{\"type\":\"flight-offer\",\"id\":\"3\",\"source\":\"GDS\",\"instantTicketingRequired\":false,\"disablePricing\":false,\"nonHomogeneous\":false,\"oneWay\":false,\"paymentCardRequired\":false,\"lastTicketingDate\":\"2025-09-03\",\"numberOfBookableSeats\":9,\"itineraries\":[{\"duration\":\"PT1H10M\",\"segments\":[{\"departure\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2025-12-31T17:00:00\"},\"arrival\":{\"iataCode\":\"HYD\",\"at\":\"2025-12-31T18:10:00\"},\"carrierCode\":\"AI\",\"number\":\"2887\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT1H10M\",\"id\":\"1\",\"numberOfStops\":0,\"blacklistedInEU\":false}]},{\"duration\":\"PT1H10M\",\"segments\":[{\"departure\":{\"iataCode\":\"HYD\",\"at\":\"2026-01-01T10:10:00\"},\"arrival\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2026-01-01T11:20:00\"},\"carrierCode\":\"AI\",\"number\":\"2898\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT1H10M\",\"id\":\"4\",\"numberOfStops\":0,\"blacklistedInEU\":false}]}],\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\",\"fees\":[{\"amount\":\"0.00\",\"type\":\"SUPPLIER\"},{\"amount\":\"0.00\",\"type\":\"TICKETING\"}],\"grandTotal\":\"10109.00\"},\"pricingOptions\":{\"includedCheckedBagsOnly\":true,\"fareType\":[\"PUBLISHED\"],\"refundableFare\":false,\"noRestrictionFare\":false,\"noPenaltyFare\":false},\"validatingAirlineCodes\":[\"AI\"],\"travelerPricings\":[{\"travelerId\":\"1\",\"fareOption\":\"STANDARD\",\"travelerType\":\"ADULT\",\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\"},\"fareDetailsBySegment\":[{\"segmentId\":\"1\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"4\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]}]}]}"
+    },
+    {
+      "oneWay": false,
+      "seatsAvailable": 9,
+      "currencyCode": "INR",
+      "basePrice": "7658.00",
+      "totalPrice": "10109.00",
+      "fees": [
+        {
+          "amount": "0.00",
+          "type": "SUPPLIER"
+        },
+        {
+          "amount": "0.00",
+          "type": "TICKETING"
+        }
+      ],
+      "totalTravelers": 1,
+      "trips": [
+        {
+          "tripNo": 1,
+          "tripType": "RETURN",
+          "from": "BLR",
+          "to": "HYD",
+          "stops": 0,
+          "totalFlightDuration": "1h 10m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "2",
+              "flightNumber": "2893",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "BLR",
+              "departureTerminal": "1",
+              "departureDateTime": "2025-12-31T18:30:00",
+              "arrivalAirport": "HYD",
+              "arrivalTerminal": null,
+              "arrivalDateTime": "2025-12-31T19:40:00",
+              "duration": "1h 10m",
+              "layoverAfter": null
+            }
+          ]
+        },
+        {
+          "tripNo": 2,
+          "tripType": "RETURN",
+          "from": "HYD",
+          "to": "BLR",
+          "stops": 0,
+          "totalFlightDuration": "1h 10m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "4",
+              "flightNumber": "2898",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "HYD",
+              "departureTerminal": null,
+              "departureDateTime": "2026-01-01T10:10:00",
+              "arrivalAirport": "BLR",
+              "arrivalTerminal": "1",
+              "arrivalDateTime": "2026-01-01T11:20:00",
+              "duration": "1h 10m",
+              "layoverAfter": null
+            }
+          ]
+        }
+      ],
+      "pricingAdditionalInfo": "{\"type\":\"flight-offer\",\"id\":\"4\",\"source\":\"GDS\",\"instantTicketingRequired\":false,\"disablePricing\":false,\"nonHomogeneous\":false,\"oneWay\":false,\"paymentCardRequired\":false,\"lastTicketingDate\":\"2025-09-03\",\"numberOfBookableSeats\":9,\"itineraries\":[{\"duration\":\"PT1H10M\",\"segments\":[{\"departure\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2025-12-31T18:30:00\"},\"arrival\":{\"iataCode\":\"HYD\",\"at\":\"2025-12-31T19:40:00\"},\"carrierCode\":\"AI\",\"number\":\"2893\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT1H10M\",\"id\":\"2\",\"numberOfStops\":0,\"blacklistedInEU\":false}]},{\"duration\":\"PT1H10M\",\"segments\":[{\"departure\":{\"iataCode\":\"HYD\",\"at\":\"2026-01-01T10:10:00\"},\"arrival\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2026-01-01T11:20:00\"},\"carrierCode\":\"AI\",\"number\":\"2898\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT1H10M\",\"id\":\"4\",\"numberOfStops\":0,\"blacklistedInEU\":false}]}],\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\",\"fees\":[{\"amount\":\"0.00\",\"type\":\"SUPPLIER\"},{\"amount\":\"0.00\",\"type\":\"TICKETING\"}],\"grandTotal\":\"10109.00\"},\"pricingOptions\":{\"includedCheckedBagsOnly\":true,\"fareType\":[\"PUBLISHED\"],\"refundableFare\":false,\"noRestrictionFare\":false,\"noPenaltyFare\":false},\"validatingAirlineCodes\":[\"AI\"],\"travelerPricings\":[{\"travelerId\":\"1\",\"fareOption\":\"STANDARD\",\"travelerType\":\"ADULT\",\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\"},\"fareDetailsBySegment\":[{\"segmentId\":\"2\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"4\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]}]}]}"
+    },
+    {
+      "oneWay": false,
+      "seatsAvailable": 9,
+      "currencyCode": "INR",
+      "basePrice": "7658.00",
+      "totalPrice": "10109.00",
+      "fees": [
+        {
+          "amount": "0.00",
+          "type": "SUPPLIER"
+        },
+        {
+          "amount": "0.00",
+          "type": "TICKETING"
+        }
+      ],
+      "totalTravelers": 1,
+      "trips": [
+        {
+          "tripNo": 1,
+          "tripType": "RETURN",
+          "from": "BLR",
+          "to": "HYD",
+          "stops": 0,
+          "totalFlightDuration": "1h 10m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "1",
+              "flightNumber": "2887",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "BLR",
+              "departureTerminal": "1",
+              "departureDateTime": "2025-12-31T17:00:00",
+              "arrivalAirport": "HYD",
+              "arrivalTerminal": null,
+              "arrivalDateTime": "2025-12-31T18:10:00",
+              "duration": "1h 10m",
+              "layoverAfter": null
+            }
+          ]
+        },
+        {
+          "tripNo": 2,
+          "tripType": "RETURN",
+          "from": "HYD",
+          "to": "BLR",
+          "stops": 0,
+          "totalFlightDuration": "1h 20m",
+          "totalLayoverDuration": "0h 0m",
+          "legs": [
+            {
+              "legNo": "5",
+              "flightNumber": "2888",
+              "carrierCode": "AI",
+              "carrierName": "AIR INDIA",
+              "operatingCarrierCode": "AI",
+              "operatingCarrierName": "AIR INDIA",
+              "aircraftCode": "32N",
+              "departureAirport": "HYD",
+              "departureTerminal": null,
+              "departureDateTime": "2026-01-01T05:30:00",
+              "arrivalAirport": "BLR",
+              "arrivalTerminal": "1",
+              "arrivalDateTime": "2026-01-01T06:50:00",
+              "duration": "1h 20m",
+              "layoverAfter": null
+            }
+          ]
+        }
+      ],
+      "pricingAdditionalInfo": "{\"type\":\"flight-offer\",\"id\":\"5\",\"source\":\"GDS\",\"instantTicketingRequired\":false,\"disablePricing\":false,\"nonHomogeneous\":false,\"oneWay\":false,\"paymentCardRequired\":false,\"lastTicketingDate\":\"2025-09-03\",\"numberOfBookableSeats\":9,\"itineraries\":[{\"duration\":\"PT1H10M\",\"segments\":[{\"departure\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2025-12-31T17:00:00\"},\"arrival\":{\"iataCode\":\"HYD\",\"at\":\"2025-12-31T18:10:00\"},\"carrierCode\":\"AI\",\"number\":\"2887\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT1H10M\",\"id\":\"1\",\"numberOfStops\":0,\"blacklistedInEU\":false}]},{\"duration\":\"PT1H20M\",\"segments\":[{\"departure\":{\"iataCode\":\"HYD\",\"at\":\"2026-01-01T05:30:00\"},\"arrival\":{\"iataCode\":\"BLR\",\"terminal\":\"1\",\"at\":\"2026-01-01T06:50:00\"},\"carrierCode\":\"AI\",\"number\":\"2888\",\"aircraft\":{\"code\":\"32N\"},\"operating\":{\"carrierCode\":\"AI\"},\"duration\":\"PT1H20M\",\"id\":\"5\",\"numberOfStops\":0,\"blacklistedInEU\":false}]}],\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\",\"fees\":[{\"amount\":\"0.00\",\"type\":\"SUPPLIER\"},{\"amount\":\"0.00\",\"type\":\"TICKETING\"}],\"grandTotal\":\"10109.00\"},\"pricingOptions\":{\"includedCheckedBagsOnly\":true,\"fareType\":[\"PUBLISHED\"],\"refundableFare\":false,\"noRestrictionFare\":false,\"noPenaltyFare\":false},\"validatingAirlineCodes\":[\"AI\"],\"travelerPricings\":[{\"travelerId\":\"1\",\"fareOption\":\"STANDARD\",\"travelerType\":\"ADULT\",\"price\":{\"currency\":\"INR\",\"total\":\"10109.00\",\"base\":\"7658.00\"},\"fareDetailsBySegment\":[{\"segmentId\":\"1\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]},{\"segmentId\":\"5\",\"cabin\":\"ECONOMY\",\"fareBasis\":\"TU1YXSII\",\"brandedFare\":\"ECOVALU\",\"class\":\"T\",\"isAllotment\":false,\"includedCheckedBags\":{\"quantity\":0,\"weight\":15,\"weightUnit\":\"KG\"},\"amenities\":[{\"description\":\"PRE RESERVED SEAT ASSIGNMENT\",\"isChargeable\":false,\"amenityType\":\"PRE_RESERVED_SEAT\"},{\"description\":\"MEAL SERVICES\",\"isChargeable\":false,\"amenityType\":\"MEAL\"},{\"description\":\"REFUNDABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"CHANGEABLE TICKET\",\"isChargeable\":true,\"amenityType\":\"BRANDED_FARES\"},{\"description\":\"UPGRADE\",\"isChargeable\":true,\"amenityType\":\"UPGRADES\"},{\"description\":\"FREE CHECKED BAGGAGE ALLOWANCE\",\"isChargeable\":false,\"amenityType\":\"BRANDED_FARES\"}]}]}]}"
+    }
+  ]
