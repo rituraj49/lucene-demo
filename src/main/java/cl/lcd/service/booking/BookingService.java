@@ -5,10 +5,13 @@ import cl.lcd.dto.booking.FlightBookingResponse;
 import com.amadeus.Response;
 import com.amadeus.exceptions.ResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+@Profile("dev")
 @Service
-public class    BookingService {
+public class    BookingService implements BookingServiceInterface {
+
     @Autowired
     AmadeusBookingService amadeusBookingService;
 
@@ -22,6 +25,7 @@ public class    BookingService {
         return amadeusBookingService.createFlightOrder(flightOrderRequest);
     }
 
+/*
     public FlightBookingResponse getFlightBooking(String orderId) throws ResponseException {
         return amadeusBookingService.getFlightOrder(orderId);
     }
@@ -29,5 +33,6 @@ public class    BookingService {
     public Response cancelFlightBooking(String orderId) throws ResponseException {
         return amadeusBookingService.cancelFlightOrder(orderId);
     }
+*/
 
 }

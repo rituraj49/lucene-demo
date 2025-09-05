@@ -1,0 +1,145 @@
+{
+  "orderId": "eJzTd9e3DI6IcnYEAAtbAmg%3D",
+  "travelers": [
+    {
+      "id": "1",
+      "dateOfBirth": "1992-02-09",
+      "gender": "MALE",
+      "firstName": "Rahul",
+      "lastName": "Sharma",
+      "email": "rahul@test.com",
+      "phones": [
+        {
+          "deviceType": "MOBILE",
+          "countryCallingCode": "91",
+          "number": "9999999999"
+        }
+      ],
+      "documents": [
+        {
+          "number": "M1234567",
+          "expiryDate": "2026-03-10",
+          "issuanceCountry": "IN",
+          "nationality": "IN",
+          "documentType": "PASSPORT",
+          "holder": true
+        }
+      ]
+    }
+  ],
+  "flightOffer": {
+    "oneWay": false,
+    "seatsAvailable": 0,
+    "currencyCode": "INR",
+    "basePrice": "48275.00",
+    "totalPrice": "55930.00",
+    "fees": [
+      {
+        "amount": "0.00",
+        "type": "TICKETING"
+      },
+      {
+        "amount": "0.00",
+        "type": "SUPPLIER"
+      },
+      {
+        "amount": "0.00",
+        "type": "FORM_OF_PAYMENT"
+      }
+    ],
+    "totalTravelers": 1,
+    "trips": [
+      {
+        "tripNo": 1,
+        "tripType": "RETURN",
+        "from": "BKK",
+        "to": "BLR",
+        "stops": 1,
+        "totalFlightDuration": "9h 40m",
+        "totalLayoverDuration": "2h 15m",
+        "legs": [
+          {
+            "legNo": "1",
+            "flightNumber": "2122",
+            "carrierCode": "AI",
+            "carrierName": null,
+            "operatingCarrierCode": null,
+            "operatingCarrierName": null,
+            "aircraftCode": "321",
+            "departureAirport": "BKK",
+            "departureTerminal": null,
+            "departureDateTime": "2025-12-28T15:15:00",
+            "arrivalAirport": "DEL",
+            "arrivalTerminal": "3",
+            "arrivalDateTime": "2025-12-28T18:15:00",
+            "duration": "4h 30m",
+            "layoverAfter": "2h 15m"
+          },
+          {
+            "legNo": "2",
+            "flightNumber": "2807",
+            "carrierCode": "AI",
+            "carrierName": null,
+            "operatingCarrierCode": null,
+            "operatingCarrierName": null,
+            "aircraftCode": "32N",
+            "departureAirport": "DEL",
+            "departureTerminal": "3",
+            "departureDateTime": "2025-12-28T20:30:00",
+            "arrivalAirport": "BLR",
+            "arrivalTerminal": "1",
+            "arrivalDateTime": "2025-12-28T23:25:00",
+            "duration": "2h 55m",
+            "layoverAfter": null
+          }
+        ]
+      },
+      {
+        "tripNo": 2,
+        "tripType": "RETURN",
+        "from": "BLR",
+        "to": "BOM",
+        "stops": 1,
+        "totalFlightDuration": "6h 10m",
+        "totalLayoverDuration": "0h 55m",
+        "legs": [
+          {
+            "legNo": "3",
+            "flightNumber": "2406",
+            "carrierCode": "AI",
+            "carrierName": null,
+            "operatingCarrierCode": null,
+            "operatingCarrierName": null,
+            "aircraftCode": "32N",
+            "departureAirport": "BLR",
+            "departureTerminal": "2",
+            "departureDateTime": "2025-12-30T11:35:00",
+            "arrivalAirport": "DEL",
+            "arrivalTerminal": "3",
+            "arrivalDateTime": "2025-12-30T14:25:00",
+            "duration": "2h 50m",
+            "layoverAfter": "0h 55m"
+          },
+          {
+            "legNo": "4",
+            "flightNumber": "2933",
+            "carrierCode": "AI",
+            "carrierName": null,
+            "operatingCarrierCode": null,
+            "operatingCarrierName": null,
+            "aircraftCode": "321",
+            "departureAirport": "DEL",
+            "departureTerminal": "3",
+            "departureDateTime": "2025-12-30T15:20:00",
+            "arrivalAirport": "BOM",
+            "arrivalTerminal": "2",
+            "arrivalDateTime": "2025-12-30T17:45:00",
+            "duration": "2h 25m",
+            "layoverAfter": null
+          }
+        ]
+      }
+    ],
+    "pricingAdditionalInfo": "null"
+  }
+}

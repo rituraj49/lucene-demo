@@ -2,13 +2,9 @@ package cl.lcd.controller;
 
 import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.dto.search.FlightAvailabilityResponse;
-import cl.lcd.mappers.flight.FlightSearchResponseMapper;
 import cl.lcd.model.FlightResponseWrapper;
-import cl.lcd.service.flights.AmadeusFlightSearchService;
-import cl.lcd.service.flights.FlightService;
-import cl.lcd.service.mailing.EmailService;
+import cl.lcd.service.flights.FlightSearchInterface;
 import com.amadeus.exceptions.ResponseException;
-import com.amadeus.resources.FlightOfferSearch;
 //import com.amadeus.service.AmadeusLocationSearchService;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,12 +14,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +35,15 @@ public class FlightSearchController {
 //    @Autowired
 //    private AmadeusFlightSearchService amadeusFlightSearchService;
 
-    @Autowired
-    private FlightService flightService;
+ //   @Autowired
+    //private FlightService flightService;
 
+//    @Autowired
+    private FlightSearchInterface flightServiceI;
+
+    public FlightSearchController(@Qualifier("offlineFlightService") FlightSearchInterface flightServiceI) {
+        this.flightServiceI = flightServiceI;
+    }
     private final Gson gson = new Gson();
 
     //@Operation(summary = "find flight offer search ")
@@ -65,20 +70,46 @@ public class FlightSearchController {
     )
     @GetMapping("/search")
     public ResponseEntity<?> flightOfferSearch(@RequestParam Map<String, String> queryParams)
-            throws ResponseException {
-        log.info("flight offer search params received: {}", queryParams.toString());
+           // throws ResponseException
+       {
+        try {
+            log.info("flight offer search params received: {}", queryParams.toString());
 //        FlightOfferSearch[] flightOffers = flightService.flightSearch(queryParams);
-        List<FlightAvailabilityResponse> flightResponseList = flightService.flightSearch(queryParams);
+            List<FlightAvailabilityResponse> flightResponseList = flightServiceI.flightSearch(queryParams);
 
 //        List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
 //                .map(FlightSearchResponseMapper::createResponse)
 //                .toList();
-        log.info("{} flight offers found", flightResponseList.size());
+            log.info("{} flight offers found", flightResponseList.size());
 //        String jsonOutput = gson.toJson(flightOffers);
 
-        FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
+            FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
 
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
+        }/*catch (ResponseException e){
+            System.out.println("Amadeus API down, serving fallback data...");
+
+            try {*//*
+                // Fallback to PDF mock response
+                File file = new ClassPathResource("flight_search_response.pdf").getFile();
+                PDDocument document = PDDocument.load(file);
+                PDFTextStripper pdfStripper = new PDFTextStripper();
+                String text = pdfStripper.getText(document);
+                document.close();
+
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(text);
+*//*
+                // load response from text file
+                Path pathFile=new ClassPathResource("flight_search_response.text").getFile().toPath();
+                String fileResponse= Files.readString(pathFile);
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(fileResponse);
+            } catch (Exception ex) {
+                return ResponseEntity.status(500).body("Error loading fallback response");
+            }
+        }*/catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Unexpected error");
+        }
     }
 
     @PostMapping("/search")
@@ -119,7 +150,7 @@ public class FlightSearchController {
         try {
             log.info("multicity search flight offer request received: {}", flightRequestDto.toString());
 //            FlightOfferSearch[] flightOffers = flightService.flightMultiCitySearch(flightRequestDto);
-            List<FlightAvailabilityResponse> flightResponseList = flightService.flightMultiCitySearch(flightRequestDto);
+            List<FlightAvailabilityResponse> flightResponseList = flightServiceI.flightMultiCitySearch(flightRequestDto);
 //            String jsonOutput = gson.toJson(flightOffers);
 //            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonOutput);
 //            List<FlightAvailabilityResponse> flightResponseList = Arrays.stream(flightOffers)
@@ -131,7 +162,23 @@ public class FlightSearchController {
             FlightResponseWrapper flightResponseWrapper = new FlightResponseWrapper(flightResponseList);
 
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(flightResponseWrapper);
-        } catch (Exception e) {
+        }/*catch (ResponseException e) {
+            System.out.println("Amadeus multi city  API down, serving offline response...");
+
+            try {
+                // Read fallback text file
+                Path filePath = new ClassPathResource("multicity_flight_search_response.text").getFile().toPath();
+                String text = Files.readString(filePath);
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(text);
+
+            } catch (Exception ex) {
+                return ResponseEntity.status(500).body("Error loading fallback response");
+            }
+        }*/
+        catch (Exception e) {
             log.error("An Error occurred while processing multi city search offer API: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }

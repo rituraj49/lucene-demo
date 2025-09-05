@@ -5,16 +5,18 @@ import cl.lcd.dto.pricing.FlightPricingConfirmResponse;
 import cl.lcd.dto.search.FlightAvailabilityRequest;
 import cl.lcd.dto.search.FlightAvailabilityResponse;
 import com.amadeus.exceptions.ResponseException;
-import com.amadeus.resources.FlightOfferSearch;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
+//@Profile("dev")
 @Service
-public class FlightService {
+@Primary
+public class FlightService implements FlightSearchInterface {
     @Autowired
     private AmadeusFlightSearchService amadeusFlightSearchService;
 
