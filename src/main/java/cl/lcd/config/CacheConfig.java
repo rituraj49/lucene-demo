@@ -87,57 +87,43 @@ public class CacheConfig {
 //        return caffeineCacheManager;
 //    }
 
-    @Bean
-    public RedisCacheConfiguration redisCacheConfiguration() throws JsonProcessingException {
-//        ObjectMapper mapper = new ObjectMapper();
+//  cache manager auto managed by spring boot
+//    @Bean
+//    public RedisCacheConfiguration redisCacheConfiguration() throws JsonProcessingException {
+//        PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
+//                .allowIfSubType("cl.lcd.model")
+//                .allowIfSubType("java.util")
+//                .build();
 //
+//        ObjectMapper mapper = new ObjectMapper();
 //        mapper.activateDefaultTyping(
-//                LaissezFaireSubTypeValidator.instance,
+////                LaissezFaireSubTypeValidator.instance,
+////                mapper.getPolymorphicTypeValidator(),
+//                ptv,
 //                ObjectMapper.DefaultTyping.NON_FINAL,
 //                JsonTypeInfo.As.PROPERTY
 //        );
-
-//        GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(mapper);
+//        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(mapper, Object.class);
+//
 //        return RedisCacheConfiguration.defaultCacheConfig()
 //                .entryTtl(Duration.ofMinutes(60))
 //                .disableCachingNullValues()
 //                .serializeValuesWith(
 //                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
 //                );
+//    }
+//
+//    @Bean
+//    public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer(RedisCacheConfiguration redisCacheConfiguration) {
+//        return (builder -> builder
+//                .withCacheConfiguration("locations",
+//                        redisCacheConfiguration.entryTtl(Duration.ofMinutes(10)))
+//                .withCacheConfiguration("flightOffers",
+//                        redisCacheConfiguration.entryTtl(Duration.ofMinutes(6)))
+//        );
+//    }
 
-        PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType("cl.lcd.model")
-                .allowIfSubType("java.util")
-                .build();
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.activateDefaultTyping(
-//                LaissezFaireSubTypeValidator.instance,
-//                mapper.getPolymorphicTypeValidator(),
-                ptv,
-                ObjectMapper.DefaultTyping.NON_FINAL,
-                JsonTypeInfo.As.PROPERTY
-        );
-        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(mapper, Object.class);
-
-        return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(60))
-                .disableCachingNullValues()
-                .serializeValuesWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
-                );
-    }
-
-    @Bean
-    public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer(RedisCacheConfiguration redisCacheConfiguration) {
-        return (builder -> builder
-                .withCacheConfiguration("locations",
-                        redisCacheConfiguration.entryTtl(Duration.ofMinutes(10)))
-                .withCacheConfiguration("flightOffers",
-                        redisCacheConfiguration.entryTtl(Duration.ofMinutes(6)))
-        );
-    }
-
+//    manual cache maneger
     @Bean
     public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
         PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
@@ -157,7 +143,10 @@ public class CacheConfig {
                 .entryTtl(Duration.ofMinutes(10))
                 .disableCachingNullValues()
                 .serializeValuesWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
+//                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
+                        RedisSerializationContext.SerializationPair.fromSerializer(
+                                new GenericJackson2JsonRedisSerializer()
+                        )
                 );
 
         Map<String, RedisCacheConfiguration> customConfigs = new HashMap<>();
