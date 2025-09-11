@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Profile("!nodb")
 public class PostGreLogsServices {
 
-    @Autowired
+    @Autowired(required = false)
     private PostGreRepo postGreRepo;
 
 

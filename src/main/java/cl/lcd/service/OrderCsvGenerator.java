@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class OrderCsvGenerator {
 
-    @Autowired
+    @Autowired(required = false)
     private PostGreRepo orderRepository;
 
     public File generateTodayOrdersCsv() throws IOException {

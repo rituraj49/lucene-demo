@@ -53,10 +53,10 @@ public class BookingController {
   //  @Autowired
    // private UserLogService userLogService;
 
-    @Autowired
+    @Autowired(required = false)
     private ReservationService reservationService;
 
-    @Autowired
+    @Autowired(required = false)
     private PostGreLogsServices postGreLogsServices;
 
     @PostMapping("flight-order")
@@ -105,9 +105,6 @@ public class BookingController {
             reservationService.createReservation(createdOrder);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
-        } catch (JsonProcessingException e) {
-            log.error("Error occurred in JSON Object flight order: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JSON input");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

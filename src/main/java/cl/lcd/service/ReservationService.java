@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.net.URLDecoder;
@@ -17,10 +18,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
+@Profile("!nodb")
 public class ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
-
 
     @Autowired
     private ObjectMapper objectMapper;

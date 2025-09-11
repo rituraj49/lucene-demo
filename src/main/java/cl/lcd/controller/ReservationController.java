@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class ReservationController {
 
-    @Autowired
+    @Autowired(required = false)
     private ReservationService reservationService;
 /*
 
