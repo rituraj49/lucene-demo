@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Profile("dev")
 @Service
-public class    BookingService implements BookingServiceInterface {
+public class BookingService implements BookingServiceInterface {
 
     @Autowired
     AmadeusBookingService amadeusBookingService;
@@ -25,7 +25,6 @@ public class    BookingService implements BookingServiceInterface {
         return amadeusBookingService.createFlightOrder(flightOrderRequest);
     }
 
-/*
     public FlightBookingResponse getFlightBooking(String orderId) throws ResponseException {
         return amadeusBookingService.getFlightOrder(orderId);
     }
@@ -33,6 +32,6 @@ public class    BookingService implements BookingServiceInterface {
     public Response cancelFlightBooking(String orderId) throws ResponseException {
         return amadeusBookingService.cancelFlightOrder(orderId);
     }
-*/
+
 
 }

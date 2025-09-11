@@ -41,7 +41,7 @@ public class AmadeusLocationSearchService {
 	 * @throws ResponseException
 	 * queryParams should contain at least two key-value pairs. Example - [{subType: CITY,AIRPORT} {keyword: delhi}]
 	 */
-	@Cacheable(cacheNames = "locations")
+//	@Cacheable(cacheNames = "locations")
     public LocationResponseWrapper searchLocations(Map<String, String> queryParams) throws ResponseException {
 		Params qParams = null;
 

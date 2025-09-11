@@ -45,8 +45,9 @@ public class BookingController {
 //    @Autowired
 //    AmadeusBookingService amadeusBookingService;
 
-  //  @Autowired
-   // BookingService bookingService;
+    @Autowired
+    BookingService bookingService;
+
     @Autowired
     private BookingServiceInterface bookingServiceI;
   //  @Autowired
@@ -104,32 +105,15 @@ public class BookingController {
             reservationService.createReservation(createdOrder);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
-        }/* catch (ResponseException e) {
-            //log.error("Error occurred while creating flight order: {}", e.getMessage());
-            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
-            System.out.println("Amadeus Pricing API down, serving offline response...");
-
-            try {
-                // Read fallback text file
-                Path filePath = new ClassPathResource("booking_confirm_response.text").getFile().toPath();
-                String text = Files.readString(filePath);
-
-                return ResponseEntity.ok()
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(text);
-
-            } catch (Exception ex) {
-                return ResponseEntity.status(500).body("Error loading fallback response");
-            }
-
-        }*/ catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             log.error("Error occurred in JSON Object flight order: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JSON input");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    /*@GetMapping("flight-order/{orderId}")
+
+    @GetMapping("flight-order/{orderId}")
     @Operation(summary = "Get flight order by ID",
             description = "Fetch a flight booking order using the Amadeus API by providing the order ID.")
     @ApiResponses({
@@ -141,6 +125,7 @@ public class BookingController {
     })
     public ResponseEntity<?> getFlightOrder(@PathVariable String orderId) {
         try {
+            log.info("Fetching flight order with ID: {}", orderId);
             log.info("Fetching flight order with ID: {}", orderId);
 //            FlightBookingResponse flightOrder = amadeusBookingService.getFlightOrder(orderId);
             FlightBookingResponse flightOrder = bookingService.getFlightBooking(orderId);
@@ -180,5 +165,5 @@ public class BookingController {
             log.error("Error occurred while deleting flight order: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
         }
-    }*/
+    }
 }

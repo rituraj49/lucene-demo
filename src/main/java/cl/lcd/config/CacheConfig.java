@@ -124,38 +124,38 @@ public class CacheConfig {
 //    }
 
 //    manual cache maneger
-    @Bean
-    public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
-        PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType("cl.lcd.model")
-                .allowIfSubType("java.util")
-                .build();
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.activateDefaultTyping(
-                ptv,
-                ObjectMapper.DefaultTyping.NON_FINAL,
-                JsonTypeInfo.As.PROPERTY
-        );
-        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(mapper, Object.class);
-
-        RedisCacheConfiguration redisDefaultConfig = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(10))
-                .disableCachingNullValues()
-                .serializeValuesWith(
-//                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
-                        RedisSerializationContext.SerializationPair.fromSerializer(
-                                new GenericJackson2JsonRedisSerializer()
-                        )
-                );
-
-        Map<String, RedisCacheConfiguration> customConfigs = new HashMap<>();
-        customConfigs.put("locations", redisDefaultConfig.entryTtl(Duration.ofMinutes(60)));
-        customConfigs.put("flightOffers", redisDefaultConfig.entryTtl(Duration.ofMinutes(5)));
-
-        return RedisCacheManager.builder(redisConnectionFactory)
-                .cacheDefaults(redisDefaultConfig)
-                .withInitialCacheConfigurations(customConfigs)
-                .build();
-    }
+//    @Bean
+//    public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
+//        PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
+//                .allowIfSubType("cl.lcd.model")
+//                .allowIfSubType("java.util")
+//                .build();
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.activateDefaultTyping(
+//                ptv,
+//                ObjectMapper.DefaultTyping.NON_FINAL,
+//                JsonTypeInfo.As.PROPERTY
+//        );
+//        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(mapper, Object.class);
+//
+//        RedisCacheConfiguration redisDefaultConfig = RedisCacheConfiguration.defaultCacheConfig()
+//                .entryTtl(Duration.ofMinutes(10))
+//                .disableCachingNullValues()
+//                .serializeValuesWith(
+////                        RedisSerializationContext.SerializationPair.fromSerializer(serializer)
+//                        RedisSerializationContext.SerializationPair.fromSerializer(
+//                                new GenericJackson2JsonRedisSerializer()
+//                        )
+//                );
+//
+//        Map<String, RedisCacheConfiguration> customConfigs = new HashMap<>();
+//        customConfigs.put("locations", redisDefaultConfig.entryTtl(Duration.ofMinutes(60)));
+//        customConfigs.put("flightOffers", redisDefaultConfig.entryTtl(Duration.ofMinutes(5)));
+//
+//        return RedisCacheManager.builder(redisConnectionFactory)
+//                .cacheDefaults(redisDefaultConfig)
+//                .withInitialCacheConfigurations(customConfigs)
+//                .build();
+//    }
 }
