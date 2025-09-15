@@ -16,7 +16,7 @@ public class ActivityResponse {
     private String shortDescription;
     private String description;
     private GeoCode geoCode;
-    //private String rating;
+    private String rating;
     private List<String> pictures;
     private String bookingLink;
     private Price price;

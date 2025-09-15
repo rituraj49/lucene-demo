@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-secrets-dev.properties
+#secrets-dev.properties
 
 /docker/loki/data/*
 !/docker/loki/data/chunks/.gitkeep

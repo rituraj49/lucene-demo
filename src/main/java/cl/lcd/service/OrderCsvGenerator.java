@@ -3,6 +3,7 @@ package cl.lcd.service;
 import cl.lcd.dto.logs.PostGreLog;
 import cl.lcd.repo.PostGreRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Profile("!nodb")
 public class OrderCsvGenerator {
 
     @Autowired(required = false)
