@@ -29,6 +29,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.lang.NonNull;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -53,39 +54,44 @@ public class CacheConfig {
 //        return new EhCacheCacheManager(ehCacheManager);
 //    }
 
-//    @Bean
-//    public CacheManager cacheManagerSetup() {
-////        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager("locations", "flightOffer");
-////        caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
-////                .expireAfterWrite(10, TimeUnit.MINUTES)
-////                .maximumSize(1000));
-////        return caffeineCacheManager;
-//        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager() {
-//            @Override
-//            protected Cache<Object, Object> createNativeCaffeineCache(String name) {
-//                if("locations".equals(name)) {
-//                    return Caffeine.newBuilder()
-//                            .expireAfterWrite(10, TimeUnit.MINUTES)
-//                            .maximumSize(1000)
-//                            .build();
-//                } else if("flightOffers".equals(name)) {
-//                    return Caffeine.newBuilder()
-//                            .expireAfterWrite(5, TimeUnit.MINUTES)
-//                            .maximumSize(100)
-//                            .build();
-//                }
-//
-//                return Caffeine.newBuilder()
-//                        .expireAfterAccess(10, TimeUnit.MINUTES)
-//                        .maximumSize(1000)
-//                        .build();
-//            }
-//        };
-//
-//        caffeineCacheManager.setCacheNames(List.of("locations", "flightOffers"));
-//
+    @Bean
+    public CacheManager cacheManagerSetup() {
+//        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager("locations", "flightOffer");
+//        caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
+//                .expireAfterWrite(10, TimeUnit.MINUTES)
+//                .maximumSize(1000));
 //        return caffeineCacheManager;
-//    }
+        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager() {
+            @Override
+            protected @NonNull Cache<Object, Object> createNativeCaffeineCache(@NonNull String name) {
+                if("locations".equals(name)) {
+                    return Caffeine.newBuilder()
+                            .expireAfterWrite(10, TimeUnit.MINUTES)
+                            .maximumSize(1000)
+                            .build();
+                } else if("flightOffers".equals(name)) {
+                    return Caffeine.newBuilder()
+                            .expireAfterWrite(5, TimeUnit.MINUTES)
+                            .maximumSize(100)
+                            .build();
+                } else if("activities".equals(name)) {
+                    return Caffeine.newBuilder()
+                        .expireAfterWrite(12, TimeUnit.HOURS)
+                        .maximumSize(100)
+                        .build();
+            }
+
+                return Caffeine.newBuilder()
+                        .expireAfterAccess(10, TimeUnit.MINUTES)
+                        .maximumSize(1000)
+                        .build();
+            }
+        };
+
+        caffeineCacheManager.setCacheNames(List.of("locations", "flightOffers", "activities"));
+
+        return caffeineCacheManager;
+    }
 
 //  cache manager auto managed by spring boot
 //    @Bean
