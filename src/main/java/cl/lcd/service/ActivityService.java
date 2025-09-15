@@ -19,7 +19,6 @@ public class ActivityService {
 
     @Cacheable("activities")
     public List<ActivityResponse> getActivities(double latitude, double longitude, Integer radius) throws ResponseException {
-        System.out.println("cache missed - fetching from Amadeus API");
         Params params = Params.with("latitude", String.valueOf(latitude))
                 .and("longitude", String.valueOf(longitude));
 
